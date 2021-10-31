@@ -1,5 +1,2 @@
-export class Hello {
-  public sayHello() {
-    return 'hello, world!';
-  }
-}
+export { GithubActionsIdentityProvider, IGithubActionsIdentityProvider } from './provider';
+export { GithubActionsRole, GithubActionsRoleProps, GithubConfiguration } from './role';
