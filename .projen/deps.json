@@ -6,6 +6,14 @@
       "type": "build"
     },
     {
+      "name": "@aws-cdk/aws-iam",
+      "type": "build"
+    },
+    {
+      "name": "@aws-cdk/core",
+      "type": "build"
+    },
+    {
       "name": "@types/github-username-regex",
       "type": "build"
     },
@@ -24,6 +32,10 @@
     },
     {
       "name": "@typescript-eslint/parser",
+      "type": "build"
+    },
+    {
+      "name": "constructs",
       "type": "build"
     },
     {

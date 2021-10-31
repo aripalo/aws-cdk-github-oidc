@@ -4,8 +4,6 @@ import { test as testUserName } from 'github-username-regex';
 import { GithubActionsIdentityProvider, IGithubActionsIdentityProvider } from './provider';
 
 
-//export type RoleProps = Omit<iam.RoleProps, 'assumedBy'>
-
 export interface GithubConfiguration {
   readonly provider: IGithubActionsIdentityProvider;
   readonly owner: string;
@@ -15,12 +13,18 @@ export interface GithubConfiguration {
   readonly filter?: string;
 }
 
-export interface GithubActionsRoleProps {
-  readonly github: GithubConfiguration;
-  readonly role: iam.RoleProps;
-}
+export interface GithubActionsRoleProps extends GithubConfiguration, iam.RoleProps {}
 
 export class GithubActionsRole extends iam.Role {
+
+  private static extractRoleProps(props: GithubActionsRoleProps): iam.RoleProps {
+    const extractProps = <any>props;
+    delete extractProps.provider;
+    delete extractProps.owner;
+    delete extractProps.repo;
+    delete extractProps.filter;
+    return extractProps;
+  }
 
   private static validateOwner(scope: cdk.Construct, owner: string): void {
     if (testUserName(owner) !== true) {
@@ -34,24 +38,32 @@ export class GithubActionsRole extends iam.Role {
     }
   }
 
+  private static validateRoleProps(scope: cdk.Construct, props: iam.RoleProps): void {
+    if (props.assumedBy) {
+      cdk.Annotations.of(scope).addError('Do not provide "assumedBy" property yourself. It will be defined by GithubActionsRole automatically.');
+    }
+  }
+
   private static formatSubject(props: GithubConfiguration): string {
     const { owner, repo, filter = '*' } = props;
     return `repo:${owner}/${repo}:${filter}`;
   }
 
+
   constructor(scope: cdk.Construct, id: string, props: GithubActionsRoleProps) {
 
-    const { github, role: roleProps } = props;
+    const { provider, owner, repo } = props;
 
-    GithubActionsRole.validateOwner(scope, github.owner);
-    GithubActionsRole.validateRepo(scope, github.repo);
+    GithubActionsRole.validateOwner(scope, owner);
+    GithubActionsRole.validateRepo(scope, repo);
+    GithubActionsRole.validateRoleProps(scope, props);
 
-    const subject = GithubActionsRole.formatSubject(props.github);
-    //const roleProps = GithubActionsRole.extractRoleProps(props);
+    const subject = GithubActionsRole.formatSubject(props);
+    const roleProps = GithubActionsRole.extractRoleProps(props);
 
     super(scope, id, {
       ...roleProps,
-      assumedBy: new iam.WebIdentityPrincipal(github.provider.openIdConnectProviderArn, {
+      assumedBy: new iam.WebIdentityPrincipal(provider.openIdConnectProviderArn, {
         StringLike: {
           [`${GithubActionsIdentityProvider.issuer}:sub`]: subject,
         },
