@@ -6,6 +6,12 @@
 
 - *Implements:* [`@aripalo/aws-cdk-github-oidc.IGithubActionsIdentityProvider`](#@aripalo/aws-cdk-github-oidc.IGithubActionsIdentityProvider)
 
+Github Actions as OpenID Connect Identity Provider for AWS IAM. There can be only one (per AWS Account).
+
+Use `fromAccount` to retrieve a reference to existing Github OIDC provider.
+
+> https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/configuring-openid-connect-in-amazon-web-services
+
 #### Initializers <a name="@aripalo/aws-cdk-github-oidc.GithubActionsIdentityProvider.Initializer"></a>
 
 ```typescript
@@ -18,34 +24,42 @@ new GithubActionsIdentityProvider(scope: Construct, id: string)
 
 - *Type:* [`@aws-cdk/core.Construct`](#@aws-cdk/core.Construct)
 
+CDK Stack or Construct to which the provider is assigned to.
+
 ---
 
 ##### `id`<sup>Required</sup> <a name="@aripalo/aws-cdk-github-oidc.GithubActionsIdentityProvider.parameter.id"></a>
 
 - *Type:* `string`
 
+CDK Construct ID given to the construct.
+
 ---
 
 
 #### Static Functions <a name="Static Functions"></a>
 
-##### `fromLookup` <a name="@aripalo/aws-cdk-github-oidc.GithubActionsIdentityProvider.fromLookup"></a>
+##### `fromAccount` <a name="@aripalo/aws-cdk-github-oidc.GithubActionsIdentityProvider.fromAccount"></a>
 
 ```typescript
 import { GithubActionsIdentityProvider } from '@aripalo/aws-cdk-github-oidc'
 
-GithubActionsIdentityProvider.fromLookup(scope: Construct, id: string)
+GithubActionsIdentityProvider.fromAccount(scope: Construct, id: string)
 ```
 
 ###### `scope`<sup>Required</sup> <a name="@aripalo/aws-cdk-github-oidc.GithubActionsIdentityProvider.parameter.scope"></a>
 
 - *Type:* [`@aws-cdk/core.Construct`](#@aws-cdk/core.Construct)
 
+CDK Stack or Construct to which the provider is assigned to.
+
 ---
 
 ###### `id`<sup>Required</sup> <a name="@aripalo/aws-cdk-github-oidc.GithubActionsIdentityProvider.parameter.id"></a>
 
 - *Type:* `string`
+
+CDK Construct ID given to the construct.
 
 ---
 
@@ -65,6 +79,11 @@ GithubActionsIdentityProvider.fromLookup(scope: Construct, id: string)
 ---
 
 ### GithubActionsRole <a name="@aripalo/aws-cdk-github-oidc.GithubActionsRole"></a>
+
+Define an IAM Role that can be assumed by Github Actions workflow via Github OpenID Connect Identity Provider.
+
+Besides `GithubConfiguration`, you may pass in any `iam.RoleProps` except `assumedBy`
+which will be defined by this construct (CDK will fail if you do).
 
 #### Initializers <a name="@aripalo/aws-cdk-github-oidc.GithubActionsRole.Initializer"></a>
 
@@ -100,6 +119,11 @@ new GithubActionsRole(scope: Construct, id: string, props: GithubActionsRoleProp
 
 ### GithubActionsRoleProps <a name="@aripalo/aws-cdk-github-oidc.GithubActionsRoleProps"></a>
 
+Props that define the IAM Role that can be assumed by Github Actions workflow via Github OpenID Connect Identity Provider.
+
+Besides `GithubConfiguration`, you may pass in any `iam.RoleProps` except `assumedBy`
+which will be defined by this construct (CDK will fail if you do).
+
 #### Initializer <a name="[object Object].Initializer"></a>
 
 ```typescript
@@ -116,6 +140,8 @@ public readonly owner: string;
 
 - *Type:* `string`
 
+Repository owner (organization or username).
+
 ---
 
 ##### `provider`<sup>Required</sup> <a name="@aripalo/aws-cdk-github-oidc.GithubActionsRoleProps.property.provider"></a>
@@ -125,6 +151,12 @@ public readonly provider: IGithubActionsIdentityProvider;
 ```
 
 - *Type:* [`@aripalo/aws-cdk-github-oidc.IGithubActionsIdentityProvider`](#@aripalo/aws-cdk-github-oidc.IGithubActionsIdentityProvider)
+
+Reference to Github OpenID Connect Provider configured in AWS IAM.
+
+Either pass an construct defined by `new GithubActionsIdentityProvider`
+or a retrieved reference from `GithubActionsIdentityProvider.fromAccount`.
+There can be only one (per AWS Account).
 
 ---
 
@@ -136,6 +168,8 @@ public readonly repo: string;
 
 - *Type:* `string`
 
+Repository name (slug) without the owner.
+
 ---
 
 ##### `filter`<sup>Optional</sup> <a name="@aripalo/aws-cdk-github-oidc.GithubActionsRoleProps.property.filter"></a>
@@ -145,6 +179,13 @@ public readonly filter: string;
 ```
 
 - *Type:* `string`
+- *Default:* '*'
+
+You may use this value to only allow Github to assume the role on specific branches, tags, environments, pull requests etc.
+
+Subject condition filter, appended after `repo:${owner}/${repo}:` string in IAM Role trust relationship.
+
+> https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/about-security-hardening-with-openid-connect#examples
 
 ---
 
@@ -338,6 +379,8 @@ Acknowledging IAM Resources in AWS CloudFormation Templates.
 
 ### GithubConfiguration <a name="@aripalo/aws-cdk-github-oidc.GithubConfiguration"></a>
 
+Github related configuration that forms the trust policy for this IAM Role.
+
 #### Initializer <a name="[object Object].Initializer"></a>
 
 ```typescript
@@ -354,6 +397,8 @@ public readonly owner: string;
 
 - *Type:* `string`
 
+Repository owner (organization or username).
+
 ---
 
 ##### `provider`<sup>Required</sup> <a name="@aripalo/aws-cdk-github-oidc.GithubConfiguration.property.provider"></a>
@@ -363,6 +408,12 @@ public readonly provider: IGithubActionsIdentityProvider;
 ```
 
 - *Type:* [`@aripalo/aws-cdk-github-oidc.IGithubActionsIdentityProvider`](#@aripalo/aws-cdk-github-oidc.IGithubActionsIdentityProvider)
+
+Reference to Github OpenID Connect Provider configured in AWS IAM.
+
+Either pass an construct defined by `new GithubActionsIdentityProvider`
+or a retrieved reference from `GithubActionsIdentityProvider.fromAccount`.
+There can be only one (per AWS Account).
 
 ---
 
@@ -374,6 +425,8 @@ public readonly repo: string;
 
 - *Type:* `string`
 
+Repository name (slug) without the owner.
+
 ---
 
 ##### `filter`<sup>Optional</sup> <a name="@aripalo/aws-cdk-github-oidc.GithubConfiguration.property.filter"></a>
@@ -383,6 +436,13 @@ public readonly filter: string;
 ```
 
 - *Type:* `string`
+- *Default:* '*'
+
+You may use this value to only allow Github to assume the role on specific branches, tags, environments, pull requests etc.
+
+Subject condition filter, appended after `repo:${owner}/${repo}:` string in IAM Role trust relationship.
+
+> https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/about-security-hardening-with-openid-connect#examples
 
 ---
 
@@ -394,6 +454,8 @@ public readonly filter: string;
 - *Extends:* [`@aws-cdk/aws-iam.IOpenIdConnectProvider`](#@aws-cdk/aws-iam.IOpenIdConnectProvider)
 
 - *Implemented By:* [`@aripalo/aws-cdk-github-oidc.GithubActionsIdentityProvider`](#@aripalo/aws-cdk-github-oidc.GithubActionsIdentityProvider), [`@aripalo/aws-cdk-github-oidc.IGithubActionsIdentityProvider`](#@aripalo/aws-cdk-github-oidc.IGithubActionsIdentityProvider)
+
+Describes a Github OpenID Connect Identity Provider for AWS IAM.
 
 
 #### Properties <a name="Properties"></a>
