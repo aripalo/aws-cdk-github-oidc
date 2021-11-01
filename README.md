@@ -6,7 +6,7 @@ AWS [CDK](https://aws.amazon.com/cdk/) constructs that define:
 - Github Actions as OpenID Connect Identity Provider into AWS IAM
 - IAM Roles that can be assumed by Github Actions workflows
 
-These constructs allows you to harden your AWS deployment security by removing the need to create long-lived access tokens for Github Actions and instead use OpenID Connect to Authenticate your Github Action workflow with AWS IAM.
+These constructs allows you to harden your AWS deployment security by removing the need to create long-term access keys for Github Actions and instead use OpenID Connect to Authenticate your Github Action workflow with AWS IAM.
 
 ## Background information
 
