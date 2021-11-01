@@ -26,5 +26,7 @@ const project = new AwsCdkConstructLibrary({
     distName: 'aws-cdk-github-oidc',
     module: 'aws_cdk_github_oidc',
   },
+
+  codeCov: true,
 });
 project.synth();
