@@ -27,7 +27,7 @@ npm i -D @aripalo/aws-cdk-github-oidc
 
 <br/>
 
-### OpenID Connect Identity Provider for AWS IAM
+### OpenID Connect Identity Provider trust for AWS IAM
 
 To create a new Github OIDC provider into AWS IAM:
 ```ts
@@ -38,7 +38,7 @@ In the background this creates an OIDC provider trust configuration into AWS IAM
 
 <br/>
 
-### Retrieving a reference to an existing Github OIDC provider
+### Retrieving a reference to an existing Github OIDC provider configuration
 
 Remember, **there can be only one (Github OIDC provider per AWS Account)**, so to retrieve a reference to existing Github OIDC provider use `fromAccount` static method:
 ```ts
