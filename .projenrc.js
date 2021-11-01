@@ -13,7 +13,7 @@ const project = new AwsCdkConstructLibrary({
   deps: ['github-username-regex'],
   bundledDeps: ['github-username-regex'],
   devDeps: ['@types/github-username-regex', '@aws-cdk/core', '@aws-cdk/aws-iam', 'constructs'],
-  packageName: '@aripalo/aws-cdk-github-oidc',
+  //packageName: '@aripalo/aws-cdk-github-oidc',
   // release: undefined,              /* Add release management to this project. */
 
   gitignore: ['.DS_Store'],
