@@ -1,5 +1,6 @@
 import * as iam from '@aws-cdk/aws-iam';
 import * as cdk from '@aws-cdk/core';
+import { RoleProps } from './iam-role-props';
 import githubUsernameRegex from './owner-regexp';
 import { GithubActionsIdentityProvider, IGithubActionsIdentityProvider } from './provider';
 
@@ -67,7 +68,7 @@ export interface GithubConfiguration {
  *   roleName: 'MyDeployRole',
  * }
  */
-export interface GithubActionsRoleProps extends GithubConfiguration, Partial<iam.RoleProps> {}
+export interface GithubActionsRoleProps extends GithubConfiguration, RoleProps {}
 
 /**
  * Define an IAM Role that can be assumed by Github Actions workflow
