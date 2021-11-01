@@ -73,7 +73,7 @@ const uploadRole = new GithubActionsRole(scope, "DeployRole", {
 });
 
 // You may also use various "add*" policy methods!
-// "AdministratorAccess" probably not a good idea, just for an example here:
+// "AdministratorAccess" not really a good idea, just for an example here:
 role.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName("AdministratorAccess"));
 ```
 
