@@ -69,18 +69,18 @@ myBucket.grantWrite(uploadRole);
 
 You may pass in any `iam.RoleProps` into the construct's props, except `assumedBy` which will be defined by this construct (CDK will fail if you do):
 ```ts
-const uploadRole = new GithubActionsRole(scope, 'DeployRole', {
+const deployRole = new GithubActionsRole(scope, 'DeployRole', {
   provider: provider,
   owner: 'octo-org',
   repo: 'octo-repo',
-  roleName: 'MyUploadRole',
-  description: 'This role uploads stuff to AWS',
+  roleName: 'MyDeployRole',
+  description: 'This role deploys stuff to AWS',
   maxSessionDuration: cdk.Duration.minutes(10),
 });
 
 // You may also use various "add*" policy methods!
 // "AdministratorAccess" not really a good idea, just for an example here:
-role.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('AdministratorAccess'));
+deployRole.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('AdministratorAccess'));
 ```
 
 <br/>
