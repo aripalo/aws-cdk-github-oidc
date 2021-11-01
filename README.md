@@ -1,6 +1,7 @@
 # AWS CDK Github OpenID Connect
 
 ![cdk-support](https://img.shields.io/badge/cdk-%20typescript%20|%20python%20-informational "TypeScript | Python")
+[![release](https://github.com/aripalo/aws-cdk-github-oidc/actions/workflows/release.yml/badge.svg)](https://github.com/aripalo/aws-cdk-github-oidc/actions/workflows/release.yml)
 
 AWS [CDK](https://aws.amazon.com/cdk/) constructs that define:
 - Github Actions as OpenID Connect Identity Provider into AWS IAM
