@@ -1,4 +1,5 @@
 import * as iam from '@aws-cdk/aws-iam';
+import { OpenIdConnectProvider } from '@aws-cdk/aws-iam/lib/oidc-provider';
 import * as cdk from '@aws-cdk/core';
 import { RoleProps } from './iam-role-props';
 import githubUsernameRegex from './owner-regexp';
@@ -158,7 +159,7 @@ export class GithubActionsRole extends iam.Role {
     // The actual IAM Role creation
     super(scope, id, {
       ...roleProps,
-      assumedBy: new iam.WebIdentityPrincipal(provider.openIdConnectProviderArn, {
+      assumedBy: new iam.OpenIdConnectPrincipal(OpenIdConnectProvider.fromOpenIdConnectProviderArn(scope, 'openIdConnectProviderArn', provider.openIdConnectProviderArn), {
         StringLike: {
           // Only allow specified subjects to assume this role
           [`${GithubActionsIdentityProvider.issuer}:sub`]: subject,
