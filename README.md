@@ -121,13 +121,13 @@ jobs:
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@master
       with:
-        role-to-assume: arn:aws:iam::111111111111:role/MyUploadRole
+        role-to-assume: arn:aws:iam::123456789012:role/MyUploadRole
         #role-session-name: MySessionName # Optional
         aws-region: us-east-1
 
-    - name: Copy files to the test website with the AWS CLI
+    - name: Sync files to S3
       run: |
-        aws s3 sync . s3://my-s3-test-website-bucket
+        aws s3 sync . s3://my-example-bucket
 ```
 
 <br/>
