@@ -1,5 +1,7 @@
 # AWS CDK Github OpenID Connect
 
+![cdk-support](https://img.shields.io/badge/cdk-%20typescript%20|%20python%20-informational "TypeScript | Python")
+
 AWS [CDK](https://aws.amazon.com/cdk/) constructs that define:
 - Github Actions as OpenID Connect Identity Provider into AWS IAM
 - IAM Roles that can be assumed by Github Actions workflows
@@ -136,4 +138,4 @@ These constructs are fresh out from the oven, since [Github just announced](http
 
 These constructs will stay in `v0.x.x` for a while, to allow easier bug fixing & breaking changes _if absolutely needed_. Once bugs are fixed (if any), the constructs will be published with `v1` major version and will be marked as stable.
 
-Currently only TypeScript version provided, but before going to stable, I'll add Python builds and probably others (supported by JSII).
+Currently only TypeScript and Python versions provided, but before going to stable, I'll probably others (supported by JSII) depending on the amount of work required - so no promises!
