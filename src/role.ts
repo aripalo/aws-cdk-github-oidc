@@ -1,6 +1,6 @@
 import * as iam from '@aws-cdk/aws-iam';
 import * as cdk from '@aws-cdk/core';
-import { test as testUserName } from 'github-username-regex';
+import githubUsernameRegex from 'github-username-regex';
 import { GithubActionsIdentityProvider, IGithubActionsIdentityProvider } from './provider';
 
 /**
@@ -67,7 +67,7 @@ export interface GithubConfiguration {
  *   roleName: 'MyDeployRole',
  * }
  */
-export interface GithubActionsRoleProps extends GithubConfiguration, iam.RoleProps {}
+export interface GithubActionsRoleProps extends GithubConfiguration, Partial<iam.RoleProps> {}
 
 /**
  * Define an IAM Role that can be assumed by Github Actions workflow
@@ -105,7 +105,7 @@ export class GithubActionsRole extends iam.Role {
 
   /** Validates the Github owner (organization or user) name. */
   private static validateOwner(scope: cdk.Construct, owner: string): void {
-    if (testUserName(owner) !== true) {
+    if (githubUsernameRegex.test(owner) !== true) {
       cdk.Annotations.of(scope).addError(`Invalid Github Repository Owner "${owner}". Must only contain alphanumeric characters or hyphens, cannot have multiple consecutive hyphens, cannot begin or end with a hypen and maximum lenght is 39 characters.`);
     }
   }
@@ -118,7 +118,7 @@ export class GithubActionsRole extends iam.Role {
   }
 
   /** Validate IAM Role related props: I.e. ensure no `assumedBy` was given. */
-  private static validateRoleProps(scope: cdk.Construct, props: iam.RoleProps): void {
+  private static validateRoleProps(scope: cdk.Construct, props: Partial<iam.RoleProps>): void {
     if (props.assumedBy) {
       cdk.Annotations.of(scope).addError('Do not provide "assumedBy" property yourself. It will be defined by GithubActionsRole automatically.');
     }
