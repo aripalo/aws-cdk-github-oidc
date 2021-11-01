@@ -4,8 +4,11 @@ AWS [CDK](https://aws.amazon.com/cdk/) constructs that define:
 - Github Actions as OpenID Connect Identity Provider into AWS IAM
 - IAM Roles that can be assumed by Github Actions workflows
 
+These constructs allows you to harden your AWS deployment security by removing the need to create long-lived access tokens for Github Actions and instead use OpenID Connect to Authenticate your Github Action workflow with AWS IAM.
 
 ## Background information
+
+![github-aws-oidc](/assets/github-aws-oidc.svg "Github OIDC with AWS")
 
 - [GitHub Actions: Secure cloud deployments with OpenID Connect](https://github.blog/changelog/2021-10-27-github-actions-secure-cloud-deployments-with-openid-connect/) on Github Changelog Blog.
 - [Security hardening your deployments](https://docs.github.com/en/actions/deployment/security-hardening-your-deployments) on Github Docs.
@@ -14,11 +17,15 @@ AWS [CDK](https://aws.amazon.com/cdk/) constructs that define:
 - Shout-out to [Aidan W Steele](https://twitter.com/__steele) and his blog post [AWS federation comes to GitHub Actions](https://awsteele.com/blog/2021/09/15/aws-federation-comes-to-github-actions.html) for being the original inspiration for this.
 
 
+<br/>
+
 ## Getting started
 
 ```shell
 npm i -D @aripalo/aws-cdk-github-oidc
 ```
+
+<br/>
 
 ### OpenID Connect Identity Provider for AWS IAM
 
@@ -29,12 +36,16 @@ const provider = new GithubActionsIdentityProvider(scope, "GithubProvider");
 
 In the background this creates an OIDC provider with an [issuer URL of `https://token.actions.githubusercontent.com`](https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/configuring-openid-connect-in-amazon-web-services#adding-the-identity-provider-to-aws), audiences (client IDs) configured as `['sts.amazonaws.com']` (which matches the [`aws-actions/configure-aws-credentials`](https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/configuring-openid-connect-in-amazon-web-services#adding-the-identity-provider-to-aws) implementation) and the thumbprint as Github's `a031c46782e6e6c662c2c87c76da9aa62ccabd8e`
 
+<br/>
+
 ### Retrieving a reference to an existing Github OIDC provider
 
 Remember, **there can be only one (Github OIDC provider per AWS Account)**, so to retrieve a reference to existing Github OIDC provider use `fromAccount` static method:
 ```ts
 const provider = GithubActionsIdentityProvider.fromAccount(scope, "GithubProvider");
 ```
+
+<br/>
 
 ### Defining a role for Github Actions workflow to assume
 
@@ -66,6 +77,8 @@ const uploadRole = new GithubActionsRole(scope, "DeployRole", {
 role.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName("AdministratorAccess"));
 ```
 
+<br/>
+
 #### Subject Filter
 
 By default the value of `filter` property will be `'*'` which means any workflow (from given repository) from any branch, tag, environment or pull request can assume this role. To further stricten the OIDC trust policy on the role, you may adjust the subject filter as seen on the [examples in Github Docs](https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/about-security-hardening-with-openid-connect#configuring-the-oidc-trust-with-the-cloud); For example:
@@ -77,7 +90,9 @@ By default the value of `filter` property will be `'*'` which means any workflow
 | `'pull_request'`               | Allow only from pull request             |
 | `'environment:Production'`     | Allow only from `Production` environment |
 
-### Github Actions
+<br/>
+
+### Github Actions Workflow
 
 To actually utilize this in your Github Actions workflow, use [aws-actions/configure-aws-credentials](https://github.com/aws-actions/configure-aws-credentials) to [assume a role](https://github.com/aws-actions/configure-aws-credentials#assuming-a-role).
 
@@ -106,3 +121,13 @@ jobs:
       run: |
         aws s3 sync . s3://my-s3-test-website-bucket
 ```
+
+<br/>
+
+### Development Status
+
+These constructs are fresh out from the oven, since [Github just announced](https://github.blog/changelog/2021-10-27-github-actions-secure-cloud-deployments-with-openid-connect/) the OpenID Connect feature as generally available. I've been playing around with the feature for few days, but the constructs themselves haven't yet been widely used.
+
+These constructs will stay in `v0.x.x` for a while, to allow easier bug fixing & breaking changes _if absolutely needed_. Once bugs are fixed (if any), the constructs will be published with `v1` major version and will be marked as stable.
+
+Currently only TypeScript version provided, but before going to stable, I'll add Python builds and probably others (supported by JSII).
