@@ -75,7 +75,7 @@ const deployRole = new GithubActionsRole(scope, 'DeployRole', {
   repo: 'octo-repo',
   roleName: 'MyDeployRole',
   description: 'This role deploys stuff to AWS',
-  maxSessionDuration: cdk.Duration.minutes(10),
+  maxSessionDuration: cdk.Duration.hours(2),
 });
 
 // You may also use various "add*" policy methods!
