@@ -31,7 +31,7 @@ npm i -D aws-cdk-github-oidc
 
 ### OpenID Connect Identity Provider trust for AWS IAM
 
-To create a new Github OIDC provider into AWS IAM:
+To create a new Github OIDC provider configuration into AWS IAM:
 ```ts
 import { GithubActionsIdentityProvider } from 'aws-cdk-github-oidc';
 
@@ -62,7 +62,7 @@ const uploadRole = new GithubActionsRole(scope, 'UploadRole', {
   provider: provider,           // reference into the OIDC provider
   owner: 'octo-org',            // your repository owner (organization or user) name
   repo: 'octo-repo',            // your repository name (without the owner name)
-  filter: 'ref:refs/tags/v*',   // jwt sub suffix filter, defaults to '*'
+  filter: 'ref:refs/tags/v*',   // JWT sub suffix filter, defaults to '*'
 });
 
 // use it like any other role, for example grant S3 bucket write access:
@@ -134,7 +134,7 @@ jobs:
 
 ### Development Status
 
-These constructs are fresh out from the oven, since [Github just announced](https://github.blog/changelog/2021-10-27-github-actions-secure-cloud-deployments-with-openid-connect/) the OpenID Connect feature as generally available. I've been playing around with the feature for few days, but the constructs themselves haven't yet been widely used.
+These constructs are fresh out from the oven, since [Github just announced](https://github.blog/changelog/2021-10-27-github-actions-secure-cloud-deployments-with-openid-connect/) the OpenID Connect feature as generally available. I've been playing around with the feature for some time, but the construct itself haven't yet been widely used.
 
 These constructs will stay in `v0.x.x` for a while, to allow easier bug fixing & breaking changes _if absolutely needed_. Once bugs are fixed (if any), the constructs will be published with `v1` major version and will be marked as stable.
 
