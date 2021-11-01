@@ -10,11 +10,15 @@ const project = new AwsCdkConstructLibrary({
   repositoryUrl: 'https://github.com/aripalo/aws-cdk-github-oidc.git',
 
   cdkDependencies: ['@aws-cdk/core', '@aws-cdk/aws-iam'],
-  deps: ['github-username-regex'],
-  bundledDeps: ['github-username-regex'],
   devDeps: ['@types/github-username-regex', '@aws-cdk/core', '@aws-cdk/aws-iam', 'constructs'],
   // release: undefined,              /* Add release management to this project. */
 
   gitignore: ['.DS_Store'],
+
+  tsconfig: {
+    compilerOptions: {
+      esModuleInterop: true, // required for github-username-regex
+    },
+  },
 });
 project.synth();

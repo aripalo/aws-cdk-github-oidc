@@ -106,10 +106,6 @@
       "type": "build"
     },
     {
-      "name": "github-username-regex",
-      "type": "bundled"
-    },
-    {
       "name": "@aws-cdk/aws-iam",
       "version": "^1.95.2",
       "type": "peer"
@@ -132,10 +128,6 @@
     {
       "name": "@aws-cdk/core",
       "version": "^1.95.2",
-      "type": "runtime"
-    },
-    {
-      "name": "github-username-regex",
       "type": "runtime"
     }
   ],

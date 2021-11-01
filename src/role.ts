@@ -1,6 +1,6 @@
 import * as iam from '@aws-cdk/aws-iam';
 import * as cdk from '@aws-cdk/core';
-import githubUsernameRegex from 'github-username-regex';
+import githubUsernameRegex from './owner-regexp';
 import { GithubActionsIdentityProvider, IGithubActionsIdentityProvider } from './provider';
 
 /**

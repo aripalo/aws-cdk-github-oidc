@@ -66,12 +66,9 @@
   },
   "dependencies": {
     "@aws-cdk/aws-iam": "^1.95.2",
-    "@aws-cdk/core": "^1.95.2",
-    "github-username-regex": "^1.0.0"
+    "@aws-cdk/core": "^1.95.2"
   },
-  "bundledDependencies": [
-    "github-username-regex"
-  ],
+  "bundledDependencies": [],
   "keywords": [
     "cdk"
   ],
