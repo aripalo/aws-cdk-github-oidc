@@ -204,24 +204,6 @@ It can be up to 1000 characters long.
 
 ---
 
-##### ~~`externalId`~~<sup>Optional</sup> <a name="aws-cdk-github-oidc.GithubActionsRoleProps.property.externalId"></a>
-
-- *Deprecated:* see {@link externalIds}
-
-```typescript
-public readonly externalId: string;
-```
-
-- *Type:* `string`
-- *Default:* No external ID required
-
-(deprecated) ID that the role assumer needs to provide when assuming this role.
-
-If the configured and provided external IDs do not match, the
-AssumeRole operation will fail.
-
----
-
 ##### `externalIds`<sup>Optional</sup> <a name="aws-cdk-github-oidc.GithubActionsRoleProps.property.externalIds"></a>
 
 ```typescript
@@ -460,24 +442,6 @@ public readonly description: string;
 A description of the role.
 
 It can be up to 1000 characters long.
-
----
-
-##### ~~`externalId`~~<sup>Optional</sup> <a name="aws-cdk-github-oidc.RoleProps.property.externalId"></a>
-
-- *Deprecated:* see {@link externalIds}
-
-```typescript
-public readonly externalId: string;
-```
-
-- *Type:* `string`
-- *Default:* No external ID required
-
-(deprecated) ID that the role assumer needs to provide when assuming this role.
-
-If the configured and provided external IDs do not match, the
-AssumeRole operation will fail.
 
 ---
 
