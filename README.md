@@ -31,7 +31,9 @@ npm i -D aws-cdk-github-oidc
 
 To create a new Github OIDC provider into AWS IAM:
 ```ts
-const provider = new GithubActionsIdentityProvider(scope, "GithubProvider");
+import { GithubActionsIdentityProvider } from 'aws-cdk-github-oidc';
+
+const provider = new GithubActionsIdentityProvider(scope, 'GithubProvider');
 ```
 
 In the background this creates an OIDC provider trust configuration into AWS IAM with an [issuer URL of `https://token.actions.githubusercontent.com`](https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/configuring-openid-connect-in-amazon-web-services#adding-the-identity-provider-to-aws), audiences (client IDs) configured as `['sts.amazonaws.com']` (which matches the [`aws-actions/configure-aws-credentials`](https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/configuring-openid-connect-in-amazon-web-services#adding-the-identity-provider-to-aws) implementation) and the thumbprint as Github's `a031c46782e6e6c662c2c87c76da9aa62ccabd8e`
@@ -42,7 +44,9 @@ In the background this creates an OIDC provider trust configuration into AWS IAM
 
 Remember, **there can be only one (Github OIDC provider per AWS Account)**, so to retrieve a reference to existing Github OIDC provider use `fromAccount` static method:
 ```ts
-const provider = GithubActionsIdentityProvider.fromAccount(scope, "GithubProvider");
+import { GithubActionsIdentityProvider } from 'aws-cdk-github-oidc';
+
+const provider = GithubActionsIdentityProvider.fromAccount(scope, 'GithubProvider');
 ```
 
 <br/>
@@ -50,7 +54,9 @@ const provider = GithubActionsIdentityProvider.fromAccount(scope, "GithubProvide
 ### Defining a role for Github Actions workflow to assume
 
 ```ts
-const uploadRole = new GithubActionsRole(scope, "UploadRole", {
+import { GithubActionsRole } from 'aws-cdk-github-oidc';
+
+const uploadRole = new GithubActionsRole(scope, 'UploadRole', {
   provider: provider,           // reference into the OIDC provider
   owner: 'octo-org',            // your repository owner (organization or user) name
   repo: 'octo-repo',            // your repository name (without the owner name)
@@ -63,7 +69,7 @@ myBucket.grantWrite(uploadRole);
 
 You may pass in any `iam.RoleProps` into the construct's props, except `assumedBy` which will be defined by this construct (CDK will fail if you do):
 ```ts
-const uploadRole = new GithubActionsRole(scope, "DeployRole", {
+const uploadRole = new GithubActionsRole(scope, 'DeployRole', {
   provider: provider,
   owner: 'octo-org',
   repo: 'octo-repo',
@@ -74,7 +80,7 @@ const uploadRole = new GithubActionsRole(scope, "DeployRole", {
 
 // You may also use various "add*" policy methods!
 // "AdministratorAccess" not really a good idea, just for an example here:
-role.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName("AdministratorAccess"));
+role.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('AdministratorAccess'));
 ```
 
 <br/>
