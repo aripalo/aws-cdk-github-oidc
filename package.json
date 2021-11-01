@@ -21,6 +21,7 @@
     "eslint": "npx projen eslint",
     "compat": "npx projen compat",
     "publish:npm": "npx projen publish:npm",
+    "publish:pypi": "npx projen publish:pypi",
     "docgen": "npx projen docgen",
     "release": "npx projen release",
     "upgrade": "npx projen upgrade",
@@ -118,7 +119,12 @@
   "stability": "experimental",
   "jsii": {
     "outdir": "dist",
-    "targets": {},
+    "targets": {
+      "python": {
+        "distName": "aws-cdk-github-oidc",
+        "module": "aws_cdk_github_oidc"
+      }
+    },
     "tsc": {
       "outDir": "lib",
       "rootDir": "src"

@@ -20,5 +20,10 @@ const project = new AwsCdkConstructLibrary({
       esModuleInterop: true, // required for github-username-regex
     },
   },
+
+  publishToPypi: {
+    distName: 'aws-cdk-github-oidc',
+    module: 'aws_cdk_github_oidc',
+  },
 });
 project.synth();
