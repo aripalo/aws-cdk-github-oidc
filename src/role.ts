@@ -118,13 +118,6 @@ export class GithubActionsRole extends iam.Role {
     }
   }
 
-  /** Validate IAM Role related props: I.e. ensure no `assumedBy` was given. */
-  private static validateRoleProps(scope: cdk.Construct, props: Partial<iam.RoleProps>): void {
-    if (props.assumedBy) {
-      cdk.Annotations.of(scope).addError('Do not provide "assumedBy" property yourself. It will be defined by GithubActionsRole automatically.');
-    }
-  }
-
   /** Formats the `sub` value used in trust policy. */
   private static formatSubject(props: GithubConfiguration): string {
     const { owner, repo, filter = '*' } = props;
@@ -157,7 +150,6 @@ export class GithubActionsRole extends iam.Role {
     // Perform validations
     GithubActionsRole.validateOwner(scope, owner);
     GithubActionsRole.validateRepo(scope, repo);
-    GithubActionsRole.validateRoleProps(scope, props);
 
     // Prepare values
     const subject = GithubActionsRole.formatSubject(props);
