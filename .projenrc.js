@@ -7,7 +7,7 @@ const project = new AwsCdkConstructLibrary({
   stability: 'experimental',
   name: 'aws-cdk-github-oidc',
   description: 'CDK constructs to use OpenID Connect for authenticating your Github Action workflow with AWS IAM',
-  repositoryUrl: 'https://github.com/ari.palo/aws-cdk-github-oidc.git',
+  repositoryUrl: 'https://github.com/aripalo/aws-cdk-github-oidc.git',
 
   cdkDependencies: ['@aws-cdk/core', '@aws-cdk/aws-iam'],
   deps: ['github-username-regex'],

@@ -3,7 +3,7 @@
   "description": "CDK constructs to use OpenID Connect for authenticating your Github Action workflow with AWS IAM",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ari.palo/aws-cdk-github-oidc.git"
+    "url": "https://github.com/aripalo/aws-cdk-github-oidc.git"
   },
   "scripts": {
     "clobber": "npx projen clobber",
