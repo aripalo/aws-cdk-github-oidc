@@ -43,7 +43,6 @@ export interface GithubConfiguration {
    * @example
    * 'ref:refs/tags/v*'
    * 'ref:refs/heads/demo-branch'
-   * 'ref:refs/heads/demo-branch'
    * 'pull_request'
    * 'environment:Production'
    *
@@ -83,7 +82,7 @@ export interface GithubActionsRoleProps extends GithubConfiguration, iam.RolePro
  *   owner: 'octo-org',
  *   repo: 'octo-repo',
  *   filter: 'ref:refs/tags/v*',
- *   roleName: 'MyDeployRole',
+ *   roleName: 'MyUploadRole',
  * });
  *
  * myBucket.grantWrite(uploadRole);
@@ -145,7 +144,7 @@ export class GithubActionsRole extends iam.Role {
    *   owner: 'octo-org',
    *   repo: 'octo-repo',
    *   filter: 'ref:refs/tags/v*',
-   *   roleName: 'MyDeployRole',
+   *   roleName: 'MyUploadRole',
    * });
    *
    * myBucket.grantWrite(uploadRole);

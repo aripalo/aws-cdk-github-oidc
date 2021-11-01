@@ -24,9 +24,13 @@ export class GithubActionsIdentityProvider extends iam.OpenIdConnectProvider imp
    * An AWS account can only have single Github OIDC provider configured into it,
    * so internally the reference is made by constructing the ARN from AWS
    * Account ID & Github issuer URL.
+   *
    * @param scope CDK Stack or Construct to which the provider is assigned to
    * @param id CDK Construct ID given to the construct
    * @returns a CDK Construct representing the Github OIDC provider
+   *
+   * @example
+   * GithubActionsIdentityProvider.fromAccount(scope, "GithubProvider");
    */
   public static fromAccount(scope: cdk.Construct, id: string): IGithubActionsIdentityProvider {
     const accountId = cdk.Stack.of(scope).account;
@@ -39,10 +43,11 @@ export class GithubActionsIdentityProvider extends iam.OpenIdConnectProvider imp
    * Define a new Github OpenID Connect Identity PRovider for AWS IAM.
    * There can be only one (per AWS Account).
    *
-   * Use `fromAccount` to retrieve a reference to existing Github OIDC provider.
-   *
    * @param scope CDK Stack or Construct to which the provider is assigned to
    * @param id CDK Construct ID given to the construct
+   *
+   * @example
+   * new GithubActionsIdentityProvider(scope, "GithubProvider");
    */
   constructor(scope: cdk.Construct, id: string) {
     super(scope, id, {
