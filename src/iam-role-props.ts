@@ -16,16 +16,6 @@ import { Duration } from '@aws-cdk/core';
  */
 export interface RoleProps {
   /**
-   * (deprecated) ID that the role assumer needs to provide when assuming this role.
-   *
-   * If the configured and provided external IDs do not match, the
-   * AssumeRole operation will fail.
-   *
-   * @default No external ID required
-   * @deprecated see {@link externalIds}
-   */
-  readonly externalId?: string;
-  /**
    * List of IDs that the role assumer needs to provide one of when assuming this role.
    *
    * If the configured and provided external IDs do not match, the
