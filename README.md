@@ -2,6 +2,9 @@
 
 ![cdk-support](https://img.shields.io/badge/cdk-%20typescript%20|%20python%20-informational "TypeScript | Python")
 [![release](https://github.com/aripalo/aws-cdk-github-oidc/actions/workflows/release.yml/badge.svg)](https://github.com/aripalo/aws-cdk-github-oidc/actions/workflows/release.yml)
+[![codecov](https://codecov.io/gh/aripalo/aws-cdk-github-oidc/branch/main/graph/badge.svg?token=5X44RM6J17)](https://codecov.io/gh/aripalo/aws-cdk-github-oidc)
+
+---
 
 AWS [CDK](https://aws.amazon.com/cdk/) constructs that define:
 - Github Actions as OpenID Connect Identity Provider into AWS IAM
