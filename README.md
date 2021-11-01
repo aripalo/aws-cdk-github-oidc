@@ -22,7 +22,7 @@ These constructs allows you to harden your AWS deployment security by removing t
 ## Getting started
 
 ```shell
-npm i -D @aripalo/aws-cdk-github-oidc
+npm i -D aws-cdk-github-oidc
 ```
 
 <br/>
