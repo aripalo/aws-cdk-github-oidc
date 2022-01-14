@@ -17,7 +17,10 @@ export interface IGithubActionsIdentityProvider extends iam.IOpenIdConnectProvid
 export class GithubActionsIdentityProvider extends iam.OpenIdConnectProvider implements IGithubActionsIdentityProvider {
 
   public static readonly issuer: string = 'token.actions.githubusercontent.com';
-  public static readonly thumbprint: string = 'a031c46782e6e6c662c2c87c76da9aa62ccabd8e';
+  public static readonly thumbprints: string[] = [
+    'a031c46782e6e6c662c2c87c76da9aa62ccabd8e',
+    '6938fd4d98bab03faadb97b34396831e3780aea1',
+  ];
 
   /**
    * Retrieve a reference to existing Github OIDC provider in your AWS account.
@@ -51,7 +54,7 @@ export class GithubActionsIdentityProvider extends iam.OpenIdConnectProvider imp
   constructor(scope: cdk.Construct, id: string) {
     super(scope, id, {
       url: `https://${GithubActionsIdentityProvider.issuer}`,
-      thumbprints: [GithubActionsIdentityProvider.thumbprint],
+      thumbprints: GithubActionsIdentityProvider.thumbprints,
       clientIds: ['sts.amazonaws.com'],
     });
   }
