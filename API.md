@@ -72,9 +72,9 @@ CDK Construct ID given to the construct.
 
 ---
 
-##### `thumbprint` <a name="aws-cdk-github-oidc.GithubActionsIdentityProvider.property.thumbprint"></a>
+##### `thumbprints` <a name="aws-cdk-github-oidc.GithubActionsIdentityProvider.property.thumbprints"></a>
 
-- *Type:* `string`
+- *Type:* `string`[]
 
 ---
 
