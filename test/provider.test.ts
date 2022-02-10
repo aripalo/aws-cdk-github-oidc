@@ -1,5 +1,5 @@
-import * as cdk from '@aws-cdk/core';
-import '@aws-cdk/assert/jest';
+import * as cdk from 'aws-cdk-lib';
+import { Template } from 'aws-cdk-lib/assertions';
 import { GithubActionsIdentityProvider } from '../src/provider';
 
 const providerArnRegexp = /^arn:aws:iam::\$\{Token\[.+\]\}:oidc-provider\/token\.actions\.githubusercontent\.com$/i;
@@ -9,8 +9,9 @@ test('New Provider', () => {
   const app = new cdk.App();
   const stack = new cdk.Stack(app);
   new GithubActionsIdentityProvider(stack, 'GithubProvider');
+  const template = Template.fromStack(stack);
 
-  expect(stack).toHaveResource('Custom::AWSCDKOpenIdConnectProvider', {
+  template.hasResourceProperties('Custom::AWSCDKOpenIdConnectProvider', {
     ClientIDList: [
       'sts.amazonaws.com',
     ],

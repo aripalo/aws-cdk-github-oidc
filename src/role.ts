@@ -1,5 +1,6 @@
-import * as iam from '@aws-cdk/aws-iam';
-import * as cdk from '@aws-cdk/core';
+import * as cdk from 'aws-cdk-lib';
+import * as iam from 'aws-cdk-lib/aws-iam';
+import { Construct } from 'constructs';
 import { RoleProps } from './iam-role-props';
 import githubUsernameRegex from './owner-regexp';
 import { GithubActionsIdentityProvider, IGithubActionsIdentityProvider } from './provider';
@@ -105,14 +106,14 @@ export class GithubActionsRole extends iam.Role {
   }
 
   /** Validates the Github owner (organization or user) name. */
-  private static validateOwner(scope: cdk.Construct, owner: string): void {
+  private static validateOwner(scope: Construct, owner: string): void {
     if (githubUsernameRegex.test(owner) !== true) {
       cdk.Annotations.of(scope).addError(`Invalid Github Repository Owner "${owner}". Must only contain alphanumeric characters or hyphens, cannot have multiple consecutive hyphens, cannot begin or end with a hypen and maximum lenght is 39 characters.`);
     }
   }
 
   /** Validates the Github repository name (without owner). */
-  private static validateRepo(scope: cdk.Construct, repo: string): void {
+  private static validateRepo(scope: Construct, repo: string): void {
     if (repo === '') {
       cdk.Annotations.of(scope).addError(`Invalid Github Repository Name "${repo}". May not be empty string.`);
     }
@@ -143,7 +144,7 @@ export class GithubActionsRole extends iam.Role {
    *
    * myBucket.grantWrite(uploadRole);
    */
-  constructor(scope: cdk.Construct, id: string, props: GithubActionsRoleProps) {
+  constructor(scope: Construct, id: string, props: GithubActionsRoleProps) {
 
     const { provider, owner, repo } = props;
 

@@ -1,8 +1,8 @@
+import { Duration } from 'aws-cdk-lib';
 import {
   IManagedPolicy,
   PolicyDocument,
-} from '@aws-cdk/aws-iam';
-import { Duration } from '@aws-cdk/core';
+} from 'aws-cdk-lib/aws-iam';
 
 
 /**

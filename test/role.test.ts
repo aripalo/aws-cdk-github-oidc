@@ -1,7 +1,6 @@
-import '@aws-cdk/assert/jest';
-import { arrayWith, objectLike, stringLike } from '@aws-cdk/assert';
-import * as iam from '@aws-cdk/aws-iam';
-import * as cdk from '@aws-cdk/core';
+import * as cdk from 'aws-cdk-lib';
+import { Template, Match } from 'aws-cdk-lib/assertions';
+import * as iam from 'aws-cdk-lib/aws-iam';
 import { GithubActionsIdentityProvider } from '../src/provider';
 import { GithubActionsRole } from '../src/role';
 
@@ -18,10 +17,12 @@ test('Role with defaults', () => {
     repo: 'octo-repo',
   });
 
-  expect(stack).toHaveResource('AWS::IAM::Role', {
-    AssumeRolePolicyDocument: objectLike({
-      Statement: arrayWith(
-        objectLike({
+  const template = Template.fromStack(stack);
+
+  template.hasResourceProperties('AWS::IAM::Role', {
+    AssumeRolePolicyDocument: Match.objectLike({
+      Statement: Match.arrayWith([
+        Match.objectLike({
           Action: 'sts:AssumeRoleWithWebIdentity',
           Effect: 'Allow',
           Condition: {
@@ -47,7 +48,7 @@ test('Role with defaults', () => {
             },
           },
         }),
-      ),
+      ]),
     }),
   });
 });
@@ -75,13 +76,15 @@ test('Role with custom props', () => {
   stmt.effect = iam.Effect.DENY;
   role.addToPolicy(stmt);
 
-  expect(stack).toHaveResource('AWS::IAM::Role', {
+  const template = Template.fromStack(stack);
+
+  template.hasResourceProperties('AWS::IAM::Role', {
     RoleName: 'MyTestRole',
     Description: 'This role deploys stuff to AWS',
     MaxSessionDuration: 7200,
-    AssumeRolePolicyDocument: objectLike({
-      Statement: arrayWith(
-        objectLike({
+    AssumeRolePolicyDocument: Match.objectLike({
+      Statement: Match.arrayWith([
+        Match.objectLike({
           Action: 'sts:AssumeRoleWithWebIdentity',
           Effect: 'Allow',
           Condition: {
@@ -107,7 +110,7 @@ test('Role with custom props', () => {
             },
           },
         }),
-      ),
+      ]),
     }),
     ManagedPolicyArns: [
       {
@@ -126,7 +129,7 @@ test('Role with custom props', () => {
   });
 
 
-  expect(stack).toHaveResource('AWS::IAM::Policy', {
+  template.hasResourceProperties('AWS::IAM::Policy', {
     PolicyDocument: {
       Statement: [
         {
@@ -137,10 +140,10 @@ test('Role with custom props', () => {
       ],
       Version: '2012-10-17',
     },
-    PolicyName: stringLike('TestRoleDefaultPolicy*'),
+    PolicyName: Match.stringLikeRegexp('TestRoleDefaultPolicy*'),
     Roles: [
       {
-        Ref: stringLike('TestRole*'),
+        Ref: Match.stringLikeRegexp('TestRole*'),
       },
     ],
 
@@ -161,8 +164,8 @@ test('Role with invalid owner', () => {
     repo: 'octo-repo',
   });
 
-  expect(stack.node.metadataEntry).toHaveLength(1);
-  expect(stack.node.metadataEntry[0].data).toBe(
+  expect(stack.node.metadata).toHaveLength(1);
+  expect(stack.node.metadata[0].data).toBe(
     'Invalid Github Repository Owner "invalid/@owner--". Must only contain alphanumeric characters or hyphens, cannot have multiple consecutive hyphens, cannot begin or end with a hypen and maximum lenght is 39 characters.',
   );
 });
@@ -179,8 +182,8 @@ test('Role with invalid repo', () => {
     repo: '',
   });
 
-  expect(stack.node.metadataEntry).toHaveLength(1);
-  expect(stack.node.metadataEntry[0].data).toBe(
+  expect(stack.node.metadata).toHaveLength(1);
+  expect(stack.node.metadata[0].data).toBe(
     'Invalid Github Repository Name "". May not be empty string.',
   );
 });
