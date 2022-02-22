@@ -3,7 +3,20 @@ const project = new awscdk.AwsCdkConstructLibrary({
   author: 'Ari Palo',
   authorAddress: 'opensource@aripalo.com',
   cdkVersion: '2.12.0',
+
+
+  /**
+   * we default release the main branch(cdkv2) with major version 2.
+   */
+  majorVersion: 2,
   defaultReleaseBranch: 'main',
+  /**
+   * we also release the cdkv1 branch with major version 1.
+   */
+  releaseBranches: {
+    cdkv1: { npmDistTag: 'cdkv1', majorVersion: 1 },
+  },
+
   stability: 'experimental',
   name: 'aws-cdk-github-oidc',
   description: 'CDK constructs to use OpenID Connect for authenticating your Github Action workflow with AWS IAM',
