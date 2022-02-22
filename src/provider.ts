@@ -1,5 +1,6 @@
-import * as iam from '@aws-cdk/aws-iam';
-import * as cdk from '@aws-cdk/core';
+import * as cdk from 'aws-cdk-lib';
+import * as iam from 'aws-cdk-lib/aws-iam';
+import { Construct } from 'constructs';
 
 /**
  * Describes a Github OpenID Connect Identity Provider for AWS IAM.
@@ -35,7 +36,7 @@ export class GithubActionsIdentityProvider extends iam.OpenIdConnectProvider imp
    * @example
    * GithubActionsIdentityProvider.fromAccount(scope, "GithubProvider");
    */
-  public static fromAccount(scope: cdk.Construct, id: string): IGithubActionsIdentityProvider {
+  public static fromAccount(scope: Construct, id: string): IGithubActionsIdentityProvider {
     const accountId = cdk.Stack.of(scope).account;
     const providerArn = `arn:aws:iam::${accountId}:oidc-provider/${GithubActionsIdentityProvider.issuer}`;
     return iam.OpenIdConnectProvider.fromOpenIdConnectProviderArn(scope, id, providerArn);
@@ -51,7 +52,7 @@ export class GithubActionsIdentityProvider extends iam.OpenIdConnectProvider imp
    * @example
    * new GithubActionsIdentityProvider(scope, "GithubProvider");
    */
-  constructor(scope: cdk.Construct, id: string) {
+  constructor(scope: Construct, id: string) {
     super(scope, id, {
       url: `https://${GithubActionsIdentityProvider.issuer}`,
       thumbprints: GithubActionsIdentityProvider.thumbprints,

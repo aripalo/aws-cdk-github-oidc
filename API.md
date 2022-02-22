@@ -22,7 +22,7 @@ new GithubActionsIdentityProvider(scope: Construct, id: string)
 
 ##### `scope`<sup>Required</sup> <a name="aws-cdk-github-oidc.GithubActionsIdentityProvider.parameter.scope"></a>
 
-- *Type:* [`@aws-cdk/core.Construct`](#@aws-cdk/core.Construct)
+- *Type:* [`constructs.Construct`](#constructs.Construct)
 
 CDK Stack or Construct to which the provider is assigned to.
 
@@ -49,7 +49,7 @@ GithubActionsIdentityProvider.fromAccount(scope: Construct, id: string)
 
 ###### `scope`<sup>Required</sup> <a name="aws-cdk-github-oidc.GithubActionsIdentityProvider.parameter.scope"></a>
 
-- *Type:* [`@aws-cdk/core.Construct`](#@aws-cdk/core.Construct)
+- *Type:* [`constructs.Construct`](#constructs.Construct)
 
 CDK Stack or Construct to which the provider is assigned to.
 
@@ -95,7 +95,7 @@ new GithubActionsRole(scope: Construct, id: string, props: GithubActionsRoleProp
 
 ##### `scope`<sup>Required</sup> <a name="aws-cdk-github-oidc.GithubActionsRole.parameter.scope"></a>
 
-- *Type:* [`@aws-cdk/core.Construct`](#@aws-cdk/core.Construct)
+- *Type:* [`constructs.Construct`](#constructs.Construct)
 
 ---
 
@@ -226,7 +226,7 @@ AssumeRole operation will fail.
 public readonly inlinePolicies: {[ key: string ]: PolicyDocument};
 ```
 
-- *Type:* {[ key: string ]: [`@aws-cdk/aws-iam.PolicyDocument`](#@aws-cdk/aws-iam.PolicyDocument)}
+- *Type:* {[ key: string ]: [`aws-cdk-lib.aws_iam.PolicyDocument`](#aws-cdk-lib.aws_iam.PolicyDocument)}
 - *Default:* No policy is inlined in the Role resource.
 
 A list of named policies to inline into this role.
@@ -244,7 +244,7 @@ dependencies that could otherwise be introduced).
 public readonly managedPolicies: IManagedPolicy[];
 ```
 
-- *Type:* [`@aws-cdk/aws-iam.IManagedPolicy`](#@aws-cdk/aws-iam.IManagedPolicy)[]
+- *Type:* [`aws-cdk-lib.aws_iam.IManagedPolicy`](#aws-cdk-lib.aws_iam.IManagedPolicy)[]
 - *Default:* No managed policies.
 
 A list of managed policies associated with this role.
@@ -260,7 +260,7 @@ You can add managed policies later using
 public readonly maxSessionDuration: Duration;
 ```
 
-- *Type:* [`@aws-cdk/core.Duration`](#@aws-cdk/core.Duration)
+- *Type:* [`aws-cdk-lib.Duration`](#aws-cdk-lib.Duration)
 - *Default:* Duration.hours(1)
 
 The maximum session duration that you want to set for the specified role.
@@ -304,7 +304,7 @@ Friendly Names and Paths in IAM User Guide.
 public readonly permissionsBoundary: IManagedPolicy;
 ```
 
-- *Type:* [`@aws-cdk/aws-iam.IManagedPolicy`](#@aws-cdk/aws-iam.IManagedPolicy)
+- *Type:* [`aws-cdk-lib.aws_iam.IManagedPolicy`](#aws-cdk-lib.aws_iam.IManagedPolicy)
 - *Default:* No permissions boundary.
 
 AWS supports permissions boundaries for IAM entities (users or roles).
@@ -467,7 +467,7 @@ AssumeRole operation will fail.
 public readonly inlinePolicies: {[ key: string ]: PolicyDocument};
 ```
 
-- *Type:* {[ key: string ]: [`@aws-cdk/aws-iam.PolicyDocument`](#@aws-cdk/aws-iam.PolicyDocument)}
+- *Type:* {[ key: string ]: [`aws-cdk-lib.aws_iam.PolicyDocument`](#aws-cdk-lib.aws_iam.PolicyDocument)}
 - *Default:* No policy is inlined in the Role resource.
 
 A list of named policies to inline into this role.
@@ -485,7 +485,7 @@ dependencies that could otherwise be introduced).
 public readonly managedPolicies: IManagedPolicy[];
 ```
 
-- *Type:* [`@aws-cdk/aws-iam.IManagedPolicy`](#@aws-cdk/aws-iam.IManagedPolicy)[]
+- *Type:* [`aws-cdk-lib.aws_iam.IManagedPolicy`](#aws-cdk-lib.aws_iam.IManagedPolicy)[]
 - *Default:* No managed policies.
 
 A list of managed policies associated with this role.
@@ -501,7 +501,7 @@ You can add managed policies later using
 public readonly maxSessionDuration: Duration;
 ```
 
-- *Type:* [`@aws-cdk/core.Duration`](#@aws-cdk/core.Duration)
+- *Type:* [`aws-cdk-lib.Duration`](#aws-cdk-lib.Duration)
 - *Default:* Duration.hours(1)
 
 The maximum session duration that you want to set for the specified role.
@@ -545,7 +545,7 @@ Friendly Names and Paths in IAM User Guide.
 public readonly permissionsBoundary: IManagedPolicy;
 ```
 
-- *Type:* [`@aws-cdk/aws-iam.IManagedPolicy`](#@aws-cdk/aws-iam.IManagedPolicy)
+- *Type:* [`aws-cdk-lib.aws_iam.IManagedPolicy`](#aws-cdk-lib.aws_iam.IManagedPolicy)
 - *Default:* No permissions boundary.
 
 AWS supports permissions boundaries for IAM entities (users or roles).
@@ -590,7 +590,7 @@ Acknowledging IAM Resources in AWS CloudFormation Templates.
 
 ### IGithubActionsIdentityProvider <a name="aws-cdk-github-oidc.IGithubActionsIdentityProvider"></a>
 
-- *Extends:* [`@aws-cdk/aws-iam.IOpenIdConnectProvider`](#@aws-cdk/aws-iam.IOpenIdConnectProvider)
+- *Extends:* [`aws-cdk-lib.aws_iam.IOpenIdConnectProvider`](#aws-cdk-lib.aws_iam.IOpenIdConnectProvider)
 
 - *Implemented By:* [`aws-cdk-github-oidc.GithubActionsIdentityProvider`](#aws-cdk-github-oidc.GithubActionsIdentityProvider), [`aws-cdk-github-oidc.IGithubActionsIdentityProvider`](#aws-cdk-github-oidc.IGithubActionsIdentityProvider)
 
@@ -602,12 +602,12 @@ Describes a Github OpenID Connect Identity Provider for AWS IAM.
 ##### `node`<sup>Required</sup> <a name="aws-cdk-github-oidc.IGithubActionsIdentityProvider.property.node"></a>
 
 ```typescript
-public readonly node: ConstructNode;
+public readonly node: Node;
 ```
 
-- *Type:* [`@aws-cdk/core.ConstructNode`](#@aws-cdk/core.ConstructNode)
+- *Type:* [`constructs.Node`](#constructs.Node)
 
-The construct tree node for this construct.
+The tree node.
 
 ---
 
@@ -617,7 +617,7 @@ The construct tree node for this construct.
 public readonly env: ResourceEnvironment;
 ```
 
-- *Type:* [`@aws-cdk/core.ResourceEnvironment`](#@aws-cdk/core.ResourceEnvironment)
+- *Type:* [`aws-cdk-lib.ResourceEnvironment`](#aws-cdk-lib.ResourceEnvironment)
 
 The environment this resource belongs to.
 
@@ -636,7 +636,7 @@ that might be different than the stack they were imported into.
 public readonly stack: Stack;
 ```
 
-- *Type:* [`@aws-cdk/core.Stack`](#@aws-cdk/core.Stack)
+- *Type:* [`aws-cdk-lib.Stack`](#aws-cdk-lib.Stack)
 
 The stack in which this resource is defined.
 
