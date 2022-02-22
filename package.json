@@ -24,6 +24,7 @@
     "publish:pypi": "npx projen publish:pypi",
     "docgen": "npx projen docgen",
     "release": "npx projen release",
+    "release:cdkv1": "npx projen release:cdkv1",
     "upgrade": "npx projen upgrade",
     "upgrade-projen": "npx projen upgrade-projen",
     "projen": "npx projen"
