@@ -142,4 +142,4 @@ These constructs are fresh out from the oven, since [Github just announced](http
 
 These constructs will stay in `v0.x.x` for a while, to allow easier bug fixing & breaking changes _if absolutely needed_. Once bugs are fixed (if any), the constructs will be published with `v1` major version and will be marked as stable.
 
-Currently only TypeScript and Python versions provided, but before going to stable, I'll probably others (supported by JSII) depending on the amount of work required - so no promises!
+Currently only TypeScript, Python and Go versions provided, but before going to stable, I'll probably others (supported by JSII) depending on the amount of work required - so no promises!
