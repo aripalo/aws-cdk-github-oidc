@@ -261,7 +261,7 @@
       "description": "Run tests",
       "steps": [
         {
-          "exec": "jest --passWithNoTests --all --updateSnapshot"
+          "exec": "jest --passWithNoTests --all --updateSnapshot --coverageProvider=v8"
         },
         {
           "spawn": "eslint"
@@ -324,10 +324,10 @@
           "exec": "npm-check-updates --dep bundle --upgrade --target=minor --reject='projen'"
         },
         {
-          "exec": "yarn install --check-files"
+          "exec": "npm install"
         },
         {
-          "exec": "yarn upgrade @types/github-username-regex @types/jest @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser aws-cdk-lib constructs eslint-import-resolver-node eslint-import-resolver-typescript eslint-plugin-import eslint jest jest-junit jsii jsii-diff jsii-docgen json-schema npm-check-updates standard-version ts-jest typescript aws-cdk-lib constructs"
+          "exec": "npm update @types/github-username-regex @types/jest @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser aws-cdk-lib constructs eslint-import-resolver-node eslint-import-resolver-typescript eslint-plugin-import eslint jest jest-junit jsii jsii-diff jsii-docgen json-schema npm-check-updates standard-version ts-jest typescript aws-cdk-lib constructs"
         },
         {
           "exec": "npx projen"
@@ -360,10 +360,10 @@
           "exec": "npm-check-updates --dep bundle --upgrade --target=minor --filter='projen'"
         },
         {
-          "exec": "yarn install --check-files"
+          "exec": "npm install"
         },
         {
-          "exec": "yarn upgrade projen"
+          "exec": "npm update projen"
         },
         {
           "exec": "npx projen"

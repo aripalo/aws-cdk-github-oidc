@@ -32,6 +32,11 @@ jspm_packages/
 .yarn-integrity
 .cache
 .DS_Store
+/examples/**/cdk.context.json
+/examples/**/node_modules
+/examples/**/cdk.out
+/examples/**/.git
+**/*.drawio.bkp
 !/.projenrc.js
 /test-reports/
 junit.xml
@@ -52,5 +57,6 @@ junit.xml
 .jsii
 tsconfig.json
 !/API.md
+!/.nvmrc
 !/.github/workflows/upgrade-main.yml
 !/.github/workflows/upgrade-cdkv1.yml

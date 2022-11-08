@@ -19,8 +19,12 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.ref }}
           repository: ${{ github.event.pull_request.head.repo.full_name }}
+      - name: Setup Node.js
+        uses: actions/setup-node@v2.2.0
+        with:
+          node-version: 14.21.1
       - name: Install dependencies
-        run: yarn install --check-files
+        run: npm install
       - name: build
         run: npx projen build
       - name: Upload coverage to Codecov
@@ -49,8 +53,6 @@ jobs:
         with:
           name: build-artifact
           path: dist
-    container:
-      image: jsii/superchain:1-buster-slim-node14
   self-mutation:
     needs: build
     runs-on: ubuntu-latest
@@ -97,7 +99,7 @@ jobs:
       - name: Prepare Repository
         run: mv dist .repo
       - name: Install Dependencies
-        run: cd .repo && yarn install --check-files --frozen-lockfile
+        run: cd .repo && npm ci
       - name: Create js artifact
         run: cd .repo && npx projen package:js
       - name: Collect js Artifact
@@ -122,7 +124,7 @@ jobs:
       - name: Prepare Repository
         run: mv dist .repo
       - name: Install Dependencies
-        run: cd .repo && yarn install --check-files --frozen-lockfile
+        run: cd .repo && npm ci
       - name: Create python artifact
         run: cd .repo && npx projen package:python
       - name: Collect python Artifact
@@ -147,7 +149,7 @@ jobs:
       - name: Prepare Repository
         run: mv dist .repo
       - name: Install Dependencies
-        run: cd .repo && yarn install --check-files --frozen-lockfile
+        run: cd .repo && npm ci
       - name: Create go artifact
         run: cd .repo && npx projen package:go
       - name: Collect go Artifact
