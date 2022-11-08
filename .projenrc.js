@@ -39,6 +39,10 @@ const project = new awscdk.AwsCdkConstructLibrary({
     module: 'aws_cdk_github_oidc',
   },
 
+  publishToGo: {
+    moduleName: 'github.com/aripalo/aws-cdk-github-oidc-go',
+  },
+
   codeCov: true,
 });
 project.synth();
