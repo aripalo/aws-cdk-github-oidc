@@ -7,6 +7,7 @@
 ---
 
 AWS [CDK](https://aws.amazon.com/cdk/) constructs that define:
+
 - Github Actions as OpenID Connect Identity Provider into AWS IAM
 - IAM Roles that can be assumed by Github Actions workflows
 
@@ -22,7 +23,6 @@ These constructs allows you to harden your AWS deployment security by removing t
 - Shout-out to [Richard H. Boyd](https://twitter.com/rchrdbyd) for helping me to debug Github OIDC setup with AWS IAM and his [Deploying to AWS with Github Actions](https://www.githubuniverse.com/2021/session/692586/deploying-to-aws-with-github-actions)-talk.
 - Shout-out to [Aidan W Steele](https://twitter.com/__steele) and his blog post [AWS federation comes to GitHub Actions](https://awsteele.com/blog/2021/09/15/aws-federation-comes-to-github-actions.html) for being the original inspiration for this.
 
-
 <br/>
 
 ## Getting started
@@ -36,23 +36,28 @@ npm i -D aws-cdk-github-oidc
 ### OpenID Connect Identity Provider trust for AWS IAM
 
 To create a new Github OIDC provider configuration into AWS IAM:
-```ts
-import { GithubActionsIdentityProvider } from 'aws-cdk-github-oidc';
 
-const provider = new GithubActionsIdentityProvider(scope, 'GithubProvider');
+```ts
+import { GithubActionsIdentityProvider } from "aws-cdk-github-oidc";
+
+const provider = new GithubActionsIdentityProvider(scope, "GithubProvider");
 ```
 
-In the background this creates an OIDC provider trust configuration into AWS IAM with an [issuer URL of `https://token.actions.githubusercontent.com`](https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/configuring-openid-connect-in-amazon-web-services#adding-the-identity-provider-to-aws), audiences (client IDs) configured as `['sts.amazonaws.com']` (which matches the [`aws-actions/configure-aws-credentials`](https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/configuring-openid-connect-in-amazon-web-services#adding-the-identity-provider-to-aws) implementation) and the thumbprint as Github's `a031c46782e6e6c662c2c87c76da9aa62ccabd8e`
+In the background this creates an OIDC provider trust configuration into AWS IAM with an [issuer URL of `https://token.actions.githubusercontent.com`](https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/configuring-openid-connect-in-amazon-web-services#adding-the-identity-provider-to-aws) and audiences (client IDs) configured as `['sts.amazonaws.com']` (which matches the [`aws-actions/configure-aws-credentials`](https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/configuring-openid-connect-in-amazon-web-services#adding-the-identity-provider-to-aws) implementation).
 
 <br/>
 
 ### Retrieving a reference to an existing Github OIDC provider configuration
 
 Remember, **there can be only one (Github OIDC provider per AWS Account)**, so to retrieve a reference to existing Github OIDC provider use `fromAccount` static method:
-```ts
-import { GithubActionsIdentityProvider } from 'aws-cdk-github-oidc';
 
-const provider = GithubActionsIdentityProvider.fromAccount(scope, 'GithubProvider');
+```ts
+import { GithubActionsIdentityProvider } from "aws-cdk-github-oidc";
+
+const provider = GithubActionsIdentityProvider.fromAccount(
+  scope,
+  "GithubProvider"
+);
 ```
 
 <br/>
@@ -60,13 +65,13 @@ const provider = GithubActionsIdentityProvider.fromAccount(scope, 'GithubProvide
 ### Defining a role for Github Actions workflow to assume
 
 ```ts
-import { GithubActionsRole } from 'aws-cdk-github-oidc';
+import { GithubActionsRole } from "aws-cdk-github-oidc";
 
-const uploadRole = new GithubActionsRole(scope, 'UploadRole', {
-  provider: provider,           // reference into the OIDC provider
-  owner: 'octo-org',            // your repository owner (organization or user) name
-  repo: 'octo-repo',            // your repository name (without the owner name)
-  filter: 'ref:refs/tags/v*',   // JWT sub suffix filter, defaults to '*'
+const uploadRole = new GithubActionsRole(scope, "UploadRole", {
+  provider: provider, // reference into the OIDC provider
+  owner: "octo-org", // your repository owner (organization or user) name
+  repo: "octo-repo", // your repository name (without the owner name)
+  filter: "ref:refs/tags/v*", // JWT sub suffix filter, defaults to '*'
 });
 
 // use it like any other role, for example grant S3 bucket write access:
@@ -74,19 +79,22 @@ myBucket.grantWrite(uploadRole);
 ```
 
 You may pass in any `iam.RoleProps` into the construct's props, except `assumedBy` which will be defined by this construct (CDK will fail if you do):
+
 ```ts
-const deployRole = new GithubActionsRole(scope, 'DeployRole', {
+const deployRole = new GithubActionsRole(scope, "DeployRole", {
   provider: provider,
-  owner: 'octo-org',
-  repo: 'octo-repo',
-  roleName: 'MyDeployRole',
-  description: 'This role deploys stuff to AWS',
+  owner: "octo-org",
+  repo: "octo-repo",
+  roleName: "MyDeployRole",
+  description: "This role deploys stuff to AWS",
   maxSessionDuration: cdk.Duration.hours(2),
 });
 
 // You may also use various "add*" policy methods!
 // "AdministratorAccess" not really a good idea, just for an example here:
-deployRole.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('AdministratorAccess'));
+deployRole.addManagedPolicy(
+  iam.ManagedPolicy.fromAwsManagedPolicyName("AdministratorAccess")
+);
 ```
 
 <br/>
@@ -95,7 +103,7 @@ deployRole.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('Administ
 
 By default the value of `filter` property will be `'*'` which means any workflow (from given repository) from any branch, tag, environment or pull request can assume this role. To further stricten the OIDC trust policy on the role, you may adjust the subject filter as seen on the [examples in Github Docs](https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/about-security-hardening-with-openid-connect#configuring-the-oidc-trust-with-the-cloud); For example:
 
-|         `filter` value         |                Descrition                |
+| `filter` value                 | Descrition                               |
 | :----------------------------- | :--------------------------------------- |
 | `'ref:refs/tags/v*'`           | Allow only tags with prefix of `v`       |
 | `'ref:refs/heads/demo-branch'` | Allow only from branch `demo-branch`     |
@@ -119,19 +127,19 @@ jobs:
       id-token: write # needed to interact with GitHub's OIDC Token endpoint.
       contents: read
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
 
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@master
-      with:
-        role-to-assume: arn:aws:iam::123456789012:role/MyUploadRole
-        #role-session-name: MySessionName # Optional
-        aws-region: us-east-1
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@master
+        with:
+          role-to-assume: arn:aws:iam::123456789012:role/MyUploadRole
+          #role-session-name: MySessionName # Optional
+          aws-region: us-east-1
 
-    - name: Sync files to S3
-      run: |
-        aws s3 sync . s3://my-example-bucket
+      - name: Sync files to S3
+        run: |
+          aws s3 sync . s3://my-example-bucket
 ```
 
 <br/>
