@@ -17,10 +17,6 @@ const project = new awscdk.AwsCdkConstructLibrary({
   // Publish configuration
   defaultReleaseBranch: 'main',
   majorVersion: 2, // we default release the main branch(cdkv2) with major version 2.
-  releaseBranches: {
-    // we also release the cdkv1 branch with major version 1
-    cdkv1: { npmDistTag: 'cdkv1', majorVersion: 1 },
-  },
   packageManager: javascript.NodePackageManager.NPM,
   npmAccess: javascript.NpmAccess.PUBLIC,
   publishToPypi: {
