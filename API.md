@@ -72,12 +72,6 @@ CDK Construct ID given to the construct.
 
 ---
 
-##### `thumbprints` <a name="aws-cdk-github-oidc.GithubActionsIdentityProvider.property.thumbprints"></a>
-
-- *Type:* `string`[]
-
----
-
 ### GithubActionsRole <a name="aws-cdk-github-oidc.GithubActionsRole"></a>
 
 Define an IAM Role that can be assumed by Github Actions workflow via Github OpenID Connect Identity Provider.
