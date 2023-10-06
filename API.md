@@ -409,12 +409,7 @@ Subject condition filter, appended after `repo:${owner}/${repo}:` string in IAM 
 
 ### RoleProps <a name="aws-cdk-github-oidc.RoleProps"></a>
 
-Properties for defining an IAM Role.
-
-These are copied fron @aws-cdk/aws-iam, but since JSII does not support
-TypeScript <Partial<iam.RoleProps>> (or Omit), we have to do this stupid thing.
-
-Basically exactly the same as source, but with assumedBy removed.
+RoleProps.
 
 #### Initializer <a name="[object Object].Initializer"></a>
 

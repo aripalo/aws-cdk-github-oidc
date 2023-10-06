@@ -308,7 +308,7 @@
           "exec": "npm install"
         },
         {
-          "exec": "npm update @types/github-username-regex @types/jest @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser aws-cdk-lib constructs eslint-import-resolver-node eslint-import-resolver-typescript eslint-plugin-import eslint jest-junit jest jsii-diff jsii-docgen jsii-pacmak jsii-rosetta jsii npm-check-updates projen standard-version ts-jest typescript aws-cdk-lib constructs"
+          "exec": "npm update @mrgrain/jsii-struct-builder @types/github-username-regex @types/jest @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser aws-cdk-lib constructs eslint-import-resolver-node eslint-import-resolver-typescript eslint-plugin-import eslint jest-junit jest jsii-diff jsii-docgen jsii-pacmak jsii-rosetta jsii npm-check-updates projen standard-version ts-jest typescript aws-cdk-lib constructs"
         },
         {
           "exec": "npx projen"

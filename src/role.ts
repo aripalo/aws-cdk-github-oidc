@@ -1,7 +1,7 @@
 import * as cdk from 'aws-cdk-lib';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import { Construct } from 'constructs';
-import { RoleProps } from './iam-role-props';
+import { RoleProps } from './generated/iam-role-props';
 import githubUsernameRegex from './owner-regexp';
 import { GithubActionsIdentityProvider, IGithubActionsIdentityProvider } from './provider';
 

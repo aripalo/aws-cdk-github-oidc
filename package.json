@@ -37,6 +37,7 @@
     "organization": false
   },
   "devDependencies": {
+    "@mrgrain/jsii-struct-builder": "^0.5.15",
     "@types/github-username-regex": "^1.0.0",
     "@types/jest": "^27",
     "@types/node": "^16",
