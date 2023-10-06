@@ -1,3 +1,4 @@
+const { ProjenStruct, Struct } = require('@mrgrain/jsii-struct-builder');
 const { awscdk, github, TextFile, javascript } = require('projen');
 
 const nodejsVersion = '16.20.0';
@@ -32,7 +33,7 @@ const project = new awscdk.AwsCdkConstructLibrary({
   cdkVersion: '2.89.0',
   constructsVersion: '10.0.0',
   peerDeps: ['constructs', 'aws-cdk-lib'],
-  devDeps: ['@types/github-username-regex', 'constructs'],
+  devDeps: ['@types/github-username-regex', 'constructs', '@mrgrain/jsii-struct-builder'],
   bundledDeps: [],
 
   // Gitignore
@@ -51,12 +52,20 @@ const project = new awscdk.AwsCdkConstructLibrary({
     },
   },
 
-
+  eslintOptions: {
+    ignorePatterns: ['src/generated/*.ts'], // ignore generated files
+  },
   codeCov: true,
 });
 
 new TextFile(project, '.nvmrc', {
   lines: [nodejsVersion],
 });
+
+new ProjenStruct(project, { name: 'RoleProps', filePath: 'src/generated/iam-role-props.ts' }).mixin(
+  Struct.fromFqn('aws-cdk-lib.aws_iam.RoleProps')
+    .omit('assumedBy')
+    .withoutDeprecated(),
+);
 
 project.synth();

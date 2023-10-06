@@ -58,3 +58,4 @@ junit.xml
 tsconfig.json
 !/API.md
 !/.nvmrc
+!/src/generated/iam-role-props.ts

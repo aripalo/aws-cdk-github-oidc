@@ -1,6 +1,10 @@
 {
   "dependencies": [
     {
+      "name": "@mrgrain/jsii-struct-builder",
+      "type": "build"
+    },
+    {
       "name": "@types/github-username-regex",
       "type": "build"
     },
