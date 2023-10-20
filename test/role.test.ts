@@ -38,7 +38,11 @@ test('Role with defaults', () => {
               'Fn::Join': [
                 '',
                 [
-                  'arn:aws:iam::',
+                  'arn:',
+                  {
+                    Ref: 'AWS::Partition',
+                  },
+                  ':iam::',
                   {
                     Ref: 'AWS::AccountId',
                   },
@@ -100,7 +104,11 @@ test('Role with custom props', () => {
               'Fn::Join': [
                 '',
                 [
-                  'arn:aws:iam::',
+                  'arn:',
+                  {
+                    Ref: 'AWS::Partition',
+                  },
+                  ':iam::',
                   {
                     Ref: 'AWS::AccountId',
                   },

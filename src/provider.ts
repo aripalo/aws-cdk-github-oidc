@@ -33,8 +33,8 @@ export class GithubActionsIdentityProvider extends iam.OpenIdConnectProvider imp
    * GithubActionsIdentityProvider.fromAccount(scope, "GithubProvider");
    */
   public static fromAccount(scope: Construct, id: string): IGithubActionsIdentityProvider {
-    const accountId = cdk.Stack.of(scope).account;
-    const providerArn = `arn:aws:iam::${accountId}:oidc-provider/${GithubActionsIdentityProvider.issuer}`;
+    const { account, partition } = cdk.Stack.of(scope);
+    const providerArn = `arn:${partition}:iam::${account}:oidc-provider/${GithubActionsIdentityProvider.issuer}`;
     return iam.OpenIdConnectProvider.fromOpenIdConnectProviderArn(scope, id, providerArn);
   }
 
