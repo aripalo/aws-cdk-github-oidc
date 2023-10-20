@@ -2,7 +2,8 @@ import * as cdk from 'aws-cdk-lib';
 import { Template } from 'aws-cdk-lib/assertions';
 import { GithubActionsIdentityProvider } from '../src/provider';
 
-const providerArnRegexp = /^arn:aws:iam::\$\{Token\[.+\]\}:oidc-provider\/token\.actions\.githubusercontent\.com$/i;
+const providerArnRegexp =
+  /^arn:\$\{Token\[.+\]\}:iam::\$\{Token\[.+\]\}:oidc-provider\/token\.actions\.githubusercontent\.com$/i;
 
 test('New Provider', () => {
 
