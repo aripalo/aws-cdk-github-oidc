@@ -78,6 +78,27 @@ const uploadRole = new GithubActionsRole(scope, "UploadRole", {
 myBucket.grantWrite(uploadRole);
 ```
 
+You can also pass multiple trusted repositories with the `trustedRepositories` property:
+
+```ts
+import { GithubActionsRole } from "aws-cdk-github-oidc";
+
+const uploadRole = new GithubActionsRole(stack, 'TestRole', {
+  provider,
+  trustedRepositories: [
+    {
+      owner: 'octo-org',
+      repo: 'octo-repo1',
+    },
+    {
+      owner: 'octo-org',
+      repo: 'octo-repo2',
+      filter: 'ref:refs/tags/v*',
+    },
+  ],
+});
+```
+
 You may pass in any `iam.RoleProps` into the construct's props, except `assumedBy` which will be defined by this construct (CDK will fail if you do):
 
 ```ts

@@ -26,10 +26,69 @@ test('Role with defaults', () => {
           Action: 'sts:AssumeRoleWithWebIdentity',
           Effect: 'Allow',
           Condition: {
-            StringLike: {
-              'token.actions.githubusercontent.com:sub': 'repo:octo-org/octo-repo:*',
+            'ForAnyValue:StringLike': {
+              'token.actions.githubusercontent.com:sub': ['repo:octo-org/octo-repo:*'],
             },
-            StringEquals: {
+            'StringEquals': {
+              'token.actions.githubusercontent.com:aud': 'sts.amazonaws.com',
+            },
+          },
+          Principal: {
+            Federated: {
+              'Fn::Join': [
+                '',
+                [
+                  'arn:aws:iam::',
+                  {
+                    Ref: 'AWS::AccountId',
+                  },
+                  ':oidc-provider/token.actions.githubusercontent.com',
+                ],
+              ],
+            },
+          },
+        }),
+      ]),
+    }),
+  });
+});
+
+test('Role with multiple trusted repositories', () => {
+  const app = new cdk.App();
+  const stack = new cdk.Stack(app);
+  const provider = GithubActionsIdentityProvider.fromAccount(stack, 'GithubProvider');
+
+  new GithubActionsRole(stack, 'TestRole', {
+    provider,
+    trustedRepositories: [
+      {
+        owner: 'octo-org',
+        repo: 'octo-repo1',
+      },
+      {
+        owner: 'octo-org',
+        repo: 'octo-repo2',
+        filter: 'ref:refs/tags/v*',
+      },
+    ],
+  });
+
+  const template = Template.fromStack(stack);
+
+  template.hasResourceProperties('AWS::IAM::Role', {
+    AssumeRolePolicyDocument: Match.objectLike({
+      Statement: Match.arrayWith([
+        Match.objectLike({
+          Action: 'sts:AssumeRoleWithWebIdentity',
+          Effect: 'Allow',
+          Condition: {
+            'ForAnyValue:StringLike': {
+              'token.actions.githubusercontent.com:sub': [
+                'repo:octo-org/octo-repo1:*',
+                'repo:octo-org/octo-repo2:ref:refs/tags/v*',
+              ],
+            },
+            'StringEquals': {
               'token.actions.githubusercontent.com:aud': 'sts.amazonaws.com',
             },
           },
@@ -88,10 +147,10 @@ test('Role with custom props', () => {
           Action: 'sts:AssumeRoleWithWebIdentity',
           Effect: 'Allow',
           Condition: {
-            StringLike: {
-              'token.actions.githubusercontent.com:sub': 'repo:octo-org/octo-repo:ref:refs/tags/v*',
+            'ForAnyValue:StringLike': {
+              'token.actions.githubusercontent.com:sub': ['repo:octo-org/octo-repo:ref:refs/tags/v*'],
             },
-            StringEquals: {
+            'StringEquals': {
               'token.actions.githubusercontent.com:aud': 'sts.amazonaws.com',
             },
           },
@@ -185,5 +244,43 @@ test('Role with invalid repo', () => {
   expect(stack.node.metadata).toHaveLength(1);
   expect(stack.node.metadata[0].data).toBe(
     'Invalid Github Repository Name "". May not be empty string.',
+  );
+});
+
+test('Role with top-level props and trustedRepositories set', () => {
+  const app = new cdk.App();
+  const stack = new cdk.Stack(app);
+  const provider = GithubActionsIdentityProvider.fromAccount(stack, 'GithubProvider');
+
+  new GithubActionsRole(stack, 'TestRole', {
+    provider,
+    owner: 'octo-org',
+    repo: 'octo-repo',
+    trustedRepositories: [
+      {
+        owner: 'octo-org',
+        repo: 'octo-repo',
+      },
+    ],
+  });
+
+  expect(stack.node.metadata).toHaveLength(1);
+  expect(stack.node.metadata[0].data).toBe(
+    'Cannot set both top-level owner/repo/filter and trustedRepositories. Use one or the other.',
+  );
+});
+
+test('Role without trustedRepositories or top-level props set', () => {
+  const app = new cdk.App();
+  const stack = new cdk.Stack(app);
+  const provider = GithubActionsIdentityProvider.fromAccount(stack, 'GithubProvider');
+
+  new GithubActionsRole(stack, 'TestRole', {
+    provider,
+  });
+
+  expect(stack.node.metadata).toHaveLength(1);
+  expect(stack.node.metadata[0].data).toBe(
+    "If you don't provide `trustedRepositories`, you must provide `owner` and `repo`.",
   );
 });
