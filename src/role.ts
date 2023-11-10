@@ -30,6 +30,50 @@ export interface GithubConfiguration {
   /**
    * Repository name (slug) without the owner.
    *
+   * Use `trustedRepositories` if you want to provide multiple repo configurations
+   *
+   * @example
+   * 'octo-repo'
+   */
+  readonly repo: string;
+
+  /**
+   * Subject condition filter, appended after `repo:${owner}/${repo}:` string in IAM Role trust relationship.
+   *
+   * @default
+   * '*'
+   *
+   * You may use this value to only allow Github to assume the role on specific branches, tags, environments, pull requests etc.
+   * @example
+   * 'ref:refs/tags/v*'
+   * 'ref:refs/heads/demo-branch'
+   * 'pull_request'
+   * 'environment:Production'
+   *
+   * @see https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/about-security-hardening-with-openid-connect#examples
+   */
+  readonly filter?: string;
+
+  /**
+   * Provide multiple trusted repositories allowed to assume this role.
+   *
+   * @default - required if top-level owner/repo not set
+   */
+  readonly trustedRepositories?: TrustedRepository[];
+}
+
+export interface TrustedRepository {
+  /**
+   * Repository owner (organization or username).
+   *
+   * @example
+   * 'octo-org'
+   */
+  readonly owner: string;
+
+  /**
+   * Repository name (slug) without the owner.
+   *
    * @example
    * 'octo-repo'
    */
@@ -102,6 +146,7 @@ export class GithubActionsRole extends iam.Role {
     delete extractProps.owner;
     delete extractProps.repo;
     delete extractProps.filter;
+    delete extractProps.trustedRepositories;
     return extractProps;
   }
 
@@ -109,6 +154,15 @@ export class GithubActionsRole extends iam.Role {
   private static validateOwner(scope: Construct, owner: string): void {
     if (githubUsernameRegex.test(owner) !== true) {
       cdk.Annotations.of(scope).addError(`Invalid Github Repository Owner "${owner}". Must only contain alphanumeric characters or hyphens, cannot have multiple consecutive hyphens, cannot begin or end with a hypen and maximum lenght is 39 characters.`);
+    }
+  }
+
+  /** Validates conflicting props aren't set simultaneously */
+  private static validateProps(scope: Construct, props: GithubActionsRoleProps) {
+    const topLevelPropsSet = props.owner || props.repo || props.filter;
+    const trustedRepositoriesSet = props.trustedRepositories && props.trustedRepositories.length > 0;
+    if (topLevelPropsSet && trustedRepositoriesSet) {
+      cdk.Annotations.of(scope).addError('Cannot set both top-level owner/repo/filter and trustedRepositories. Use one or the other.');
     }
   }
 
@@ -146,11 +200,19 @@ export class GithubActionsRole extends iam.Role {
    */
   constructor(scope: Construct, id: string, props: GithubActionsRoleProps) {
 
-    const { provider, owner, repo } = props;
+    const { provider, owner, repo, trustedRepositories } = props;
 
-    // Perform validations
-    GithubActionsRole.validateOwner(scope, owner);
-    GithubActionsRole.validateRepo(scope, repo);
+    // Validate props
+    GithubActionsRole.validateProps(scope, props);
+
+    // Unify the two ways of defining trusted repositories
+    const subjects = trustedRepositories || [{ owner, repo, filter: props.filter }];
+
+    // Perform validations on each trusted repository
+    subjects.forEach((subject) => {
+      GithubActionsRole.validateOwner(scope, subject.owner);
+      GithubActionsRole.validateRepo(scope, subject.repo);
+    });
 
     // Prepare values
     const subject = GithubActionsRole.formatSubject(props);
