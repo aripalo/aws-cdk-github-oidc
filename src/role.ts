@@ -59,7 +59,7 @@ export interface GithubConfiguration {
   /**
    * Provide multiple trusted repositories allowed to assume this role.
    *
-   * @default - required if top-level owner/repo not set
+   * @default - required if top-level owner/repo/filter not set
    */
   readonly trustedRepositories?: TrustedRepository[];
 }

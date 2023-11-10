@@ -157,10 +157,10 @@ There can be only one (per AWS Account).
 ##### `repo`<sup>Required</sup> <a name="aws-cdk-github-oidc.GithubActionsRoleProps.property.repo"></a>
 
 ```typescript
-public readonly repo: string;
+public readonly repo: string | string[];
 ```
 
-- *Type:* `string`
+- *Type:* `string` | `string`[]
 
 Repository name (slug) without the owner.
 
@@ -381,10 +381,10 @@ There can be only one (per AWS Account).
 ##### `repo`<sup>Required</sup> <a name="aws-cdk-github-oidc.GithubConfiguration.property.repo"></a>
 
 ```typescript
-public readonly repo: string;
+public readonly repo: string | string[];
 ```
 
-- *Type:* `string`
+- *Type:* `string` | `string`[]
 
 Repository name (slug) without the owner.
 
