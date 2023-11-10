@@ -26,10 +26,10 @@ test('Role with defaults', () => {
           Action: 'sts:AssumeRoleWithWebIdentity',
           Effect: 'Allow',
           Condition: {
-            StringLike: {
-              'token.actions.githubusercontent.com:sub': 'repo:octo-org/octo-repo:*',
+            'ForAnyValue:StringLike': {
+              'token.actions.githubusercontent.com:sub': ['repo:octo-org/octo-repo:*'],
             },
-            StringEquals: {
+            'StringEquals': {
               'token.actions.githubusercontent.com:aud': 'sts.amazonaws.com',
             },
           },
@@ -88,10 +88,10 @@ test('Role with custom props', () => {
           Action: 'sts:AssumeRoleWithWebIdentity',
           Effect: 'Allow',
           Condition: {
-            StringLike: {
-              'token.actions.githubusercontent.com:sub': 'repo:octo-org/octo-repo:ref:refs/tags/v*',
+            'ForAnyValue:StringLike': {
+              'token.actions.githubusercontent.com:sub': ['repo:octo-org/octo-repo:ref:refs/tags/v*'],
             },
-            StringEquals: {
+            'StringEquals': {
               'token.actions.githubusercontent.com:aud': 'sts.amazonaws.com',
             },
           },

@@ -174,8 +174,8 @@ export class GithubActionsRole extends iam.Role {
   }
 
   /** Formats the `sub` value used in trust policy. */
-  private static formatSubject(props: GithubConfiguration): string {
-    const { owner, repo, filter = '*' } = props;
+  private static formatSubject(trustedRepository: TrustedRepository): string {
+    const { owner, repo, filter = '*' } = trustedRepository;
     return `repo:${owner}/${repo}:${filter}`;
   }
 
@@ -214,19 +214,18 @@ export class GithubActionsRole extends iam.Role {
       GithubActionsRole.validateRepo(scope, subject.repo);
     });
 
-    // Prepare values
-    const subject = GithubActionsRole.formatSubject(props);
+    // Extract IAM Role props
     const roleProps = GithubActionsRole.extractRoleProps(props);
 
     // The actual IAM Role creation
     super(scope, id, {
       ...roleProps,
       assumedBy: new iam.WebIdentityPrincipal(provider.openIdConnectProviderArn, {
-        StringLike: {
+        'ForAnyValue:StringLike': {
           // Only allow specified subjects to assume this role
-          [`${GithubActionsIdentityProvider.issuer}:sub`]: subject,
+          [`${GithubActionsIdentityProvider.issuer}:sub`]: subjects.map((subject) => GithubActionsRole.formatSubject(subject)),
         },
-        StringEquals: {
+        'StringEquals': {
           // Audience is always sts.amazonaws.com with AWS official Github Action
           // https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/configuring-openid-connect-in-amazon-web-services#adding-the-identity-provider-to-aws
           [`${GithubActionsIdentityProvider.issuer}:aud`]: 'sts.amazonaws.com',
