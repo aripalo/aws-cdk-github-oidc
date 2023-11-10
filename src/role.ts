@@ -22,10 +22,12 @@ export interface GithubConfiguration {
   /**
    * Repository owner (organization or username).
    *
+   * Use `trustedRepositories` if you want to provide multiple repo configurations
+   *
    * @example
    * 'octo-org'
    */
-  readonly owner: string;
+  readonly owner?: string;
 
   /**
    * Repository name (slug) without the owner.
@@ -35,7 +37,7 @@ export interface GithubConfiguration {
    * @example
    * 'octo-repo'
    */
-  readonly repo: string;
+  readonly repo?: string;
 
   /**
    * Subject condition filter, appended after `repo:${owner}/${repo}:` string in IAM Role trust relationship.
@@ -160,9 +162,14 @@ export class GithubActionsRole extends iam.Role {
   /** Validates conflicting props aren't set simultaneously */
   private static validateProps(scope: Construct, props: GithubActionsRoleProps) {
     const topLevelPropsSet = props.owner || props.repo || props.filter;
-    const trustedRepositoriesSet = props.trustedRepositories && props.trustedRepositories.length > 0;
+    const trustedRepositoriesSet = props.trustedRepositories && props.trustedRepositories.length > 0 || false;
+
     if (topLevelPropsSet && trustedRepositoriesSet) {
       cdk.Annotations.of(scope).addError('Cannot set both top-level owner/repo/filter and trustedRepositories. Use one or the other.');
+    }
+
+    if (!trustedRepositoriesSet && (props.owner === undefined || props.repo === undefined)) {
+      cdk.Annotations.of(scope).addError("If you don't provide `trustedRepositories`, you must provide `owner` and `repo`.");
     }
   }
 
@@ -206,7 +213,7 @@ export class GithubActionsRole extends iam.Role {
     GithubActionsRole.validateProps(scope, props);
 
     // Unify the two ways of defining trusted repositories
-    const subjects = trustedRepositories || [{ owner, repo, filter: props.filter }];
+    const subjects = trustedRepositories || [{ owner: owner!, repo: repo!, filter: props.filter }];
 
     // Perform validations on each trusted repository
     subjects.forEach((subject) => {
