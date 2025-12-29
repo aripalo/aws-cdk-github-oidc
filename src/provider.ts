@@ -5,7 +5,7 @@ import { Construct } from 'constructs';
 /**
  * Describes a Github OpenID Connect Identity Provider for AWS IAM.
  */
-export interface IGithubActionsIdentityProvider extends iam.IOpenIdConnectProvider { }
+export interface IGithubActionsIdentityProvider extends iam.IOidcProvider { }
 
 /**
  * Github Actions as OpenID Connect Identity Provider for AWS IAM.
@@ -13,9 +13,11 @@ export interface IGithubActionsIdentityProvider extends iam.IOpenIdConnectProvid
  *
  * Use `fromAccount` to retrieve a reference to existing Github OIDC provider.
  *
+ * Uses the native CloudFormation resource AWS::IAM::OIDCProvider (no Lambda functions).
+ *
  * @see https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/configuring-openid-connect-in-amazon-web-services
  */
-export class GithubActionsIdentityProvider extends iam.OpenIdConnectProvider implements IGithubActionsIdentityProvider {
+export class GithubActionsIdentityProvider extends iam.OidcProviderNative implements IGithubActionsIdentityProvider {
 
   public static readonly issuer: string = 'token.actions.githubusercontent.com';
 
@@ -35,11 +37,11 @@ export class GithubActionsIdentityProvider extends iam.OpenIdConnectProvider imp
   public static fromAccount(scope: Construct, id: string): IGithubActionsIdentityProvider {
     const accountId = cdk.Stack.of(scope).account;
     const providerArn = `arn:aws:iam::${accountId}:oidc-provider/${GithubActionsIdentityProvider.issuer}`;
-    return iam.OpenIdConnectProvider.fromOpenIdConnectProviderArn(scope, id, providerArn);
+    return iam.OidcProviderNative.fromOidcProviderArn(scope, id, providerArn);
   }
 
   /**
-   * Define a new Github OpenID Connect Identity PRovider for AWS IAM.
+   * Define a new Github OpenID Connect Identity Provider for AWS IAM.
    * There can be only one (per AWS Account).
    *
    * @param scope CDK Stack or Construct to which the provider is assigned to

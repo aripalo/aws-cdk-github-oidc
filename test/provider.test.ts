@@ -11,8 +11,8 @@ test('New Provider', () => {
   new GithubActionsIdentityProvider(stack, 'GithubProvider');
   const template = Template.fromStack(stack);
 
-  template.hasResourceProperties('Custom::AWSCDKOpenIdConnectProvider', {
-    ClientIDList: [
+  template.hasResourceProperties('AWS::IAM::OIDCProvider', {
+    ClientIdList: [
       'sts.amazonaws.com',
     ],
     Url: 'https://token.actions.githubusercontent.com',
@@ -25,6 +25,6 @@ test('Existing Provider', () => {
   const stack = new cdk.Stack(app);
   const provider = GithubActionsIdentityProvider.fromAccount(stack, 'GithubProvider');
 
-  expect(provider.openIdConnectProviderIssuer).toBe('token.actions.githubusercontent.com');
-  expect(provider.openIdConnectProviderArn).toMatch(providerArnRegexp);
+  expect(provider.oidcProviderIssuer).toBe('token.actions.githubusercontent.com');
+  expect(provider.oidcProviderArn).toMatch(providerArnRegexp);
 });

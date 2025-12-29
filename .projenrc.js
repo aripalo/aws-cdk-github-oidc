@@ -1,8 +1,13 @@
 const { awscdk, github, TextFile, javascript } = require('projen');
 
-const nodejsVersion = '16.20.0';
+const nodejsVersion = '22';
 
 const project = new awscdk.AwsCdkConstructLibrary({
+
+  // Node.js & JSII
+  minNodeVersion: nodejsVersion,
+  workflowNodeVersion: nodejsVersion,
+  jsiiVersion: '~5.8.0',
 
   // Metadata
   stability: 'experimental',
@@ -28,9 +33,8 @@ const project = new awscdk.AwsCdkConstructLibrary({
   },
 
   // Dependencies
-  minNodeVersion: nodejsVersion,
-  cdkVersion: '2.89.0',
-  constructsVersion: '10.0.0',
+  cdkVersion: '2.233.0',
+  constructsVersion: '10.4.2',
   peerDeps: ['constructs', 'aws-cdk-lib'],
   devDeps: ['@types/github-username-regex', 'constructs'],
   bundledDeps: [],

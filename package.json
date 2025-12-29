@@ -37,37 +37,32 @@
     "organization": false
   },
   "devDependencies": {
+    "@stylistic/eslint-plugin": "^2",
     "@types/github-username-regex": "^1.0.0",
     "@types/jest": "^27",
-    "@types/node": "^16",
-    "@typescript-eslint/eslint-plugin": "^5",
-    "@typescript-eslint/parser": "^5",
-    "aws-cdk-lib": "2.89.0",
-    "constructs": "10.0.0",
-    "eslint": "^8",
-    "eslint-import-resolver-node": "^0.3.7",
+    "@types/node": "^22",
+    "@typescript-eslint/eslint-plugin": "^8",
+    "@typescript-eslint/parser": "^8",
+    "aws-cdk-lib": "2.233.0",
+    "commit-and-tag-version": "^12",
+    "constructs": "10.4.2",
+    "eslint": "^9",
     "eslint-import-resolver-typescript": "^2.7.1",
     "eslint-plugin-import": "^2.28.0",
     "jest": "^27",
-    "jest-junit": "^15",
-    "jsii": "1.x",
+    "jest-junit": "^16",
+    "jsii": "~5.8.0",
     "jsii-diff": "^1.86.1",
-    "jsii-docgen": "^3.8.31",
+    "jsii-docgen": "^10.5.0",
     "jsii-pacmak": "^1.86.1",
-    "jsii-rosetta": "1.x",
-    "npm-check-updates": "^16",
-    "projen": "^0.71.161",
-    "standard-version": "^9",
+    "jsii-rosetta": "~5.8.0",
+    "projen": "^0.98.0",
     "ts-jest": "^27",
     "typescript": "^4.9.5"
   },
   "peerDependencies": {
-    "aws-cdk-lib": "^2.89.0",
-    "constructs": "^10.0.0"
-  },
-  "overrides": {
-    "@types/babel__traverse": "7.18.2",
-    "@types/prettier": "2.6.0"
+    "aws-cdk-lib": "^2.233.0",
+    "constructs": "^10.4.2"
   },
   "keywords": [
     "aws",
@@ -81,15 +76,19 @@
     "openid-connect"
   ],
   "engines": {
-    "node": ">= 16.20.0"
+    "node": ">= 22"
   },
   "main": "lib/index.js",
   "license": "Apache-2.0",
+  "publishConfig": {
+    "access": "public"
+  },
   "version": "0.0.0",
   "jest": {
+    "coverageProvider": "v8",
     "testMatch": [
-      "<rootDir>/src/**/__tests__/**/*.ts?(x)",
-      "<rootDir>/(test|src)/**/*(*.)@(spec|test).ts?(x)"
+      "<rootDir>/@(src|test)/**/*(*.)@(spec|test).ts?(x)",
+      "<rootDir>/@(src|test)/**/__tests__/**/*.ts?(x)"
     ],
     "clearMocks": true,
     "collectCoverage": true,

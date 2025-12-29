@@ -9,7 +9,6 @@
     ".github/workflows/upgrade-main.yml",
     ".gitignore",
     ".mergify.yml",
-    ".npmrc",
     ".nvmrc",
     ".projen/deps.json",
     ".projen/files.json",
