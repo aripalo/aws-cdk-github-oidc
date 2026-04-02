@@ -165,21 +165,17 @@ export class GithubActionsRole extends iam.Role {
     // The actual IAM Role creation
     super(scope, id, {
       ...roleProps,
-      assumedBy: new iam.WebIdentityPrincipal(
-        provider.openIdConnectProviderArn,
-        {
-          StringLike: {
-            // Only allow specified subjects to assume this role
-            [`${GithubActionsIdentityProvider.issuer}:sub`]: subject,
-          },
-          StringEquals: {
-            // Audience is always sts.amazonaws.com with AWS official Github Action
-            // https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/configuring-openid-connect-in-amazon-web-services#adding-the-identity-provider-to-aws
-            [`${GithubActionsIdentityProvider.issuer}:aud`]:
-              "sts.amazonaws.com",
-          },
+      assumedBy: new iam.WebIdentityPrincipal(provider.oidcProviderArn, {
+        StringLike: {
+          // Only allow specified subjects to assume this role
+          [`${GithubActionsIdentityProvider.issuer}:sub`]: subject,
         },
-      ),
+        StringEquals: {
+          // Audience is always sts.amazonaws.com with AWS official Github Action
+          // https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/configuring-openid-connect-in-amazon-web-services#adding-the-identity-provider-to-aws
+          [`${GithubActionsIdentityProvider.issuer}:aud`]: "sts.amazonaws.com",
+        },
+      }),
     });
   }
 }

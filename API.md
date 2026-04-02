@@ -10,6 +10,8 @@ Github Actions as OpenID Connect Identity Provider for AWS IAM. There can be onl
 
 Use `fromAccount` to retrieve a reference to existing Github OIDC provider.
 
+Uses the native CloudFormation resource AWS::IAM::OIDCProvider (no Lambda functions).
+
 > [https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/configuring-openid-connect-in-amazon-web-services](https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/configuring-openid-connect-in-amazon-web-services)
 
 #### Initializers <a name="Initializers" id="aws-cdk-github-oidc.GithubActionsIdentityProvider.Initializer"></a>
@@ -89,7 +91,7 @@ account for data recovery and cleanup later (`RemovalPolicy.RETAIN`).
 | <code><a href="#aws-cdk-github-oidc.GithubActionsIdentityProvider.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
 | <code><a href="#aws-cdk-github-oidc.GithubActionsIdentityProvider.isOwnedResource">isOwnedResource</a></code> | Returns true if the construct was created by CDK, and false otherwise. |
 | <code><a href="#aws-cdk-github-oidc.GithubActionsIdentityProvider.isResource">isResource</a></code> | Check whether the given construct is a Resource. |
-| <code><a href="#aws-cdk-github-oidc.GithubActionsIdentityProvider.fromOpenIdConnectProviderArn">fromOpenIdConnectProviderArn</a></code> | Imports an Open ID connect provider from an ARN. |
+| <code><a href="#aws-cdk-github-oidc.GithubActionsIdentityProvider.fromOidcProviderArn">fromOidcProviderArn</a></code> | Imports an Open ID connect provider from an ARN. |
 | <code><a href="#aws-cdk-github-oidc.GithubActionsIdentityProvider.fromAccount">fromAccount</a></code> | Retrieve a reference to existing Github OIDC provider in your AWS account. |
 
 ---
@@ -158,17 +160,17 @@ Check whether the given construct is a Resource.
 
 ---
 
-##### `fromOpenIdConnectProviderArn` <a name="fromOpenIdConnectProviderArn" id="aws-cdk-github-oidc.GithubActionsIdentityProvider.fromOpenIdConnectProviderArn"></a>
+##### `fromOidcProviderArn` <a name="fromOidcProviderArn" id="aws-cdk-github-oidc.GithubActionsIdentityProvider.fromOidcProviderArn"></a>
 
 ```typescript
 import { GithubActionsIdentityProvider } from 'aws-cdk-github-oidc'
 
-GithubActionsIdentityProvider.fromOpenIdConnectProviderArn(scope: Construct, id: string, openIdConnectProviderArn: string)
+GithubActionsIdentityProvider.fromOidcProviderArn(scope: Construct, id: string, oidcProviderArn: string)
 ```
 
 Imports an Open ID connect provider from an ARN.
 
-###### `scope`<sup>Required</sup> <a name="scope" id="aws-cdk-github-oidc.GithubActionsIdentityProvider.fromOpenIdConnectProviderArn.parameter.scope"></a>
+###### `scope`<sup>Required</sup> <a name="scope" id="aws-cdk-github-oidc.GithubActionsIdentityProvider.fromOidcProviderArn.parameter.scope"></a>
 
 - *Type:* constructs.Construct
 
@@ -176,7 +178,7 @@ The definition scope.
 
 ---
 
-###### `id`<sup>Required</sup> <a name="id" id="aws-cdk-github-oidc.GithubActionsIdentityProvider.fromOpenIdConnectProviderArn.parameter.id"></a>
+###### `id`<sup>Required</sup> <a name="id" id="aws-cdk-github-oidc.GithubActionsIdentityProvider.fromOidcProviderArn.parameter.id"></a>
 
 - *Type:* string
 
@@ -184,7 +186,7 @@ ID of the construct.
 
 ---
 
-###### `openIdConnectProviderArn`<sup>Required</sup> <a name="openIdConnectProviderArn" id="aws-cdk-github-oidc.GithubActionsIdentityProvider.fromOpenIdConnectProviderArn.parameter.openIdConnectProviderArn"></a>
+###### `oidcProviderArn`<sup>Required</sup> <a name="oidcProviderArn" id="aws-cdk-github-oidc.GithubActionsIdentityProvider.fromOidcProviderArn.parameter.oidcProviderArn"></a>
 
 - *Type:* string
 
@@ -236,10 +238,10 @@ CDK Construct ID given to the construct.
 | <code><a href="#aws-cdk-github-oidc.GithubActionsIdentityProvider.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
 | <code><a href="#aws-cdk-github-oidc.GithubActionsIdentityProvider.property.env">env</a></code> | <code>aws-cdk-lib.ResourceEnvironment</code> | The environment this resource belongs to. |
 | <code><a href="#aws-cdk-github-oidc.GithubActionsIdentityProvider.property.stack">stack</a></code> | <code>aws-cdk-lib.Stack</code> | The stack in which this resource is defined. |
+| <code><a href="#aws-cdk-github-oidc.GithubActionsIdentityProvider.property.oidcProviderArn">oidcProviderArn</a></code> | <code>string</code> | The Amazon Resource Name (ARN) of the Native IAM OpenID Connect provider. |
+| <code><a href="#aws-cdk-github-oidc.GithubActionsIdentityProvider.property.oidcProviderIssuer">oidcProviderIssuer</a></code> | <code>string</code> | The issuer for the Native OIDC Provider. |
 | <code><a href="#aws-cdk-github-oidc.GithubActionsIdentityProvider.property.oidcProviderRef">oidcProviderRef</a></code> | <code>aws-cdk-lib.aws_iam.OIDCProviderReference</code> | A reference to a OIDCProvider resource. |
-| <code><a href="#aws-cdk-github-oidc.GithubActionsIdentityProvider.property.openIdConnectProviderArn">openIdConnectProviderArn</a></code> | <code>string</code> | The Amazon Resource Name (ARN) of the IAM OpenID Connect provider. |
-| <code><a href="#aws-cdk-github-oidc.GithubActionsIdentityProvider.property.openIdConnectProviderIssuer">openIdConnectProviderIssuer</a></code> | <code>string</code> | The issuer for OIDC Provider. |
-| <code><a href="#aws-cdk-github-oidc.GithubActionsIdentityProvider.property.openIdConnectProviderthumbprints">openIdConnectProviderthumbprints</a></code> | <code>string</code> | The thumbprints configured for this provider. |
+| <code><a href="#aws-cdk-github-oidc.GithubActionsIdentityProvider.property.oidcProviderThumbprints">oidcProviderThumbprints</a></code> | <code>string</code> | The thumbprints configured for this provider. |
 
 ---
 
@@ -286,6 +288,30 @@ The stack in which this resource is defined.
 
 ---
 
+##### `oidcProviderArn`<sup>Required</sup> <a name="oidcProviderArn" id="aws-cdk-github-oidc.GithubActionsIdentityProvider.property.oidcProviderArn"></a>
+
+```typescript
+public readonly oidcProviderArn: string;
+```
+
+- *Type:* string
+
+The Amazon Resource Name (ARN) of the Native IAM OpenID Connect provider.
+
+---
+
+##### `oidcProviderIssuer`<sup>Required</sup> <a name="oidcProviderIssuer" id="aws-cdk-github-oidc.GithubActionsIdentityProvider.property.oidcProviderIssuer"></a>
+
+```typescript
+public readonly oidcProviderIssuer: string;
+```
+
+- *Type:* string
+
+The issuer for the Native OIDC Provider.
+
+---
+
 ##### `oidcProviderRef`<sup>Required</sup> <a name="oidcProviderRef" id="aws-cdk-github-oidc.GithubActionsIdentityProvider.property.oidcProviderRef"></a>
 
 ```typescript
@@ -298,34 +324,10 @@ A reference to a OIDCProvider resource.
 
 ---
 
-##### `openIdConnectProviderArn`<sup>Required</sup> <a name="openIdConnectProviderArn" id="aws-cdk-github-oidc.GithubActionsIdentityProvider.property.openIdConnectProviderArn"></a>
+##### `oidcProviderThumbprints`<sup>Required</sup> <a name="oidcProviderThumbprints" id="aws-cdk-github-oidc.GithubActionsIdentityProvider.property.oidcProviderThumbprints"></a>
 
 ```typescript
-public readonly openIdConnectProviderArn: string;
-```
-
-- *Type:* string
-
-The Amazon Resource Name (ARN) of the IAM OpenID Connect provider.
-
----
-
-##### `openIdConnectProviderIssuer`<sup>Required</sup> <a name="openIdConnectProviderIssuer" id="aws-cdk-github-oidc.GithubActionsIdentityProvider.property.openIdConnectProviderIssuer"></a>
-
-```typescript
-public readonly openIdConnectProviderIssuer: string;
-```
-
-- *Type:* string
-
-The issuer for OIDC Provider.
-
----
-
-##### `openIdConnectProviderthumbprints`<sup>Required</sup> <a name="openIdConnectProviderthumbprints" id="aws-cdk-github-oidc.GithubActionsIdentityProvider.property.openIdConnectProviderthumbprints"></a>
-
-```typescript
-public readonly openIdConnectProviderthumbprints: string;
+public readonly oidcProviderThumbprints: string;
 ```
 
 - *Type:* string
@@ -1648,7 +1650,7 @@ Acknowledging IAM Resources in AWS CloudFormation Templates.
 
 ### IGithubActionsIdentityProvider <a name="IGithubActionsIdentityProvider" id="aws-cdk-github-oidc.IGithubActionsIdentityProvider"></a>
 
-- *Extends:* aws-cdk-lib.aws_iam.IOpenIdConnectProvider
+- *Extends:* aws-cdk-lib.aws_iam.IOidcProvider
 
 - *Implemented By:* <a href="#aws-cdk-github-oidc.GithubActionsIdentityProvider">GithubActionsIdentityProvider</a>, <a href="#aws-cdk-github-oidc.IGithubActionsIdentityProvider">IGithubActionsIdentityProvider</a>
 
@@ -1663,8 +1665,8 @@ Describes a Github OpenID Connect Identity Provider for AWS IAM.
 | <code><a href="#aws-cdk-github-oidc.IGithubActionsIdentityProvider.property.env">env</a></code> | <code>aws-cdk-lib.ResourceEnvironment</code> | The environment this resource belongs to. |
 | <code><a href="#aws-cdk-github-oidc.IGithubActionsIdentityProvider.property.stack">stack</a></code> | <code>aws-cdk-lib.Stack</code> | The stack in which this resource is defined. |
 | <code><a href="#aws-cdk-github-oidc.IGithubActionsIdentityProvider.property.oidcProviderRef">oidcProviderRef</a></code> | <code>aws-cdk-lib.aws_iam.OIDCProviderReference</code> | A reference to a OIDCProvider resource. |
-| <code><a href="#aws-cdk-github-oidc.IGithubActionsIdentityProvider.property.openIdConnectProviderArn">openIdConnectProviderArn</a></code> | <code>string</code> | The Amazon Resource Name (ARN) of the IAM OpenID Connect provider. |
-| <code><a href="#aws-cdk-github-oidc.IGithubActionsIdentityProvider.property.openIdConnectProviderIssuer">openIdConnectProviderIssuer</a></code> | <code>string</code> | The issuer for OIDC Provider. |
+| <code><a href="#aws-cdk-github-oidc.IGithubActionsIdentityProvider.property.oidcProviderArn">oidcProviderArn</a></code> | <code>string</code> | The Amazon Resource Name (ARN) of the IAM OpenID Connect provider. |
+| <code><a href="#aws-cdk-github-oidc.IGithubActionsIdentityProvider.property.oidcProviderIssuer">oidcProviderIssuer</a></code> | <code>string</code> | The issuer for OIDC Provider. |
 
 ---
 
@@ -1723,10 +1725,10 @@ A reference to a OIDCProvider resource.
 
 ---
 
-##### `openIdConnectProviderArn`<sup>Required</sup> <a name="openIdConnectProviderArn" id="aws-cdk-github-oidc.IGithubActionsIdentityProvider.property.openIdConnectProviderArn"></a>
+##### `oidcProviderArn`<sup>Required</sup> <a name="oidcProviderArn" id="aws-cdk-github-oidc.IGithubActionsIdentityProvider.property.oidcProviderArn"></a>
 
 ```typescript
-public readonly openIdConnectProviderArn: string;
+public readonly oidcProviderArn: string;
 ```
 
 - *Type:* string
@@ -1735,10 +1737,10 @@ The Amazon Resource Name (ARN) of the IAM OpenID Connect provider.
 
 ---
 
-##### `openIdConnectProviderIssuer`<sup>Required</sup> <a name="openIdConnectProviderIssuer" id="aws-cdk-github-oidc.IGithubActionsIdentityProvider.property.openIdConnectProviderIssuer"></a>
+##### `oidcProviderIssuer`<sup>Required</sup> <a name="oidcProviderIssuer" id="aws-cdk-github-oidc.IGithubActionsIdentityProvider.property.oidcProviderIssuer"></a>
 
 ```typescript
-public readonly openIdConnectProviderIssuer: string;
+public readonly oidcProviderIssuer: string;
 ```
 
 - *Type:* string
