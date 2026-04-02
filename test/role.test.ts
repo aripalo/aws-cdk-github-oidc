@@ -1,50 +1,48 @@
-import * as cdk from "aws-cdk-lib";
-import { Template, Match } from "aws-cdk-lib/assertions";
-import * as iam from "aws-cdk-lib/aws-iam";
-import { GithubActionsIdentityProvider } from "../src/provider";
-import { GithubActionsRole } from "../src/role";
+import * as cdk from 'aws-cdk-lib';
+import { Template, Match } from 'aws-cdk-lib/assertions';
+import * as iam from 'aws-cdk-lib/aws-iam';
+import { GithubActionsIdentityProvider } from '../src/provider';
+import { GithubActionsRole } from '../src/role';
 
-test("Role with defaults", () => {
+
+test('Role with defaults', () => {
+
   const app = new cdk.App();
   const stack = new cdk.Stack(app);
-  const provider = GithubActionsIdentityProvider.fromAccount(
-    stack,
-    "GithubProvider",
-  );
+  const provider = GithubActionsIdentityProvider.fromAccount(stack, 'GithubProvider');
 
-  new GithubActionsRole(stack, "TestRole", {
+  new GithubActionsRole(stack, 'TestRole', {
     provider,
-    owner: "octo-org",
-    repo: "octo-repo",
+    owner: 'octo-org',
+    repo: 'octo-repo',
   });
 
   const template = Template.fromStack(stack);
 
-  template.hasResourceProperties("AWS::IAM::Role", {
+  template.hasResourceProperties('AWS::IAM::Role', {
     AssumeRolePolicyDocument: Match.objectLike({
       Statement: Match.arrayWith([
         Match.objectLike({
-          Action: "sts:AssumeRoleWithWebIdentity",
-          Effect: "Allow",
+          Action: 'sts:AssumeRoleWithWebIdentity',
+          Effect: 'Allow',
           Condition: {
             StringLike: {
-              "token.actions.githubusercontent.com:sub":
-                "repo:octo-org/octo-repo:*",
+              'token.actions.githubusercontent.com:sub': 'repo:octo-org/octo-repo:*',
             },
             StringEquals: {
-              "token.actions.githubusercontent.com:aud": "sts.amazonaws.com",
+              'token.actions.githubusercontent.com:aud': 'sts.amazonaws.com',
             },
           },
           Principal: {
             Federated: {
-              "Fn::Join": [
-                "",
+              'Fn::Join': [
+                '',
                 [
-                  "arn:aws:iam::",
+                  'arn:aws:iam::',
                   {
-                    Ref: "AWS::AccountId",
+                    Ref: 'AWS::AccountId',
                   },
-                  ":oidc-provider/token.actions.githubusercontent.com",
+                  ':oidc-provider/token.actions.githubusercontent.com',
                 ],
               ],
             },
@@ -55,63 +53,58 @@ test("Role with defaults", () => {
   });
 });
 
-test("Role with custom props", () => {
+test('Role with custom props', () => {
+
   const app = new cdk.App();
   const stack = new cdk.Stack(app);
-  const provider = GithubActionsIdentityProvider.fromAccount(
-    stack,
-    "GithubProvider",
-  );
+  const provider = GithubActionsIdentityProvider.fromAccount(stack, 'GithubProvider');
 
-  const role = new GithubActionsRole(stack, "TestRole", {
+  const role = new GithubActionsRole(stack, 'TestRole', {
     provider,
-    owner: "octo-org",
-    repo: "octo-repo",
-    filter: "ref:refs/tags/v*",
-    roleName: "MyTestRole",
-    description: "This role deploys stuff to AWS",
+    owner: 'octo-org',
+    repo: 'octo-repo',
+    filter: 'ref:refs/tags/v*',
+    roleName: 'MyTestRole',
+    description: 'This role deploys stuff to AWS',
     maxSessionDuration: cdk.Duration.hours(2),
-    managedPolicies: [
-      iam.ManagedPolicy.fromAwsManagedPolicyName("AdministratorAccess"),
-    ],
+    managedPolicies: [iam.ManagedPolicy.fromAwsManagedPolicyName('AdministratorAccess')],
   });
 
   const stmt = new iam.PolicyStatement();
-  stmt.addActions("s3:PutObject");
-  stmt.addResources("arn:aws:s3:::mybucket/*");
+  stmt.addActions('s3:PutObject');
+  stmt.addResources('arn:aws:s3:::mybucket/*');
   stmt.effect = iam.Effect.DENY;
   role.addToPolicy(stmt);
 
   const template = Template.fromStack(stack);
 
-  template.hasResourceProperties("AWS::IAM::Role", {
-    RoleName: "MyTestRole",
-    Description: "This role deploys stuff to AWS",
+  template.hasResourceProperties('AWS::IAM::Role', {
+    RoleName: 'MyTestRole',
+    Description: 'This role deploys stuff to AWS',
     MaxSessionDuration: 7200,
     AssumeRolePolicyDocument: Match.objectLike({
       Statement: Match.arrayWith([
         Match.objectLike({
-          Action: "sts:AssumeRoleWithWebIdentity",
-          Effect: "Allow",
+          Action: 'sts:AssumeRoleWithWebIdentity',
+          Effect: 'Allow',
           Condition: {
             StringLike: {
-              "token.actions.githubusercontent.com:sub":
-                "repo:octo-org/octo-repo:ref:refs/tags/v*",
+              'token.actions.githubusercontent.com:sub': 'repo:octo-org/octo-repo:ref:refs/tags/v*',
             },
             StringEquals: {
-              "token.actions.githubusercontent.com:aud": "sts.amazonaws.com",
+              'token.actions.githubusercontent.com:aud': 'sts.amazonaws.com',
             },
           },
           Principal: {
             Federated: {
-              "Fn::Join": [
-                "",
+              'Fn::Join': [
+                '',
                 [
-                  "arn:aws:iam::",
+                  'arn:aws:iam::',
                   {
-                    Ref: "AWS::AccountId",
+                    Ref: 'AWS::AccountId',
                   },
-                  ":oidc-provider/token.actions.githubusercontent.com",
+                  ':oidc-provider/token.actions.githubusercontent.com',
                 ],
               ],
             },
@@ -121,52 +114,54 @@ test("Role with custom props", () => {
     }),
     ManagedPolicyArns: [
       {
-        "Fn::Join": [
-          "",
+        'Fn::Join': [
+          '',
           [
-            "arn:",
+            'arn:',
             {
-              Ref: "AWS::Partition",
+              Ref: 'AWS::Partition',
             },
-            ":iam::aws:policy/AdministratorAccess",
+            ':iam::aws:policy/AdministratorAccess',
           ],
         ],
       },
     ],
   });
 
-  template.hasResourceProperties("AWS::IAM::Policy", {
+
+  template.hasResourceProperties('AWS::IAM::Policy', {
     PolicyDocument: {
       Statement: [
         {
-          Action: "s3:PutObject",
-          Effect: "Deny",
-          Resource: "arn:aws:s3:::mybucket/*",
+          Action: 's3:PutObject',
+          Effect: 'Deny',
+          Resource: 'arn:aws:s3:::mybucket/*',
         },
       ],
-      Version: "2012-10-17",
+      Version: '2012-10-17',
     },
-    PolicyName: Match.stringLikeRegexp("TestRoleDefaultPolicy*"),
+    PolicyName: Match.stringLikeRegexp('TestRoleDefaultPolicy*'),
     Roles: [
       {
-        Ref: Match.stringLikeRegexp("TestRole*"),
+        Ref: Match.stringLikeRegexp('TestRole*'),
       },
     ],
+
   });
+
 });
 
-test("Role with invalid owner", () => {
+
+test('Role with invalid owner', () => {
+
   const app = new cdk.App();
   const stack = new cdk.Stack(app);
-  const provider = GithubActionsIdentityProvider.fromAccount(
-    stack,
-    "GithubProvider",
-  );
+  const provider = GithubActionsIdentityProvider.fromAccount(stack, 'GithubProvider');
 
-  new GithubActionsRole(stack, "TestRole", {
+  new GithubActionsRole(stack, 'TestRole', {
     provider,
-    owner: "invalid/@owner--",
-    repo: "octo-repo",
+    owner: 'invalid/@owner--',
+    repo: 'octo-repo',
   });
 
   expect(stack.node.metadata).toHaveLength(1);
@@ -175,18 +170,16 @@ test("Role with invalid owner", () => {
   );
 });
 
-test("Role with invalid repo", () => {
+test('Role with invalid repo', () => {
+
   const app = new cdk.App();
   const stack = new cdk.Stack(app);
-  const provider = GithubActionsIdentityProvider.fromAccount(
-    stack,
-    "GithubProvider",
-  );
+  const provider = GithubActionsIdentityProvider.fromAccount(stack, 'GithubProvider');
 
-  new GithubActionsRole(stack, "TestRole", {
+  new GithubActionsRole(stack, 'TestRole', {
     provider,
-    owner: "octo-org",
-    repo: "",
+    owner: 'octo-org',
+    repo: '',
   });
 
   expect(stack.node.metadata).toHaveLength(1);
