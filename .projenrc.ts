@@ -44,7 +44,7 @@ project.setScript("integ:test", "node ./run-integ-tests.mjs");
 
 project.setScript(
   "prepare",
-  'node -e "const fs = require(\'node:fs\'); if (process.env.CI || !fs.existsSync(\'.git\')) process.exit(0)" && lefthook install',
+  'node -e "const fs = require(\'node:fs\'); const { spawnSync } = require(\'node:child_process\'); if (process.env.CI || !fs.existsSync(\'.git\')) process.exit(0); const result = spawnSync(process.execPath, [\'node_modules/lefthook/bin/index.js\', \'install\'], { stdio: \'inherit\' }); process.exit(result.status ?? 1)"',
 );
 
 project.setScript(
