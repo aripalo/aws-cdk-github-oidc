@@ -13,5 +13,6 @@ resolutionMode: highest
 strictDepBuilds: true
 onlyBuiltDependencies:
   - unrs-resolver
+  - lefthook
 blockExoticSubdeps: true
 overrides: {}
