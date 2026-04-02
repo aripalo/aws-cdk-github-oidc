@@ -27,7 +27,7 @@ const project = new AlmaCdkConstructLibrary({
   pnpmSettings: {
     trustPolicyExclude: ["jsii@5.9.35"],
   },
-  // codeCov: true,
+  codeCov: true,
 });
 
 project.synth();

@@ -9,6 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      id-token: write
     outputs:
       self_mutation_happened: ${{ steps.self_mutation.outputs.self_mutation_happened }}
     env:
@@ -31,6 +32,11 @@ jobs:
         run: pnpm i --no-frozen-lockfile
       - name: build
         run: pnpm exec projen build
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          directory: coverage
+          use_oidc: true
       - name: Find mutations
         id: self_mutation
         run: |-
