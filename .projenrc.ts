@@ -23,7 +23,6 @@ const project = new AlmaCdkConstructLibrary({
   stability: cdk.Stability.EXPERIMENTAL, // or STABLE or DEPRECATED
   majorVersion: 3,
   releaseEnvironment: "production",
-  devDeps: ["constructs", "@alma-cdk/construct-library"],
   pnpmSettings: {
     trustPolicyExclude: ["jsii@5.9.35"],
   },
