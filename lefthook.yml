@@ -1,0 +1,4 @@
+pre-commit:
+  commands:
+    gitleaks:
+      run: "pnpm run gitleaks:dir"

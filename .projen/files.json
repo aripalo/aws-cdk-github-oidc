@@ -2,8 +2,11 @@
   "files": [
     ".eslintrc.json",
     ".gitattributes",
+    ".github/codeql/codeql-config.yml",
     ".github/pull_request_template.md",
     ".github/workflows/build.yml",
+    ".github/workflows/codeql.yml",
+    ".github/workflows/gitleaks.yml",
     ".github/workflows/pull-request-lint.yml",
     ".github/workflows/release.yml",
     ".github/workflows/sonarcloud-report.yml",

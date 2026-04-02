@@ -1,0 +1,28 @@
+{
+  "version": "48.0.0",
+  "testCases": {
+    "GithubOidcInteg/DefaultTest": {
+      "stacks": [
+        "GithubOidcIntegStack"
+      ],
+      "regions": [
+        "us-east-1"
+      ],
+      "cdkCommandOptions": {
+        "deploy": {
+          "args": {
+            "requireApproval": "never"
+          }
+        },
+        "destroy": {
+          "args": {
+            "force": true
+          }
+        }
+      },
+      "assertionStack": "GithubOidcAssertionsStack",
+      "assertionStackName": "GithubOidcAssertionsStack"
+    }
+  },
+  "minimumCliVersion": "2.1033.0"
+}

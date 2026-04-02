@@ -67,4 +67,7 @@ tsconfig.json
 !/sonar-project.properties
 !/.nvmrc
 !/pnpm-workspace.yaml
+!/.github/workflows/gitleaks.yml
+!/.github/workflows/codeql.yml
+!/.github/codeql/codeql-config.yml
 !/.projenrc.ts

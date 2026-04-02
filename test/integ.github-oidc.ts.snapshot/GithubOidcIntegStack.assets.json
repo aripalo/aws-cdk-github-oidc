@@ -1,0 +1,20 @@
+{
+  "version": "48.0.0",
+  "files": {
+    "066a4a55b7c2bc0fc77fc83e98330abd85627900e78eb9dfdfd9283fabce43e8": {
+      "displayName": "GithubOidcIntegStack Template",
+      "source": {
+        "path": "GithubOidcIntegStack.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "current_account-current_region-f87b6305": {
+          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
+          "objectKey": "066a4a55b7c2bc0fc77fc83e98330abd85627900e78eb9dfdfd9283fabce43e8.json",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}

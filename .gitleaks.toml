@@ -1,0 +1,24 @@
+[extend]
+useDefault = true
+
+[[rules]]
+id = "aws-account-id"
+description = "AWS account ID"
+regex = '''\b\d{12}\b'''
+tags = ["aws", "account-id", "security"]
+
+[[rules.allowlists]]
+description = "Ignore the gitleaks configuration file itself"
+paths = ['''^\.gitleaks\.toml$''']
+
+[[rules.allowlists]]
+description = "Ignore example AWS account IDs"
+regexes = ['''^(123456789012|111111111111|000000000000)$''']
+
+[[rules]]
+id = "generic-api-key"
+
+[[rules.allowlists]]
+description = "Ignore secret-like zip file names"
+regexTarget = "match"
+regexes = ['''(?i)[a-f0-9]{32,}\.zip''']

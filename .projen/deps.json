@@ -5,6 +5,18 @@
       "type": "build"
     },
     {
+      "name": "@aws-cdk/cloud-assembly-schema",
+      "type": "build"
+    },
+    {
+      "name": "@aws-cdk/integ-runner",
+      "type": "build"
+    },
+    {
+      "name": "@aws-cdk/integ-tests-alpha",
+      "type": "build"
+    },
+    {
       "name": "@types/jest",
       "version": "^30",
       "type": "build"
@@ -81,6 +93,10 @@
     {
       "name": "jsii",
       "version": "~5.9.0",
+      "type": "build"
+    },
+    {
+      "name": "lefthook",
       "type": "build"
     },
     {

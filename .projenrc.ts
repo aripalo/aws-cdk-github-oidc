@@ -1,5 +1,5 @@
 import { AlmaCdkConstructLibrary } from "@alma-cdk/construct-library";
-import { cdk } from "projen";
+import { cdk, github, YamlFile } from "projen";
 
 const project = new AlmaCdkConstructLibrary({
   name: "aws-cdk-github-oidc",
@@ -25,8 +25,112 @@ const project = new AlmaCdkConstructLibrary({
   releaseEnvironment: "production",
   pnpmSettings: {
     trustPolicyExclude: ["jsii@5.9.35"],
+    onlyBuiltDependencies: ["lefthook"],
   },
   codeCov: true,
 });
+
+project.addDevDeps(
+  "@aws-cdk/integ-runner",
+  "@aws-cdk/integ-tests-alpha",
+  "@aws-cdk/cloud-assembly-schema",
+  "lefthook",
+);
+
+/**
+ * Run with AWS_PROFILE=<YOUR_PROFILE> pnpm run integ:test
+ */
+project.setScript("integ:test", "node ./run-integ-tests.mjs");
+
+project.setScript(
+  "prepare",
+  "node -e \"const fs = require('node:fs'); const { spawnSync } = require('node:child_process'); if (process.env.CI || !fs.existsSync('.git')) process.exit(0); const result = spawnSync(process.execPath, ['node_modules/lefthook/bin/index.js', 'install'], { stdio: 'inherit' }); process.exit(result.status ?? 1)\"",
+);
+
+project.setScript(
+  "gitleaks:history",
+  'docker run --rm -v "$PWD:/repo" -w /repo ghcr.io/gitleaks/gitleaks:latest git --verbose --config /repo/.gitleaks.toml',
+);
+project.setScript(
+  "gitleaks:dir",
+  'docker run --rm -v "$PWD:/repo" -w /repo ghcr.io/gitleaks/gitleaks:latest dir --verbose --config /repo/.gitleaks.toml',
+);
+
+const gitleaksWorkflow = project.github!.addWorkflow("gitleaks");
+gitleaksWorkflow.on({
+  push: {},
+});
+gitleaksWorkflow.addJobs({
+  gitleaks: {
+    runsOn: ["ubuntu-latest"],
+    permissions: {
+      contents: github.workflows.JobPermission.READ,
+    },
+    steps: [
+      {
+        name: "Checkout",
+        uses: "actions/checkout@v5",
+        with: {
+          fetchDepth: 0,
+        },
+      },
+      {
+        name: "Run gitleaks",
+        uses: "gitleaks/gitleaks-action@v2",
+        env: {
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}",
+          GITLEAKS_CONFIG: ".gitleaks.toml",
+        },
+      },
+    ],
+  },
+});
+
+const codeqlWorkflow = project.github!.addWorkflow("codeql");
+codeqlWorkflow.on({
+  push: {
+    branches: ["main"],
+  },
+  pullRequest: {},
+  schedule: [{ cron: "36 4 * * 0" }],
+  workflowDispatch: {},
+});
+codeqlWorkflow.addJobs({
+  analyze: {
+    name: "analyze",
+    runsOn: ["ubuntu-latest"],
+    permissions: {
+      actions: github.workflows.JobPermission.READ,
+      contents: github.workflows.JobPermission.READ,
+      securityEvents: github.workflows.JobPermission.WRITE,
+    },
+    steps: [
+      {
+        name: "Checkout",
+        uses: "actions/checkout@v5",
+      },
+      {
+        name: "Initialize CodeQL",
+        uses: "github/codeql-action/init@v4",
+        with: {
+          languages: "javascript-typescript",
+          "config-file": "./.github/codeql/codeql-config.yml",
+        },
+      },
+      {
+        name: "Perform CodeQL Analysis",
+        uses: "github/codeql-action/analyze@v4",
+      },
+    ],
+  },
+});
+
+new YamlFile(project, ".github/codeql/codeql-config.yml", {
+  obj: {
+    "paths-ignore": ["test/integ.github-oidc.ts.snapshot"],
+  },
+});
+
+project.annotateGenerated("test/integ.github-oidc.ts.snapshot/**");
 
 project.synth();
