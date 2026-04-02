@@ -33,7 +33,7 @@
     "watch": "pnpm exec projen watch",
     "projen": "pnpm exec projen",
     "integ:test": "node ./run-integ-tests.mjs",
-    "prepare": "lefthook install",
+    "prepare": "node -e \"const fs = require('node:fs'); if (process.env.CI || !fs.existsSync('.git')) process.exit(0)\" && lefthook install",
     "gitleaks:history": "docker run --rm -v \"$PWD:/repo\" -w /repo ghcr.io/gitleaks/gitleaks:latest git --verbose --config /repo/.gitleaks.toml",
     "gitleaks:dir": "docker run --rm -v \"$PWD:/repo\" -w /repo ghcr.io/gitleaks/gitleaks:latest dir --verbose --config /repo/.gitleaks.toml"
   },

@@ -42,7 +42,10 @@ project.addDevDeps(
  */
 project.setScript("integ:test", "node ./run-integ-tests.mjs");
 
-project.setScript("prepare", "lefthook install");
+project.setScript(
+  "prepare",
+  'node -e "const fs = require(\'node:fs\'); if (process.env.CI || !fs.existsSync(\'.git\')) process.exit(0)" && lefthook install',
+);
 
 project.setScript(
   "gitleaks:history",
