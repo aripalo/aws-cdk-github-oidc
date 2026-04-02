@@ -1,11 +1,12 @@
-import * as cdk from 'aws-cdk-lib';
-import * as iam from 'aws-cdk-lib/aws-iam';
-import { Construct } from 'constructs';
+import * as cdk from "aws-cdk-lib";
+import * as iam from "aws-cdk-lib/aws-iam";
+import { Construct } from "constructs";
 
 /**
  * Describes a Github OpenID Connect Identity Provider for AWS IAM.
  */
-export interface IGithubActionsIdentityProvider extends iam.IOpenIdConnectProvider { }
+export interface IGithubActionsIdentityProvider
+  extends iam.IOpenIdConnectProvider {}
 
 /**
  * Github Actions as OpenID Connect Identity Provider for AWS IAM.
@@ -15,9 +16,11 @@ export interface IGithubActionsIdentityProvider extends iam.IOpenIdConnectProvid
  *
  * @see https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/configuring-openid-connect-in-amazon-web-services
  */
-export class GithubActionsIdentityProvider extends iam.OpenIdConnectProvider implements IGithubActionsIdentityProvider {
-
-  public static readonly issuer: string = 'token.actions.githubusercontent.com';
+export class GithubActionsIdentityProvider
+  extends iam.OpenIdConnectProvider
+  implements IGithubActionsIdentityProvider
+{
+  public static readonly issuer: string = "token.actions.githubusercontent.com";
 
   /**
    * Retrieve a reference to existing Github OIDC provider in your AWS account.
@@ -32,10 +35,17 @@ export class GithubActionsIdentityProvider extends iam.OpenIdConnectProvider imp
    * @example
    * GithubActionsIdentityProvider.fromAccount(scope, "GithubProvider");
    */
-  public static fromAccount(scope: Construct, id: string): IGithubActionsIdentityProvider {
+  public static fromAccount(
+    scope: Construct,
+    id: string,
+  ): IGithubActionsIdentityProvider {
     const accountId = cdk.Stack.of(scope).account;
     const providerArn = `arn:aws:iam::${accountId}:oidc-provider/${GithubActionsIdentityProvider.issuer}`;
-    return iam.OpenIdConnectProvider.fromOpenIdConnectProviderArn(scope, id, providerArn);
+    return iam.OpenIdConnectProvider.fromOpenIdConnectProviderArn(
+      scope,
+      id,
+      providerArn,
+    );
   }
 
   /**
@@ -51,7 +61,7 @@ export class GithubActionsIdentityProvider extends iam.OpenIdConnectProvider imp
   constructor(scope: Construct, id: string) {
     super(scope, id, {
       url: `https://${GithubActionsIdentityProvider.issuer}`,
-      clientIds: ['sts.amazonaws.com'],
+      clientIds: ["sts.amazonaws.com"],
     });
   }
 }
