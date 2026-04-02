@@ -1,5 +1,5 @@
 import { AlmaCdkConstructLibrary } from "@alma-cdk/construct-library";
-import { cdk, github } from "projen";
+import { cdk, github, YamlFile } from "projen";
 
 const project = new AlmaCdkConstructLibrary({
   name: "aws-cdk-github-oidc",
@@ -85,5 +85,52 @@ gitleaksWorkflow.addJobs({
     ],
   },
 });
+
+const codeqlWorkflow = project.github!.addWorkflow("codeql");
+codeqlWorkflow.on({
+  push: {
+    branches: ["main"],
+  },
+  pullRequest: {},
+  schedule: [{ cron: "36 4 * * 0" }],
+  workflowDispatch: {},
+});
+codeqlWorkflow.addJobs({
+  analyze: {
+    name: "analyze",
+    runsOn: ["ubuntu-latest"],
+    permissions: {
+      actions: github.workflows.JobPermission.READ,
+      contents: github.workflows.JobPermission.READ,
+      securityEvents: github.workflows.JobPermission.WRITE,
+    },
+    steps: [
+      {
+        name: "Checkout",
+        uses: "actions/checkout@v5",
+      },
+      {
+        name: "Initialize CodeQL",
+        uses: "github/codeql-action/init@v4",
+        with: {
+          languages: "javascript-typescript",
+          "config-file": "./.github/codeql/codeql-config.yml",
+        },
+      },
+      {
+        name: "Perform CodeQL Analysis",
+        uses: "github/codeql-action/analyze@v4",
+      },
+    ],
+  },
+});
+
+new YamlFile(project, ".github/codeql/codeql-config.yml", {
+  obj: {
+    "paths-ignore": ["test/integ.github-oidc.ts.snapshot"],
+  },
+});
+
+project.annotateGenerated("test/integ.github-oidc.ts.snapshot/**");
 
 project.synth();

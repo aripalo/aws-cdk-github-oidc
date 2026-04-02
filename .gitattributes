@@ -4,8 +4,10 @@
 *.snap linguist-generated
 /.eslintrc.json linguist-generated linguist-language=JSON-with-Comments
 /.gitattributes linguist-generated
+/.github/codeql/codeql-config.yml linguist-generated
 /.github/pull_request_template.md linguist-generated
 /.github/workflows/build.yml linguist-generated
+/.github/workflows/codeql.yml linguist-generated
 /.github/workflows/gitleaks.yml linguist-generated
 /.github/workflows/pull-request-lint.yml linguist-generated
 /.github/workflows/release.yml linguist-generated
@@ -29,3 +31,4 @@
 /pnpm-workspace.yaml linguist-generated
 /sonar-project.properties linguist-generated
 /tsconfig.dev.json linguist-generated linguist-language=JSON-with-Comments
+test/integ.github-oidc.ts.snapshot/** linguist-generated
