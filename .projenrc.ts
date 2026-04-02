@@ -31,9 +31,10 @@ const project = new AlmaCdkConstructLibrary({
 });
 
 project.addDevDeps(
-  "@aws-cdk/integ-runner@2.197.4",
-  "@aws-cdk/integ-tests-alpha@2.220.0-alpha.0",
-  "lefthook@2.1.4",
+  "@aws-cdk/integ-runner",
+  "@aws-cdk/integ-tests-alpha",
+  "@aws-cdk/cloud-assembly-schema",
+  "lefthook",
 );
 
 /**

@@ -5,13 +5,15 @@
       "type": "build"
     },
     {
+      "name": "@aws-cdk/cloud-assembly-schema",
+      "type": "build"
+    },
+    {
       "name": "@aws-cdk/integ-runner",
-      "version": "2.197.4",
       "type": "build"
     },
     {
       "name": "@aws-cdk/integ-tests-alpha",
-      "version": "2.220.0-alpha.0",
       "type": "build"
     },
     {
@@ -95,7 +97,6 @@
     },
     {
       "name": "lefthook",
-      "version": "2.1.4",
       "type": "build"
     },
     {
