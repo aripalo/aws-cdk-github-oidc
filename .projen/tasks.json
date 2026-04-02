@@ -317,13 +317,13 @@
       },
       "steps": [
         {
-          "exec": "pnpm dlx npm-check-updates@18 --upgrade --target=minor --peer --no-deprecated --dep=dev,peer,prod,optional --filter=@alma-cdk/construct-library,@types/github-username-regex,eslint-config-prettier,eslint-import-resolver-typescript,eslint-plugin-import,eslint-plugin-prettier,jsii-diff,jsii-pacmak,prettier,projen,ts-node"
+          "exec": "pnpm dlx npm-check-updates@18 --upgrade --target=minor --peer --no-deprecated --dep=dev,peer,prod,optional --filter=@alma-cdk/construct-library,eslint-config-prettier,eslint-import-resolver-typescript,eslint-plugin-import,eslint-plugin-prettier,jsii-diff,jsii-pacmak,prettier,projen,ts-node"
         },
         {
           "exec": "pnpm i --no-frozen-lockfile"
         },
         {
-          "exec": "pnpm update @alma-cdk/construct-library @types/github-username-regex @types/jest @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser commit-and-tag-version eslint-config-prettier eslint-import-resolver-typescript eslint-plugin-import eslint-plugin-prettier eslint jest-junit jest jsii-diff jsii-docgen jsii-pacmak jsii-rosetta jsii prettier projen ts-jest ts-node typescript aws-cdk-lib constructs"
+          "exec": "pnpm update @alma-cdk/construct-library @types/jest @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser commit-and-tag-version eslint-config-prettier eslint-import-resolver-typescript eslint-plugin-import eslint-plugin-prettier eslint jest-junit jest jsii-diff jsii-docgen jsii-pacmak jsii-rosetta jsii prettier projen ts-jest ts-node typescript aws-cdk-lib constructs"
         },
         {
           "exec": "pnpm exec projen"

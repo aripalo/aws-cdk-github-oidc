@@ -23,29 +23,11 @@ const project = new AlmaCdkConstructLibrary({
   stability: cdk.Stability.EXPERIMENTAL, // or STABLE or DEPRECATED
   majorVersion: 3,
   releaseEnvironment: "production",
-  devDeps: [
-    "@types/github-username-regex",
-    "constructs",
-    "@alma-cdk/construct-library",
-  ],
+  devDeps: ["constructs", "@alma-cdk/construct-library"],
   pnpmSettings: {
     trustPolicyExclude: ["jsii@5.9.35"],
   },
   // codeCov: true,
-
-  // tsconfig: {
-  //   compilerOptions: {
-  //     esModuleInterop: true, // required for github-username-regex
-  //   },
-  // },
 });
-
-// publishToPypi: {
-//   distName: 'aws-cdk-github-oidc',
-//   module: 'aws_cdk_github_oidc',
-// },
-// publishToGo: {
-//   moduleName: 'github.com/aripalo/aws-cdk-github-oidc-go',
-// },
 
 project.synth();

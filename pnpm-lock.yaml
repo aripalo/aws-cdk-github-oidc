@@ -11,9 +11,6 @@ importers:
       '@alma-cdk/construct-library':
         specifier: 0.0.18
         version: 0.0.18(constructs@10.3.0)(projen@0.99.27(constructs@10.3.0))
-      '@types/github-username-regex':
-        specifier: ^1.0.0
-        version: 1.0.2
       '@types/jest':
         specifier: ^30
         version: 30.0.0
@@ -533,9 +530,6 @@ packages:
 
   '@types/estree@1.0.8':
     resolution: {integrity: sha512-dWHzHa2WqEXI/O1E9OjrocMTKJl2mSrEolh1Iomrv6U+JuNwaHXsXx9bLu5gG7BUWFIN0skIQJQ/L1rIex4X6w==}
-
-  '@types/github-username-regex@1.0.2':
-    resolution: {integrity: sha512-ZirTZmuSLQdBJ84UZJuQqdagPwk/KIw2pCBLIwUyEw4muASByFaRrb4H4yWwyC5IrHNhvlhw/Z40ZQeS1iVqUA==}
 
   '@types/istanbul-lib-coverage@2.0.6':
     resolution: {integrity: sha512-2QF/t/auWm0lsy8XtKVPG19v3sSOQlJe/YHZgfjb/KBBHOGSV+J2q/S671rcq9uTBrLAXmZpqJiaQbMT+zNU1w==}
@@ -3642,8 +3636,6 @@ snapshots:
       '@babel/types': 7.29.0
 
   '@types/estree@1.0.8': {}
-
-  '@types/github-username-regex@1.0.2': {}
 
   '@types/istanbul-lib-coverage@2.0.6': {}
 
