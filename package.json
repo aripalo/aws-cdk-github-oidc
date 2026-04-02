@@ -39,7 +39,7 @@
     "organization": true
   },
   "devDependencies": {
-    "@alma-cdk/construct-library": "0.0.19",
+    "@alma-cdk/construct-library": "0.0.20",
     "@types/jest": "^30",
     "@types/node": "^20",
     "@typescript-eslint/eslint-plugin": "^8",
