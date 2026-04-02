@@ -1,11 +1,11 @@
-import * as cdk from 'aws-cdk-lib';
-import * as iam from 'aws-cdk-lib/aws-iam';
-import { Construct } from 'constructs';
+import * as cdk from "aws-cdk-lib";
+import * as iam from "aws-cdk-lib/aws-iam";
+import { Construct } from "constructs";
 
 /**
  * Describes a Github OpenID Connect Identity Provider for AWS IAM.
  */
-export interface IGithubActionsIdentityProvider extends iam.IOidcProvider { }
+export interface IGithubActionsIdentityProvider extends iam.IOidcProvider {}
 
 /**
  * Github Actions as OpenID Connect Identity Provider for AWS IAM.
@@ -17,9 +17,11 @@ export interface IGithubActionsIdentityProvider extends iam.IOidcProvider { }
  *
  * @see https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/configuring-openid-connect-in-amazon-web-services
  */
-export class GithubActionsIdentityProvider extends iam.OidcProviderNative implements IGithubActionsIdentityProvider {
-
-  public static readonly issuer: string = 'token.actions.githubusercontent.com';
+export class GithubActionsIdentityProvider
+  extends iam.OidcProviderNative
+  implements IGithubActionsIdentityProvider
+{
+  public static readonly issuer: string = "token.actions.githubusercontent.com";
 
   /**
    * Retrieve a reference to existing Github OIDC provider in your AWS account.
@@ -34,7 +36,10 @@ export class GithubActionsIdentityProvider extends iam.OidcProviderNative implem
    * @example
    * GithubActionsIdentityProvider.fromAccount(scope, "GithubProvider");
    */
-  public static fromAccount(scope: Construct, id: string): IGithubActionsIdentityProvider {
+  public static fromAccount(
+    scope: Construct,
+    id: string,
+  ): IGithubActionsIdentityProvider {
     const accountId = cdk.Stack.of(scope).account;
     const providerArn = `arn:aws:iam::${accountId}:oidc-provider/${GithubActionsIdentityProvider.issuer}`;
     return iam.OidcProviderNative.fromOidcProviderArn(scope, id, providerArn);
@@ -53,7 +58,7 @@ export class GithubActionsIdentityProvider extends iam.OidcProviderNative implem
   constructor(scope: Construct, id: string) {
     super(scope, id, {
       url: `https://${GithubActionsIdentityProvider.issuer}`,
-      clientIds: ['sts.amazonaws.com'],
+      clientIds: ["sts.amazonaws.com"],
     });
   }
 }

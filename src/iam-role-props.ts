@@ -1,9 +1,5 @@
-import { Duration } from 'aws-cdk-lib';
-import {
-  IManagedPolicy,
-  PolicyDocument,
-} from 'aws-cdk-lib/aws-iam';
-
+import { Duration } from "aws-cdk-lib";
+import { IManagedPolicy, PolicyDocument } from "aws-cdk-lib/aws-iam";
 
 /**
  * Properties for defining an IAM Role.
