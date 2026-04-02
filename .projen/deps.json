@@ -5,6 +5,16 @@
       "type": "build"
     },
     {
+      "name": "@aws-cdk/integ-runner",
+      "version": "2.197.4",
+      "type": "build"
+    },
+    {
+      "name": "@aws-cdk/integ-tests-alpha",
+      "version": "2.220.0-alpha.0",
+      "type": "build"
+    },
+    {
       "name": "@types/jest",
       "version": "^30",
       "type": "build"
@@ -81,6 +91,11 @@
     {
       "name": "jsii",
       "version": "~5.9.0",
+      "type": "build"
+    },
+    {
+      "name": "lefthook",
+      "version": "2.1.4",
       "type": "build"
     },
     {

@@ -1,5 +1,5 @@
 import { AlmaCdkConstructLibrary } from "@alma-cdk/construct-library";
-import { cdk } from "projen";
+import { cdk, github } from "projen";
 
 const project = new AlmaCdkConstructLibrary({
   name: "aws-cdk-github-oidc",
@@ -27,6 +27,58 @@ const project = new AlmaCdkConstructLibrary({
     trustPolicyExclude: ["jsii@5.9.35"],
   },
   codeCov: true,
+});
+
+project.addDevDeps(
+  "@aws-cdk/integ-runner@2.197.4",
+  "@aws-cdk/integ-tests-alpha@2.220.0-alpha.0",
+  "lefthook@2.1.4",
+);
+
+/**
+ * Run with AWS_PROFILE=<YOUR_PROFILE> pnpm run integ:test
+ */
+project.setScript("integ:test", "node ./run-integ-tests.mjs");
+
+project.setScript("prepare", "lefthook install");
+
+project.setScript(
+  "gitleaks:history",
+  'docker run --rm -v "$PWD:/repo" -w /repo ghcr.io/gitleaks/gitleaks:latest git --verbose --config /repo/.gitleaks.toml',
+);
+project.setScript(
+  "gitleaks:dir",
+  'docker run --rm -v "$PWD:/repo" -w /repo ghcr.io/gitleaks/gitleaks:latest dir --verbose --config /repo/.gitleaks.toml',
+);
+
+const gitleaksWorkflow = project.github!.addWorkflow("gitleaks");
+gitleaksWorkflow.on({
+  push: {},
+});
+gitleaksWorkflow.addJobs({
+  gitleaks: {
+    runsOn: ["ubuntu-latest"],
+    permissions: {
+      contents: github.workflows.JobPermission.READ,
+    },
+    steps: [
+      {
+        name: "Checkout",
+        uses: "actions/checkout@v5",
+        with: {
+          fetchDepth: 0,
+        },
+      },
+      {
+        name: "Run gitleaks",
+        uses: "gitleaks/gitleaks-action@v2",
+        env: {
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}",
+          GITLEAKS_CONFIG: ".gitleaks.toml",
+        },
+      },
+    ],
+  },
 });
 
 project.synth();

@@ -67,4 +67,5 @@ tsconfig.json
 !/sonar-project.properties
 !/.nvmrc
 !/pnpm-workspace.yaml
+!/.github/workflows/gitleaks.yml
 !/.projenrc.ts
