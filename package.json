@@ -6,69 +6,70 @@
     "url": "https://github.com/aripalo/aws-cdk-github-oidc.git"
   },
   "scripts": {
-    "build": "npx projen build",
-    "bump": "npx projen bump",
-    "clobber": "npx projen clobber",
-    "compat": "npx projen compat",
-    "compile": "npx projen compile",
-    "default": "npx projen default",
-    "docgen": "npx projen docgen",
-    "eject": "npx projen eject",
-    "eslint": "npx projen eslint",
-    "package": "npx projen package",
-    "package-all": "npx projen package-all",
-    "package:go": "npx projen package:go",
-    "package:js": "npx projen package:js",
-    "package:python": "npx projen package:python",
-    "post-compile": "npx projen post-compile",
-    "post-upgrade": "npx projen post-upgrade",
-    "pre-compile": "npx projen pre-compile",
-    "release": "npx projen release",
-    "test": "npx projen test",
-    "test:watch": "npx projen test:watch",
-    "unbump": "npx projen unbump",
-    "upgrade": "npx projen upgrade",
-    "watch": "npx projen watch",
-    "projen": "npx projen"
+    "build": "pnpm exec projen build",
+    "bump": "pnpm exec projen bump",
+    "clobber": "pnpm exec projen clobber",
+    "compat": "pnpm exec projen compat",
+    "compile": "pnpm exec projen compile",
+    "default": "pnpm exec projen default",
+    "docgen": "pnpm exec projen docgen",
+    "eject": "pnpm exec projen eject",
+    "eslint": "pnpm exec projen eslint",
+    "format": "pnpm exec projen format",
+    "package": "pnpm exec projen package",
+    "package-all": "pnpm exec projen package-all",
+    "package:go": "pnpm exec projen package:go",
+    "package:js": "pnpm exec projen package:js",
+    "package:python": "pnpm exec projen package:python",
+    "post-compile": "pnpm exec projen post-compile",
+    "post-upgrade": "pnpm exec projen post-upgrade",
+    "pre-compile": "pnpm exec projen pre-compile",
+    "release": "pnpm exec projen release",
+    "test": "pnpm exec projen test",
+    "test:update": "pnpm exec projen test:update",
+    "test:watch": "pnpm exec projen test:watch",
+    "unbump": "pnpm exec projen unbump",
+    "upgrade": "pnpm exec projen upgrade",
+    "watch": "pnpm exec projen watch",
+    "projen": "pnpm exec projen"
   },
   "author": {
     "name": "Ari Palo",
     "email": "opensource@aripalo.com",
-    "organization": false
+    "organization": true
   },
   "devDependencies": {
-    "@types/github-username-regex": "^1.0.0",
-    "@types/jest": "^27",
-    "@types/node": "^16",
-    "@typescript-eslint/eslint-plugin": "^5",
-    "@typescript-eslint/parser": "^5",
-    "aws-cdk-lib": "2.89.0",
-    "constructs": "10.0.0",
-    "eslint": "^8",
-    "eslint-import-resolver-node": "^0.3.7",
+    "@alma-cdk/construct-library": "0.0.20",
+    "@types/jest": "^30",
+    "@types/node": "^20",
+    "@typescript-eslint/eslint-plugin": "^8",
+    "@typescript-eslint/parser": "^8",
+    "aws-cdk-lib": "2.220.0",
+    "commit-and-tag-version": "^12",
+    "constructs": "10.3.0",
+    "eslint": "^9",
+    "eslint-config-prettier": "^10.1.8",
     "eslint-import-resolver-typescript": "^2.7.1",
     "eslint-plugin-import": "^2.28.0",
-    "jest": "^27",
-    "jest-junit": "^15",
-    "jsii": "1.x",
+    "eslint-plugin-prettier": "^5.5.5",
+    "jest": "^30",
+    "jest-junit": "^16",
+    "jsii": "~5.9.0",
     "jsii-diff": "^1.86.1",
-    "jsii-docgen": "^3.8.31",
+    "jsii-docgen": "^10.5.0",
     "jsii-pacmak": "^1.86.1",
-    "jsii-rosetta": "1.x",
-    "npm-check-updates": "^16",
-    "projen": "^0.71.161",
-    "standard-version": "^9",
-    "ts-jest": "^27",
-    "typescript": "^4.9.5"
+    "jsii-rosetta": "~5.9.0",
+    "prettier": "^3.8.1",
+    "projen": "^0.99.27",
+    "ts-jest": "^29",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9"
   },
   "peerDependencies": {
-    "aws-cdk-lib": "^2.89.0",
-    "constructs": "^10.0.0"
+    "aws-cdk-lib": "^2.220.0",
+    "constructs": "^10.3.0"
   },
-  "overrides": {
-    "@types/babel__traverse": "7.18.2",
-    "@types/prettier": "2.6.0"
-  },
+  "pnpm": {},
   "keywords": [
     "aws",
     "aws-cdk",
@@ -81,15 +82,21 @@
     "openid-connect"
   ],
   "engines": {
-    "node": ">= 16.20.0"
+    "node": ">= 20 <= 24"
   },
   "main": "lib/index.js",
   "license": "Apache-2.0",
+  "publishConfig": {
+    "access": "public"
+  },
   "version": "0.0.0",
   "jest": {
+    "coverageProvider": "v8",
     "testMatch": [
-      "<rootDir>/src/**/__tests__/**/*.ts?(x)",
-      "<rootDir>/(test|src)/**/*(*.)@(spec|test).ts?(x)"
+      "<rootDir>/@(src|test)/**/*(*.)@(spec|test).ts?(x)",
+      "<rootDir>/@(src|test)/**/__tests__/**/*.ts?(x)",
+      "<rootDir>/@(projenrc)/**/*(*.)@(spec|test).ts?(x)",
+      "<rootDir>/@(projenrc)/**/__tests__/**/*.ts?(x)"
     ],
     "clearMocks": true,
     "collectCoverage": true,
@@ -119,11 +126,13 @@
         }
       ]
     ],
-    "preset": "ts-jest",
-    "globals": {
-      "ts-jest": {
-        "tsconfig": "tsconfig.dev.json"
-      }
+    "transform": {
+      "^.+\\.[t]sx?$": [
+        "ts-jest",
+        {
+          "tsconfig": "tsconfig.dev.json"
+        }
+      ]
     }
   },
   "types": "lib/index.d.ts",
@@ -144,5 +153,5 @@
       "rootDir": "src"
     }
   },
-  "//": "~~ Generated by projen. To modify, edit .projenrc.js and run \"npx projen\"."
+  "//": "~~ Generated by projen. To modify, edit .projenrc.ts and run \"pnpm exec projen\"."
 }
