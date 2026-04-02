@@ -38,3 +38,9 @@ pnpm run gitleaks:dir
 ```sh
 pnpm run gitleaks:history
 ```
+
+## Running integration tests
+
+```sh
+AWS_PROFILE=<YOUR_PROFILE> pnpm run integ:test
+```
