@@ -13,6 +13,11 @@ AWS [CDK](https://aws.amazon.com/cdk/) constructs that define:
 
 These constructs allows you to harden your AWS deployment security by removing the need to create long-term access keys for Github Actions and instead use OpenID Connect to Authenticate your Github Action workflow with AWS IAM.
 
+> [!Tip]
+> Migrating to `v5`? See [Migration Guide](/docs/V5_MIGRATION_GUIDE.md).
+
+<br/>
+
 ## Background information
 
 ![github-aws-oidc](/assets/github-aws-oidc.svg "Github OIDC with AWS")
