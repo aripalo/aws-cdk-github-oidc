@@ -5,12 +5,12 @@ This guide documents how to migrate to `aws-cdk-github-oidc` v5.
 
 ## Changes coming in v5
 
-Switching from [custom resource based `iam.OpenIdConnectProvider`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.OpenIdConnectProvider.html) to [CloudFormation native `iam.OidcProviderNative`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.OidcProviderNative.html) in `v4` resulted to a following error when migrating from v2/v3:
+Switching from [custom resource based `iam.OpenIdConnectProvider`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.OpenIdConnectProvider.html) to [CloudFormation native `iam.OidcProviderNative`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.OidcProviderNative.html) in `v4` resulted to a following error when migrating from `v2`/`v3`:
 ```
 Update of resource type is not permitted. The new template modifies resource type of the following resources: [GithubProvider1CDE27EB]
 ```
 
-To avoid this, v5 prefixes the `AWS::IAM::OIDCProvider` resource logical ID with string `Native`:
+To avoid this, `v5` **prefixes** the `AWS::IAM::OIDCProvider` resource logical ID with string `Native`:
 ```diff
 - GithubProvider1CDE27EB
 + NativeGithubProvider1CDE27EB
@@ -22,7 +22,7 @@ To avoid this, v5 prefixes the `AWS::IAM::OIDCProvider` resource logical ID with
 - From `v3` and older, the migration is straightforward: the old custom-resource-based provider is removed and replaced with the native CloudFormation OIDC provider resource.
 - From `v4`, you have two migration options:
   - recreate the provider by accepting the new logical ID in v5
-  - keep the v4 logical ID by enabling the compatibility feature flag
+  - or keep the v4 logical ID by enabling the compatibility feature flag
 
 ## Migrating From V3 And Older
 
