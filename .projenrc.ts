@@ -21,7 +21,7 @@ const project = new AlmaCdkConstructLibrary({
     "openid-connect",
   ],
   stability: cdk.Stability.EXPERIMENTAL, // or STABLE or DEPRECATED
-  majorVersion: 4,
+  majorVersion: 5,
   releaseEnvironment: "production",
   pnpmSettings: {
     trustPolicyExclude: ["jsii@5.9.35"],
