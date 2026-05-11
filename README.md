@@ -143,3 +143,48 @@ jobs:
 ```
 
 <br/>
+
+## Example CDK App
+
+This repository now includes a simple example app in [`example/`](example/) with two env-agnostic stacks:
+
+- `GithubOidcProviderStack` creates the GitHub OIDC provider and outputs its name and synthesized logical ID.
+- `GithubOidcRoleStack` retrieves the provider with `GithubActionsIdentityProvider.fromAccount(...)` and creates a `GithubActionsRole`.
+
+The sample app is executed with [`tsx`](https://github.com/privatenumber/tsx).
+
+### Manual deployment
+
+From the repository root:
+
+```shell
+cd example
+pnpm exec cdk ls
+pnpm exec cdk synth
+```
+
+Deploy the provider stack first:
+
+```shell
+cd example
+pnpm exec cdk deploy GithubOidcProviderStack
+```
+
+That deployment prints CloudFormation outputs for:
+
+- `OidcProviderName`
+- `OidcProviderLogicalId`
+
+Then deploy the role stack:
+
+```shell
+cd example
+pnpm exec cdk deploy GithubOidcRoleStack
+```
+
+When finished, destroy the sample stacks:
+
+```shell
+cd example
+pnpm exec cdk destroy GithubOidcRoleStack GithubOidcProviderStack
+```

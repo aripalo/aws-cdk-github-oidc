@@ -1,0 +1,3 @@
+{
+  "app": "pnpm exec tsx --tsconfig tsconfig.json app.ts"
+}

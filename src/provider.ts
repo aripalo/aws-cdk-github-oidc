@@ -1,6 +1,7 @@
 import * as cdk from "aws-cdk-lib";
 import * as iam from "aws-cdk-lib/aws-iam";
 import { Construct } from "constructs";
+import { is } from "./feature-flags";
 
 /**
  * Describes a Github OpenID Connect Identity Provider for AWS IAM.
@@ -60,5 +61,13 @@ export class GithubActionsIdentityProvider
       url: `https://${GithubActionsIdentityProvider.issuer}`,
       clientIds: ["sts.amazonaws.com"],
     });
+
+    const resource = this.node.defaultChild as cdk.CfnResource;
+    const stack = cdk.Stack.of(this);
+    const generatedLogicalId = stack.getLogicalId(resource);
+
+    if (!is(this, "compatibilityV4")) {
+      resource.overrideLogicalId(`Native${generatedLogicalId}`);
+    }
   }
 }

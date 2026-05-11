@@ -35,6 +35,7 @@ project.addDevDeps(
   "@aws-cdk/integ-tests-alpha",
   "@aws-cdk/cloud-assembly-schema",
   "lefthook",
+  "tsx",
 );
 
 /**
