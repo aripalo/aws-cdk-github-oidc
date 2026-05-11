@@ -17,10 +17,10 @@ The CloudFormation diff is expected to look like this:
 
 ```diff
 Resources
-[-] Custom::AWSCDKOpenIdConnectProvider GithubProvider/Resource GithubProvider1CDE27EB destroy
-[-] AWS::IAM::Role Custom::AWSCDKOpenIdConnectProviderCustomResourceProvider/Role CustomAWSCDKOpenIdConnectProviderCustomResourceProviderRole517FED65 destroy
-[-] AWS::Lambda::Function Custom::AWSCDKOpenIdConnectProviderCustomResourceProvider/Handler CustomAWSCDKOpenIdConnectProviderCustomResourceProviderHandlerF2C543E0 destroy
-[+] AWS::IAM::OIDCProvider GithubProvider NativeGithubProvider1CDE27EB
+- Custom::AWSCDKOpenIdConnectProvider GithubProvider/Resource GithubProvider1CDE27EB destroy
+- AWS::IAM::Role Custom::AWSCDKOpenIdConnectProviderCustomResourceProvider/Role CustomAWSCDKOpenIdConnectProviderCustomResourceProviderRole517FED65 destroy
+- AWS::Lambda::Function Custom::AWSCDKOpenIdConnectProviderCustomResourceProvider/Handler CustomAWSCDKOpenIdConnectProviderCustomResourceProviderHandlerF2C543E0 destroy
++ AWS::IAM::OIDCProvider GithubProvider NativeGithubProvider1CDE27EB
 ```
 
 This means:
