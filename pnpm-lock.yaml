@@ -9,8 +9,8 @@ importers:
   .:
     devDependencies:
       '@alma-cdk/construct-library':
-        specifier: 0.0.20
-        version: 0.0.20(constructs@10.3.0)(projen@0.99.27(constructs@10.3.0))
+        specifier: 0.0.25
+        version: 0.0.25(constructs@10.3.0)(projen@0.99.27(constructs@10.3.0))
       '@aws-cdk/cloud-assembly-schema':
         specifier: ^48.20.0
         version: 48.20.0
@@ -101,8 +101,8 @@ importers:
 
 packages:
 
-  '@alma-cdk/construct-library@0.0.20':
-    resolution: {integrity: sha512-ksVlk9/kHSag2NEWF7fBTvrbrlRctCzPaQzOeaZsBPnQN4UYOC2FTZWjm6KxEe3tveC/rNgCJIiFUqSEiKrXfg==}
+  '@alma-cdk/construct-library@0.0.25':
+    resolution: {integrity: sha512-2JHraBeUaRggWVX07qjdtY5tPthFibbM7SlyACd6pCyIHX3BdtoHUG8oQhCdLNqoPC99T2QU0Ab1vG0SvyaUOA==}
     engines: {node: '>= 20 <= 24'}
     peerDependencies:
       constructs: ^10.0.0
@@ -3329,7 +3329,7 @@ packages:
 
 snapshots:
 
-  '@alma-cdk/construct-library@0.0.20(constructs@10.3.0)(projen@0.99.27(constructs@10.3.0))':
+  '@alma-cdk/construct-library@0.0.25(constructs@10.3.0)(projen@0.99.27(constructs@10.3.0))':
     dependencies:
       constructs: 10.3.0
       projen: 0.99.27(constructs@10.3.0)
