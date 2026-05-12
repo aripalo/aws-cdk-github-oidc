@@ -12,9 +12,15 @@ Update of resource type is not permitted. The new template modifies resource typ
 
 To avoid this, `v5` **prefixes** the `AWS::IAM::OIDCProvider` resource logical ID with string `Native`:
 ```diff
+- <CdkGeneratedLogicalId>
++ Native<CdkGeneratedLogicalId>
+```
+so for example:
+```diff
 - GithubProvider1CDE27EB
 + NativeGithubProvider1CDE27EB
 ```
+
 … resulting in a new resource being created instead of trying (and failing) to change the type of existing one.
 
 ## Migration Summary
