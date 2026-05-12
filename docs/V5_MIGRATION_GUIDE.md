@@ -75,9 +75,12 @@ Choose this approach if you want to move fully to the new default v5 behavior wi
 
 If you want to avoid any CloudFormation diff for the provider resource when moving from `v4` to `v5`, enable the compatibility feature flag in your CDK context:
 
-```json
+```jsonc
 {
-  "aws-cdk-github-oidc:compatibilityV4": true
+    /* ... */
+    "context": {
+        "aws-cdk-github-oidc:compatibilityV4": true
+    }
 }
 ```
 
