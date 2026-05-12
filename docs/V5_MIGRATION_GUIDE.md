@@ -21,7 +21,7 @@ so for example:
 + NativeGithubProvider1CDE27EB
 ```
 
-… resulting in a new resource being created instead of trying (and failing) to change the type of existing one.
+… resulting in a new resource being created (_instead_ of trying – and failing – to change the type of existing one).
 
 ## Migration Summary
 
@@ -34,7 +34,7 @@ so for example:
 
 In `v3` and older, the GitHub OIDC provider was created using a custom resource. In `v5`, it is created using the native CloudFormation resource type `AWS::IAM::OIDCProvider`.
 
-The CloudFormation diff is expected to look like this:
+The CDK CloudFormation diff is expected to look like this:
 
 ```diff
 Resources
