@@ -43,7 +43,7 @@
     "organization": true
   },
   "devDependencies": {
-    "@alma-cdk/construct-library": "0.0.25",
+    "@alma-cdk/construct-library": "0.0.26",
     "@aws-cdk/cloud-assembly-schema": "^48.20.0",
     "@aws-cdk/integ-runner": "2.197.4",
     "@aws-cdk/integ-tests-alpha": "2.220.0-alpha.0",
@@ -51,9 +51,9 @@
     "@types/node": "^20",
     "@typescript-eslint/eslint-plugin": "^8",
     "@typescript-eslint/parser": "^8",
-    "aws-cdk-lib": "2.220.0",
+    "aws-cdk-lib": "2.247.0",
     "commit-and-tag-version": "^12",
-    "constructs": "10.3.0",
+    "constructs": "10.5.0",
     "eslint": "^9",
     "eslint-config-prettier": "^10.1.8",
     "eslint-import-resolver-typescript": "^2.7.1",
@@ -75,8 +75,8 @@
     "typescript": "^5.9"
   },
   "peerDependencies": {
-    "aws-cdk-lib": "^2.220.0",
-    "constructs": "^10.3.0"
+    "aws-cdk-lib": "^2.247.0",
+    "constructs": "^10.5.0"
   },
   "pnpm": {},
   "keywords": [

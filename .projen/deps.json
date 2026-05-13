@@ -127,12 +127,12 @@
     },
     {
       "name": "aws-cdk-lib",
-      "version": "^2.220.0",
+      "version": "^2.247.0",
       "type": "peer"
     },
     {
       "name": "constructs",
-      "version": "^10.3.0",
+      "version": "^10.5.0",
       "type": "peer"
     }
   ],

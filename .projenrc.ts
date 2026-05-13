@@ -28,6 +28,8 @@ const project = new AlmaCdkConstructLibrary({
     onlyBuiltDependencies: ["lefthook", "esbuild"],
   },
   codeCov: true,
+  cdkVersion: "2.247.0",
+  constructsVersion: "10.5.0",
 });
 
 project.addDevDeps(
