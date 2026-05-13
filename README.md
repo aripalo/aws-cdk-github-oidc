@@ -120,30 +120,23 @@ By default the value of `filter` property will be `'*'` which means any workflow
 
 To actually utilize this in your Github Actions workflow, use [aws-actions/configure-aws-credentials](https://github.com/aws-actions/configure-aws-credentials) to [assume a role](https://github.com/aws-actions/configure-aws-credentials#assuming-a-role).
 
-At the moment you must use the `master` version (until AWS releases a new tag):
-
 ```yaml
 jobs:
-  deploy:
-    name: Upload to Amazon S3
+  whoami:
+    name: Who Am I
     runs-on: ubuntu-latest
     permissions:
       id-token: write # needed to interact with GitHub's OIDC Token endpoint.
-      contents: read
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@master
+        uses: aws-actions/configure-aws-credentials@d979d5b3a71173a29b74b5b88418bfda9437d885 # v6.1.1
         with:
           role-to-assume: arn:aws:iam::123456789012:role/MyUploadRole
           #role-session-name: MySessionName # Optional
           aws-region: us-east-1
-
-      - name: Sync files to S3
+      - name: Get Caller Identity
         run: |
-          aws s3 sync . s3://my-example-bucket
+          aws sts get-caller-identity
 ```
 
 <br/>
