@@ -5,6 +5,51 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_DIR="$(cd "${SCRIPT_DIR}/.." && pwd)"
 cd "${PROJECT_DIR}"
 
+AUTO_TEARDOWN="false"
+
+usage() {
+  cat <<EOF
+Usage: ./scripts/run-migration.sh [--teardown[=true|false]]
+
+Options:
+  --teardown            Perform teardown automatically without asking.
+  --teardown=true       Same as --teardown.
+  --teardown=false      Skip automatic teardown and ask at the end.
+  -h, --help            Show this help message.
+EOF
+}
+
+while (($# > 0)); do
+  case "$1" in
+    --teardown)
+      if (($# > 1)) && [[ "$2" =~ ^(true|false)$ ]]; then
+        AUTO_TEARDOWN="$2"
+        shift 2
+      else
+        AUTO_TEARDOWN="true"
+        shift
+      fi
+      ;;
+    --teardown=*)
+      AUTO_TEARDOWN="${1#*=}"
+      if [[ "${AUTO_TEARDOWN}" != "true" && "${AUTO_TEARDOWN}" != "false" ]]; then
+        echo "Invalid value for --teardown: ${AUTO_TEARDOWN} (expected true|false)" >&2
+        exit 1
+      fi
+      shift
+      ;;
+    -h | --help)
+      usage
+      exit 0
+      ;;
+    *)
+      echo "Unknown argument: $1" >&2
+      usage >&2
+      exit 1
+      ;;
+  esac
+done
+
 STACK_NAME="${MIGRATION_STACK_NAME:-AwsCdkGithubOidcMigrationTest}"
 TMP_DIR="${PROJECT_DIR}/.tmp"
 RESOURCE_MAPPING_PATH="${TMP_DIR}/resource-mapping.json"
@@ -13,6 +58,12 @@ ACCOUNT_ID="$(aws sts get-caller-identity --query "Account" --output text)"
 CALLER_ARN="$(aws sts get-caller-identity --query "Arn" --output text)"
 AWS_PARTITION="$(echo "${CALLER_ARN}" | cut -d: -f2)"
 OIDC_PROVIDER_ARN="arn:${AWS_PARTITION}:iam::${ACCOUNT_ID}:oidc-provider/${OIDC_ISSUER}"
+
+cleanup_tmp_artifacts() {
+  rm -f "${RESOURCE_MAPPING_PATH}"
+}
+
+trap cleanup_tmp_artifacts EXIT
 
 verify_stack_status() {
   local context="$1"
@@ -62,10 +113,16 @@ verify_oidc_provider_present() {
   echo "Verified OIDC provider after ${context}: ${OIDC_PROVIDER_ARN}"
 }
 
+teardown_stack() {
+  echo "==> Teardown: Destroying stack ${STACK_NAME}"
+  MIGRATION_PHASE=v4-import MIGRATION_STACK_NAME="${STACK_NAME}" pnpm exec cdk destroy "${STACK_NAME}" --force
+}
+
 echo "Using stack: ${STACK_NAME}"
 echo "Working directory: ${PROJECT_DIR}"
 echo "Using account: ${ACCOUNT_ID}"
 echo "Using OIDC provider ARN: ${OIDC_PROVIDER_ARN}"
+echo "Auto teardown: ${AUTO_TEARDOWN}"
 
 mkdir -p "${TMP_DIR}"
 
@@ -98,7 +155,8 @@ cat > "${RESOURCE_MAPPING_PATH}" <<EOF
 }
 EOF
 
-MIGRATION_PHASE=v4-import MIGRATION_STACK_NAME="${STACK_NAME}" pnpm exec cdk import "${STACK_NAME}" --resource-mapping "${RESOURCE_MAPPING_PATH}"
+echo "Running non-interactive import..."
+printf "y\ny\n" | MIGRATION_PHASE=v4-import MIGRATION_STACK_NAME="${STACK_NAME}" pnpm exec cdk import "${STACK_NAME}" --resource-mapping "${RESOURCE_MAPPING_PATH}" --force --execute true --require-approval never
 verify_stack_status "phase 4 import" IMPORT_COMPLETE
 verify_oidc_provider_present "phase 4 import"
 
@@ -107,3 +165,15 @@ MIGRATION_PHASE=v4-import MIGRATION_STACK_NAME="${STACK_NAME}" pnpm exec cdk dif
 verify_oidc_provider_present "phase 5 post-import diff"
 
 echo "Migration test flow completed successfully."
+
+if [[ "${AUTO_TEARDOWN}" == "true" ]]; then
+  teardown_stack
+else
+  read -r -p "Teardown test stack now? (y/n) " teardown_answer
+  teardown_answer="${teardown_answer,,}"
+  if [[ "${teardown_answer}" == "y" || "${teardown_answer}" == "yes" ]]; then
+    teardown_stack
+  else
+    echo "Skipping teardown. Stack remains deployed: ${STACK_NAME}"
+  fi
+fi

@@ -33,6 +33,12 @@ pnpm install
 pnpm run test-migration
 ```
 
+Run with automatic teardown (no prompt at the end):
+
+```sh
+bash ./scripts/run-migration.sh --teardown
+```
+
 Optional environment variable:
 
 - `MIGRATION_STACK_NAME` (default: `AwsCdkGithubOidcMigrationTest`)
@@ -49,6 +55,11 @@ Optional environment variable:
 5. Generate `./.tmp/resource-mapping.json` (not committed) and run:
    - `pnpm exec cdk import <STACK_NAME> --resource-mapping ./.tmp/resource-mapping.json`
 6. Run `pnpm exec cdk diff` for verification
+
+After step 6, the script asks whether to delete the test stack.
+- Reply `y` or `yes` to destroy it.
+- Reply `n` to keep it deployed.
+- Use `--teardown` (or `--teardown=true`) to destroy without prompting.
 
 ## Resource mapping
 
