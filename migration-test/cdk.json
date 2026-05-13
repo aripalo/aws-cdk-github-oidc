@@ -1,0 +1,6 @@
+{
+  "app": "pnpm exec tsx bin/app.ts",
+  "context": {
+    "@aws-cdk/core:newStyleStackSynthesis": true
+  }
+}
