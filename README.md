@@ -146,7 +146,7 @@ jobs:
 
 ## Migration Guide
 
-- [v2→v3](#v2--v3)
+- [v2→v3](#v2v3)
 
 ### v2→v3
 
