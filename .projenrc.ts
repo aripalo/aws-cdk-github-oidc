@@ -27,6 +27,16 @@ const project = new AlmaCdkConstructLibrary({
     trustPolicyExclude: ["jsii@5.9.35"],
   },
   codeCov: true,
+  cdkVersion: "v2.237.0", // https://github.com/aws/aws-cdk/releases/tag/v2.237.0 & https://github.com/aws/aws-cdk/commit/09383cbad28336441f0fb405c9d8a190135620dc
 });
+
+project.addDevDeps(
+  "tsx",
+  "@aws-cdk/integ-runner",
+  "@aws-cdk/integ-tests-alpha",
+  "@aws-cdk/cloud-assembly-schema",
+  "lefthook",
+  "semver",
+);
 
 project.synth();

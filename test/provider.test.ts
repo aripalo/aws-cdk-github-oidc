@@ -17,6 +17,20 @@ test("New Provider", () => {
   });
 });
 
+test("Provider honors removalPolicy prop", () => {
+  const app = new cdk.App();
+  const stack = new cdk.Stack(app);
+  new GithubActionsIdentityProvider(stack, "GithubProvider", {
+    removalPolicy: cdk.RemovalPolicy.RETAIN,
+  });
+  const template = Template.fromStack(stack);
+
+  template.hasResource("Custom::AWSCDKOpenIdConnectProvider", {
+    DeletionPolicy: "Retain",
+    UpdateReplacePolicy: "Retain",
+  });
+});
+
 test("Existing Provider", () => {
   const app = new cdk.App();
   const stack = new cdk.Stack(app);

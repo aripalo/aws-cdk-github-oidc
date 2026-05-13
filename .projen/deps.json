@@ -5,6 +5,18 @@
       "type": "build"
     },
     {
+      "name": "@aws-cdk/cloud-assembly-schema",
+      "type": "build"
+    },
+    {
+      "name": "@aws-cdk/integ-runner",
+      "type": "build"
+    },
+    {
+      "name": "@aws-cdk/integ-tests-alpha",
+      "type": "build"
+    },
+    {
       "name": "@types/jest",
       "version": "^30",
       "type": "build"
@@ -84,11 +96,19 @@
       "type": "build"
     },
     {
+      "name": "lefthook",
+      "type": "build"
+    },
+    {
       "name": "prettier",
       "type": "build"
     },
     {
       "name": "projen",
+      "type": "build"
+    },
+    {
+      "name": "semver",
       "type": "build"
     },
     {
@@ -101,13 +121,17 @@
       "type": "build"
     },
     {
+      "name": "tsx",
+      "type": "build"
+    },
+    {
       "name": "typescript",
       "version": "^5.9",
       "type": "build"
     },
     {
       "name": "aws-cdk-lib",
-      "version": "^2.220.0",
+      "version": "^v2.237.0",
       "type": "peer"
     },
     {

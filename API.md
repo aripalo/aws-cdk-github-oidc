@@ -17,13 +17,14 @@ Use `fromAccount` to retrieve a reference to existing Github OIDC provider.
 ```typescript
 import { GithubActionsIdentityProvider } from 'aws-cdk-github-oidc'
 
-new GithubActionsIdentityProvider(scope: Construct, id: string)
+new GithubActionsIdentityProvider(scope: Construct, id: string, props?: GithubActionsIdentityProviderProps)
 ```
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#aws-cdk-github-oidc.GithubActionsIdentityProvider.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | CDK Stack or Construct to which the provider is assigned to. |
 | <code><a href="#aws-cdk-github-oidc.GithubActionsIdentityProvider.Initializer.parameter.id">id</a></code> | <code>string</code> | CDK Construct ID given to the construct. |
+| <code><a href="#aws-cdk-github-oidc.GithubActionsIdentityProvider.Initializer.parameter.props">props</a></code> | <code><a href="#aws-cdk-github-oidc.GithubActionsIdentityProviderProps">GithubActionsIdentityProviderProps</a></code> | optional properties for the provider. |
 
 ---
 
@@ -40,6 +41,14 @@ CDK Stack or Construct to which the provider is assigned to.
 - *Type:* string
 
 CDK Construct ID given to the construct.
+
+---
+
+##### `props`<sup>Optional</sup> <a name="props" id="aws-cdk-github-oidc.GithubActionsIdentityProvider.Initializer.parameter.props"></a>
+
+- *Type:* <a href="#aws-cdk-github-oidc.GithubActionsIdentityProviderProps">GithubActionsIdentityProviderProps</a>
+
+optional properties for the provider.
 
 ---
 
@@ -234,9 +243,9 @@ CDK Construct ID given to the construct.
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#aws-cdk-github-oidc.GithubActionsIdentityProvider.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#aws-cdk-github-oidc.GithubActionsIdentityProvider.property.env">env</a></code> | <code>aws-cdk-lib.ResourceEnvironment</code> | The environment this resource belongs to. |
+| <code><a href="#aws-cdk-github-oidc.GithubActionsIdentityProvider.property.env">env</a></code> | <code>aws-cdk-lib.interfaces.ResourceEnvironment</code> | The environment this resource belongs to. |
 | <code><a href="#aws-cdk-github-oidc.GithubActionsIdentityProvider.property.stack">stack</a></code> | <code>aws-cdk-lib.Stack</code> | The stack in which this resource is defined. |
-| <code><a href="#aws-cdk-github-oidc.GithubActionsIdentityProvider.property.oidcProviderRef">oidcProviderRef</a></code> | <code>aws-cdk-lib.aws_iam.OIDCProviderReference</code> | A reference to a OIDCProvider resource. |
+| <code><a href="#aws-cdk-github-oidc.GithubActionsIdentityProvider.property.oidcProviderRef">oidcProviderRef</a></code> | <code>aws-cdk-lib.interfaces.aws_iam.OIDCProviderReference</code> | A reference to a OIDCProvider resource. |
 | <code><a href="#aws-cdk-github-oidc.GithubActionsIdentityProvider.property.openIdConnectProviderArn">openIdConnectProviderArn</a></code> | <code>string</code> | The Amazon Resource Name (ARN) of the IAM OpenID Connect provider. |
 | <code><a href="#aws-cdk-github-oidc.GithubActionsIdentityProvider.property.openIdConnectProviderIssuer">openIdConnectProviderIssuer</a></code> | <code>string</code> | The issuer for OIDC Provider. |
 | <code><a href="#aws-cdk-github-oidc.GithubActionsIdentityProvider.property.openIdConnectProviderthumbprints">openIdConnectProviderthumbprints</a></code> | <code>string</code> | The thumbprints configured for this provider. |
@@ -261,16 +270,17 @@ The tree node.
 public readonly env: ResourceEnvironment;
 ```
 
-- *Type:* aws-cdk-lib.ResourceEnvironment
+- *Type:* aws-cdk-lib.interfaces.ResourceEnvironment
 
 The environment this resource belongs to.
 
-For resources that are created and managed by the CDK
-(generally, those created by creating new class instances like Role, Bucket, etc.),
-this is always the same as the environment of the stack they belong to;
-however, for imported resources
-(those obtained from static methods like fromRoleArn, fromBucketName, etc.),
-that might be different than the stack they were imported into.
+For resources that are created and managed in a Stack (those created by
+creating new class instances like `new Role()`, `new Bucket()`, etc.), this
+is always the same as the environment of the stack they belong to.
+
+For referenced resources (those obtained from referencing methods like
+`Role.fromRoleArn()`, `Bucket.fromBucketName()`, etc.), they might be
+different than the stack they were imported into.
 
 ---
 
@@ -292,7 +302,7 @@ The stack in which this resource is defined.
 public readonly oidcProviderRef: OIDCProviderReference;
 ```
 
-- *Type:* aws-cdk-lib.aws_iam.OIDCProviderReference
+- *Type:* aws-cdk-lib.interfaces.aws_iam.OIDCProviderReference
 
 A reference to a OIDCProvider resource.
 
@@ -870,15 +880,16 @@ Return whether the given object is a Role.
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#aws-cdk-github-oidc.GithubActionsRole.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#aws-cdk-github-oidc.GithubActionsRole.property.env">env</a></code> | <code>aws-cdk-lib.ResourceEnvironment</code> | The environment this resource belongs to. |
+| <code><a href="#aws-cdk-github-oidc.GithubActionsRole.property.env">env</a></code> | <code>aws-cdk-lib.interfaces.ResourceEnvironment</code> | The environment this resource belongs to. |
 | <code><a href="#aws-cdk-github-oidc.GithubActionsRole.property.stack">stack</a></code> | <code>aws-cdk-lib.Stack</code> | The stack in which this resource is defined. |
 | <code><a href="#aws-cdk-github-oidc.GithubActionsRole.property.assumeRoleAction">assumeRoleAction</a></code> | <code>string</code> | When this Principal is used in an AssumeRole policy, the action to use. |
 | <code><a href="#aws-cdk-github-oidc.GithubActionsRole.property.grantPrincipal">grantPrincipal</a></code> | <code>aws-cdk-lib.aws_iam.IPrincipal</code> | The principal to grant permissions to. |
+| <code><a href="#aws-cdk-github-oidc.GithubActionsRole.property.grants">grants</a></code> | <code>aws-cdk-lib.aws_iam.RoleGrants</code> | Collection of grant methods for a Role. |
 | <code><a href="#aws-cdk-github-oidc.GithubActionsRole.property.policyFragment">policyFragment</a></code> | <code>aws-cdk-lib.aws_iam.PrincipalPolicyFragment</code> | Returns the role. |
 | <code><a href="#aws-cdk-github-oidc.GithubActionsRole.property.roleArn">roleArn</a></code> | <code>string</code> | Returns the ARN of this role. |
 | <code><a href="#aws-cdk-github-oidc.GithubActionsRole.property.roleId">roleId</a></code> | <code>string</code> | Returns the stable and unique string identifying the role. |
 | <code><a href="#aws-cdk-github-oidc.GithubActionsRole.property.roleName">roleName</a></code> | <code>string</code> | Returns the name of the role. |
-| <code><a href="#aws-cdk-github-oidc.GithubActionsRole.property.roleRef">roleRef</a></code> | <code>aws-cdk-lib.aws_iam.RoleReference</code> | A reference to a Role resource. |
+| <code><a href="#aws-cdk-github-oidc.GithubActionsRole.property.roleRef">roleRef</a></code> | <code>aws-cdk-lib.interfaces.aws_iam.RoleReference</code> | A reference to a Role resource. |
 | <code><a href="#aws-cdk-github-oidc.GithubActionsRole.property.assumeRolePolicy">assumeRolePolicy</a></code> | <code>aws-cdk-lib.aws_iam.PolicyDocument</code> | The assume role policy document associated with this role. |
 | <code><a href="#aws-cdk-github-oidc.GithubActionsRole.property.permissionsBoundary">permissionsBoundary</a></code> | <code>aws-cdk-lib.aws_iam.IManagedPolicy</code> | Returns the permissions boundary attached to this role. |
 | <code><a href="#aws-cdk-github-oidc.GithubActionsRole.property.principalAccount">principalAccount</a></code> | <code>string</code> | The AWS account ID of this principal. |
@@ -903,16 +914,17 @@ The tree node.
 public readonly env: ResourceEnvironment;
 ```
 
-- *Type:* aws-cdk-lib.ResourceEnvironment
+- *Type:* aws-cdk-lib.interfaces.ResourceEnvironment
 
 The environment this resource belongs to.
 
-For resources that are created and managed by the CDK
-(generally, those created by creating new class instances like Role, Bucket, etc.),
-this is always the same as the environment of the stack they belong to;
-however, for imported resources
-(those obtained from static methods like fromRoleArn, fromBucketName, etc.),
-that might be different than the stack they were imported into.
+For resources that are created and managed in a Stack (those created by
+creating new class instances like `new Role()`, `new Bucket()`, etc.), this
+is always the same as the environment of the stack they belong to.
+
+For referenced resources (those obtained from referencing methods like
+`Role.fromRoleArn()`, `Bucket.fromBucketName()`, etc.), they might be
+different than the stack they were imported into.
 
 ---
 
@@ -949,6 +961,18 @@ public readonly grantPrincipal: IPrincipal;
 - *Type:* aws-cdk-lib.aws_iam.IPrincipal
 
 The principal to grant permissions to.
+
+---
+
+##### `grants`<sup>Required</sup> <a name="grants" id="aws-cdk-github-oidc.GithubActionsRole.property.grants"></a>
+
+```typescript
+public readonly grants: RoleGrants;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.RoleGrants
+
+Collection of grant methods for a Role.
 
 ---
 
@@ -1009,7 +1033,7 @@ Returns the name of the role.
 public readonly roleRef: RoleReference;
 ```
 
-- *Type:* aws-cdk-lib.aws_iam.RoleReference
+- *Type:* aws-cdk-lib.interfaces.aws_iam.RoleReference
 
 A reference to a Role resource.
 
@@ -1077,6 +1101,37 @@ Uniquely identifies this class.
 ---
 
 ## Structs <a name="Structs" id="Structs"></a>
+
+### GithubActionsIdentityProviderProps <a name="GithubActionsIdentityProviderProps" id="aws-cdk-github-oidc.GithubActionsIdentityProviderProps"></a>
+
+#### Initializer <a name="Initializer" id="aws-cdk-github-oidc.GithubActionsIdentityProviderProps.Initializer"></a>
+
+```typescript
+import { GithubActionsIdentityProviderProps } from 'aws-cdk-github-oidc'
+
+const githubActionsIdentityProviderProps: GithubActionsIdentityProviderProps = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#aws-cdk-github-oidc.GithubActionsIdentityProviderProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy for the provider. |
+
+---
+
+##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="aws-cdk-github-oidc.GithubActionsIdentityProviderProps.property.removalPolicy"></a>
+
+```typescript
+public readonly removalPolicy: RemovalPolicy;
+```
+
+- *Type:* aws-cdk-lib.RemovalPolicy
+- *Default:* cdk.RemovalPolicy.DESTROY
+
+The removal policy for the provider.
+
+---
 
 ### GithubActionsRoleProps <a name="GithubActionsRoleProps" id="aws-cdk-github-oidc.GithubActionsRoleProps"></a>
 
@@ -1660,9 +1715,9 @@ Describes a Github OpenID Connect Identity Provider for AWS IAM.
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#aws-cdk-github-oidc.IGithubActionsIdentityProvider.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#aws-cdk-github-oidc.IGithubActionsIdentityProvider.property.env">env</a></code> | <code>aws-cdk-lib.ResourceEnvironment</code> | The environment this resource belongs to. |
+| <code><a href="#aws-cdk-github-oidc.IGithubActionsIdentityProvider.property.env">env</a></code> | <code>aws-cdk-lib.interfaces.ResourceEnvironment</code> | The environment this resource belongs to. |
 | <code><a href="#aws-cdk-github-oidc.IGithubActionsIdentityProvider.property.stack">stack</a></code> | <code>aws-cdk-lib.Stack</code> | The stack in which this resource is defined. |
-| <code><a href="#aws-cdk-github-oidc.IGithubActionsIdentityProvider.property.oidcProviderRef">oidcProviderRef</a></code> | <code>aws-cdk-lib.aws_iam.OIDCProviderReference</code> | A reference to a OIDCProvider resource. |
+| <code><a href="#aws-cdk-github-oidc.IGithubActionsIdentityProvider.property.oidcProviderRef">oidcProviderRef</a></code> | <code>aws-cdk-lib.interfaces.aws_iam.OIDCProviderReference</code> | A reference to a OIDCProvider resource. |
 | <code><a href="#aws-cdk-github-oidc.IGithubActionsIdentityProvider.property.openIdConnectProviderArn">openIdConnectProviderArn</a></code> | <code>string</code> | The Amazon Resource Name (ARN) of the IAM OpenID Connect provider. |
 | <code><a href="#aws-cdk-github-oidc.IGithubActionsIdentityProvider.property.openIdConnectProviderIssuer">openIdConnectProviderIssuer</a></code> | <code>string</code> | The issuer for OIDC Provider. |
 
@@ -1686,16 +1741,17 @@ The tree node.
 public readonly env: ResourceEnvironment;
 ```
 
-- *Type:* aws-cdk-lib.ResourceEnvironment
+- *Type:* aws-cdk-lib.interfaces.ResourceEnvironment
 
 The environment this resource belongs to.
 
-For resources that are created and managed by the CDK
-(generally, those created by creating new class instances like Role, Bucket, etc.),
-this is always the same as the environment of the stack they belong to;
-however, for imported resources
-(those obtained from static methods like fromRoleArn, fromBucketName, etc.),
-that might be different than the stack they were imported into.
+For resources that are created and managed in a Stack (those created by
+creating new class instances like `new Role()`, `new Bucket()`, etc.), this
+is always the same as the environment of the stack they belong to.
+
+For referenced resources (those obtained from referencing methods like
+`Role.fromRoleArn()`, `Bucket.fromBucketName()`, etc.), they might be
+different than the stack they were imported into.
 
 ---
 
@@ -1717,7 +1773,7 @@ The stack in which this resource is defined.
 public readonly oidcProviderRef: OIDCProviderReference;
 ```
 
-- *Type:* aws-cdk-lib.aws_iam.OIDCProviderReference
+- *Type:* aws-cdk-lib.interfaces.aws_iam.OIDCProviderReference
 
 A reference to a OIDCProvider resource.
 

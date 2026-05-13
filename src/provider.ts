@@ -2,6 +2,15 @@ import * as cdk from "aws-cdk-lib";
 import * as iam from "aws-cdk-lib/aws-iam";
 import { Construct } from "constructs";
 
+export interface GithubActionsIdentityProviderProps {
+  /**
+   * The removal policy for the provider.
+   *
+   * @default cdk.RemovalPolicy.DESTROY
+   */
+  readonly removalPolicy?: cdk.RemovalPolicy;
+}
+
 /**
  * Describes a Github OpenID Connect Identity Provider for AWS IAM.
  */
@@ -54,12 +63,18 @@ export class GithubActionsIdentityProvider
    *
    * @param scope CDK Stack or Construct to which the provider is assigned to
    * @param id CDK Construct ID given to the construct
+   * @param props optional properties for the provider
    *
    * @example
    * new GithubActionsIdentityProvider(scope, "GithubProvider");
    */
-  constructor(scope: Construct, id: string) {
+  constructor(
+    scope: Construct,
+    id: string,
+    props?: GithubActionsIdentityProviderProps,
+  ) {
     super(scope, id, {
+      ...props,
       url: `https://${GithubActionsIdentityProvider.issuer}`,
       clientIds: ["sts.amazonaws.com"],
     });

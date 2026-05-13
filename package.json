@@ -39,12 +39,15 @@
     "organization": true
   },
   "devDependencies": {
-    "@alma-cdk/construct-library": "0.0.20",
+    "@alma-cdk/construct-library": "0.0.26",
+    "@aws-cdk/cloud-assembly-schema": "^48.20.0",
+    "@aws-cdk/integ-runner": "^2.197.20",
+    "@aws-cdk/integ-tests-alpha": "^2.253.1-alpha.0",
     "@types/jest": "^30",
     "@types/node": "^20",
     "@typescript-eslint/eslint-plugin": "^8",
     "@typescript-eslint/parser": "^8",
-    "aws-cdk-lib": "2.220.0",
+    "aws-cdk-lib": "2.237.0",
     "commit-and-tag-version": "^12",
     "constructs": "10.3.0",
     "eslint": "^9",
@@ -59,14 +62,17 @@
     "jsii-docgen": "^10.5.0",
     "jsii-pacmak": "^1.86.1",
     "jsii-rosetta": "~5.9.0",
+    "lefthook": "^2.1.6",
     "prettier": "^3.8.1",
     "projen": "^0.99.27",
+    "semver": "^7.7.4",
     "ts-jest": "^29",
     "ts-node": "^10.9.2",
+    "tsx": "^4.21.0",
     "typescript": "^5.9"
   },
   "peerDependencies": {
-    "aws-cdk-lib": "^2.220.0",
+    "aws-cdk-lib": "^v2.237.0",
     "constructs": "^10.3.0"
   },
   "pnpm": {},

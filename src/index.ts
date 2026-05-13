@@ -1,6 +1,7 @@
 export {
   GithubActionsIdentityProvider,
   IGithubActionsIdentityProvider,
+  type GithubActionsIdentityProviderProps,
 } from "./provider";
 export {
   GithubActionsRole,
