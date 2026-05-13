@@ -27,6 +27,7 @@ const project = new AlmaCdkConstructLibrary({
     v3: {
       majorVersion: 3,
       environment: "production",
+      npmDistTag: "v3",
     },
   },
   pnpmSettings: {
