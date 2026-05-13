@@ -23,6 +23,12 @@ const project = new AlmaCdkConstructLibrary({
   stability: cdk.Stability.EXPERIMENTAL, // or STABLE or DEPRECATED
   majorVersion: 4,
   releaseEnvironment: "production",
+  releaseBranches: {
+    v3: {
+      majorVersion: 3,
+      environment: "production",
+    },
+  },
   pnpmSettings: {
     trustPolicyExclude: ["jsii@5.9.35"],
     onlyBuiltDependencies: ["lefthook"],
