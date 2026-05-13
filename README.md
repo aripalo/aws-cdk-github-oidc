@@ -32,7 +32,7 @@ These constructs allows you to harden your AWS deployment security by removing t
 ## Getting started
 
 ```shell
-npm i -D aws-cdk-github-oidc
+pnpm add -D aws-cdk-github-oidc
 ```
 
 <br/>
