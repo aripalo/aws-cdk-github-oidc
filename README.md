@@ -207,11 +207,9 @@ jobs:
     - const provider = new GithubActionsIdentityProvider(this, "GithubProvider", {
     -  removalPolicy: cdk.RemovalPolicy.RETAIN,
     - });
-    + const provider = GithubActionsIdentityProvider.fromAccount(this, "GithubProviderReference");
+    + const provider = GithubActionsIdentityProvider.fromAccount(this, "GithubProviderReference"); // NOTICE the different construct ID
     ```
-    
-    > [!IMPORTANT]
-    > Notice the different construct ID (in the example `GithubProviderReference` instead of ~~`GithubProvider`~~). This is required so that the CDK treats the GitHub OIDC provider lookup as a different "thing" and does not try to change the type of existing construct.
+    ⚠️ **Notice the different construct ID** (in the example `GithubProviderReference` instead of ~~`GithubProvider`~~). This is required so that the CDK treats the GitHub OIDC provider lookup as a different "thing" and does not try to change the type of existing construct.
 
 7. Check `pnpm exec cdk diff` which should look similar to:
     ```sh
