@@ -162,7 +162,7 @@ jobs:
     pnpm add -D aws-cdk-lib@^2.237.0
     ```
 
-2. Install `v3.1.0` or newer version of this library:
+2. Install `v3.1.0` (or newer v3 release) of this library:
 
     ```sh
     pnpm add -D aws-cdk-github-oidc@^3.1
@@ -202,7 +202,7 @@ jobs:
 
 4. Deploy the changes `pnpm exec cdk deploy`
 
-5. Once the `RETAIN` removal policy has been successfully deployed, upgrade this library to `v4.2` or newer:
+5. Once the `RETAIN` removal policy has been successfully deployed, upgrade this library to `v4.2` (or newer v4 release):
 
     ```sh
     pnpm add -D aws-cdk-github-oidc@^4.2
