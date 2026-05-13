@@ -25,6 +25,7 @@
     "post-upgrade": "pnpm exec projen post-upgrade",
     "pre-compile": "pnpm exec projen pre-compile",
     "release": "pnpm exec projen release",
+    "release:v3": "pnpm exec projen release:v3",
     "test": "pnpm exec projen test",
     "test:update": "pnpm exec projen test:update",
     "test:watch": "pnpm exec projen test:watch",
