@@ -170,7 +170,7 @@ if [[ "${AUTO_TEARDOWN}" == "true" ]]; then
   teardown_stack
 else
   read -r -p "Teardown test stack now? (y/n) " teardown_answer
-  teardown_answer="${teardown_answer,,}"
+  teardown_answer="$(printf '%s' "${teardown_answer}" | tr '[:upper:]' '[:lower:]')"
   if [[ "${teardown_answer}" == "y" || "${teardown_answer}" == "yes" ]]; then
     teardown_stack
   else
