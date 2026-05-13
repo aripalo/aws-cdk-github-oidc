@@ -1,0 +1,5 @@
+{
+  "GithubProvider1CDE27EB": {
+    "Arn": "arn:aws:iam::__ACCOUNT_ID__:oidc-provider/token.actions.githubusercontent.com"
+  }
+}
