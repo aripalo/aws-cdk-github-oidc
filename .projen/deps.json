@@ -117,13 +117,17 @@
       "type": "build"
     },
     {
+      "name": "tsx",
+      "type": "build"
+    },
+    {
       "name": "typescript",
       "version": "^5.9",
       "type": "build"
     },
     {
       "name": "aws-cdk-lib",
-      "version": "^2.220.0",
+      "version": "^v2.237.0",
       "type": "peer"
     },
     {
