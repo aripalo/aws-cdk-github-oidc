@@ -149,7 +149,7 @@ jobs:
 
 ### v2→v3
 
-1. Install AWS CDK version [`v2.237.0`](https://github.com/aws/aws-cdk/releases/tag/v2.237.0) or newer required (due to support of [OIDC provider removal policy support](https://github.com/aws/aws-cdk/commit/09383cbad28336441f0fb405c9d8a190135620dc)):
+1. Install AWS CDK version [`v2.237.0`](https://github.com/aws/aws-cdk/releases/tag/v2.237.0) or newer required (due to support of [OIDC provider removal policy](https://github.com/aws/aws-cdk/commit/09383cbad28336441f0fb405c9d8a190135620dc)):
     
     ```sh
     pnpm add -D aws-cdk-lib@^2.237.0
