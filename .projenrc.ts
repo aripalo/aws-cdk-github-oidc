@@ -25,6 +25,7 @@ const project = new AlmaCdkConstructLibrary({
   releaseEnvironment: "production",
   pnpmSettings: {
     trustPolicyExclude: ["jsii@5.9.35"],
+    onlyBuiltDependencies: ["lefthook", "esbuild"],
   },
   releaseBranches: {
     v3: {
