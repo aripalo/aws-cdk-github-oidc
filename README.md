@@ -173,8 +173,8 @@ jobs:
 ### v3→v4
 
 > [!CAUTION]
-> The following steps describe a **no-downtime** migration path. 
-> It is somewhat _involved_: Hence some users may decide to use "destroy + redeploy" strategy instead, but that causes downtime to authenticating from GitHub Actions to AWS using OIDC.
+> The following steps describe a _**no-downtime** migration path_. 
+> It is the recommended approach, but somewhat _involved_: Hence some users may decide to use "destroy + redeploy" strategy instead, which causes downtime to authenticating from GitHub Actions to AWS using OIDC.
 
 1. Ensure you are running `v3.1.0` (or newer v3 release) of this library, see [v2→v3](#v2v3).
 
