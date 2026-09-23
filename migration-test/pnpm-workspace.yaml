@@ -1,0 +1,21 @@
+# Copied from repository root pnpm-workspace.yaml to keep identical pnpm policies
+# while keeping migration-test dependency changes isolated.
+
+minimumReleaseAge: 4320
+minimumReleaseAgeExclude:
+  - "@alma-cdk/construct-library"
+  - "aws-cdk-github-oidc"
+trustPolicy: no-downgrade
+trustPolicyIgnoreAfter: 20160
+trustPolicyExclude:
+  - jsii@5.9.33
+  - jsii@5.9.35
+nodeLinker: hoisted
+resolutionMode: highest
+strictDepBuilds: true
+onlyBuiltDependencies:
+  - unrs-resolver
+  - lefthook
+  - esbuild
+blockExoticSubdeps: true
+overrides: {}

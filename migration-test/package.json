@@ -1,0 +1,24 @@
+{
+  "name": "migration-test",
+  "private": true,
+  "packageManager": "pnpm@10.19.0",
+  "scripts": {
+    "build": "tsc --noEmit",
+    "cdk": "pnpm exec cdk",
+    "synth": "pnpm exec cdk synth",
+    "diff": "pnpm exec cdk diff",
+    "deploy": "pnpm exec cdk deploy --require-approval never",
+    "test-migration": "bash ./scripts/run-migration.sh"
+  },
+  "dependencies": {
+    "aws-cdk-github-oidc": "^2.4.1",
+    "aws-cdk-lib": "2.220.0",
+    "constructs": "^10.3.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "aws-cdk": "^2",
+    "tsx": "^4",
+    "typescript": "^5"
+  }
+}

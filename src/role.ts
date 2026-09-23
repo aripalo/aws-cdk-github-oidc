@@ -1,15 +1,17 @@
-import * as cdk from 'aws-cdk-lib';
-import * as iam from 'aws-cdk-lib/aws-iam';
-import { Construct } from 'constructs';
-import { RoleProps } from './iam-role-props';
-import githubUsernameRegex from './owner-regexp';
-import { GithubActionsIdentityProvider, IGithubActionsIdentityProvider } from './provider';
+import * as cdk from "aws-cdk-lib";
+import * as iam from "aws-cdk-lib/aws-iam";
+import { Construct } from "constructs";
+import { RoleProps } from "./iam-role-props";
+import githubUsernameRegex from "./owner-regexp";
+import {
+  GithubActionsIdentityProvider,
+  IGithubActionsIdentityProvider,
+} from "./provider";
 
 /**
  * Github related configuration that forms the trust policy for this IAM Role.
  */
 export interface GithubConfiguration {
-
   /**
    * Reference to Github OpenID Connect Provider configured in AWS IAM.
    *
@@ -36,7 +38,36 @@ export interface GithubConfiguration {
   readonly repo: string;
 
   /**
+   * Numeric Github ID of the repository owner (organization or user), which
+   * makes the subject immutable. Must be given together with `repoId`.
+   *
+   * @default - subject refers to the owner and repository by name
+   *
+   * @example
+   * '123456'
+   *
+   * @see https://docs.github.com/en/actions/reference/security/oidc#immutable-subject-claims
+   */
+  readonly ownerId?: string;
+
+  /**
+   * Numeric Github ID of the repository, which makes the subject immutable.
+   * Must be given together with `ownerId`.
+   *
+   * @default - subject refers to the owner and repository by name
+   *
+   * @example
+   * '456789'
+   *
+   * @see https://docs.github.com/en/actions/reference/security/oidc#immutable-subject-claims
+   */
+  readonly repoId?: string;
+
+  /**
    * Subject condition filter, appended after `repo:${owner}/${repo}:` string in IAM Role trust relationship.
+   *
+   * With `ownerId` & `repoId` given, appended after
+   * `repo:${owner}@${ownerId}/${repo}@${repoId}:` instead.
    *
    * @default
    * '*'
@@ -69,7 +100,8 @@ export interface GithubConfiguration {
  *   roleName: 'MyDeployRole',
  * }
  */
-export interface GithubActionsRoleProps extends GithubConfiguration, RoleProps {}
+export interface GithubActionsRoleProps
+  extends GithubConfiguration, RoleProps {}
 
 /**
  * Define an IAM Role that can be assumed by Github Actions workflow
@@ -90,17 +122,20 @@ export interface GithubActionsRoleProps extends GithubConfiguration, RoleProps {
  * myBucket.grantWrite(uploadRole);
  */
 export class GithubActionsRole extends iam.Role {
-
   /**
    * Extracts props given for the created IAM Role Construct.
    * @param props for the GithubActionsRole
    * @returns for the IAM Role
    */
-  private static extractRoleProps(props: GithubActionsRoleProps): iam.RoleProps {
+  private static extractRoleProps(
+    props: GithubActionsRoleProps,
+  ): iam.RoleProps {
     const extractProps = <any>props;
     delete extractProps.provider;
     delete extractProps.owner;
     delete extractProps.repo;
+    delete extractProps.ownerId;
+    delete extractProps.repoId;
     delete extractProps.filter;
     return extractProps;
   }
@@ -108,23 +143,44 @@ export class GithubActionsRole extends iam.Role {
   /** Validates the Github owner (organization or user) name. */
   private static validateOwner(scope: Construct, owner: string): void {
     if (githubUsernameRegex.test(owner) !== true) {
-      cdk.Annotations.of(scope).addError(`Invalid Github Repository Owner "${owner}". Must only contain alphanumeric characters or hyphens, cannot have multiple consecutive hyphens, cannot begin or end with a hypen and maximum lenght is 39 characters.`);
+      cdk.Annotations.of(scope).addError(
+        `Invalid Github Repository Owner "${owner}". Must only contain alphanumeric characters or hyphens, cannot have multiple consecutive hyphens, cannot begin or end with a hypen and maximum lenght is 39 characters.`,
+      );
     }
   }
 
   /** Validates the Github repository name (without owner). */
   private static validateRepo(scope: Construct, repo: string): void {
-    if (repo === '') {
-      cdk.Annotations.of(scope).addError(`Invalid Github Repository Name "${repo}". May not be empty string.`);
+    if (repo === "") {
+      cdk.Annotations.of(scope).addError(
+        `Invalid Github Repository Name "${repo}". May not be empty string.`,
+      );
+    }
+  }
+
+  /** Validates the Github owner and repository IDs. */
+  private static validateIds(
+    scope: Construct,
+    ownerId?: string,
+    repoId?: string,
+  ): void {
+    if ((ownerId === undefined) !== (repoId === undefined)) {
+      cdk.Annotations.of(scope).addError(
+        'Incomplete Github IDs. Both "ownerId" and "repoId" must be given to use an immutable subject, or neither of them.',
+      );
     }
   }
 
   /** Formats the `sub` value used in trust policy. */
   private static formatSubject(props: GithubConfiguration): string {
-    const { owner, repo, filter = '*' } = props;
+    const { owner, repo, ownerId, repoId, filter = "*" } = props;
+
+    if (ownerId !== undefined && repoId !== undefined) {
+      return `repo:${owner}@${ownerId}/${repo}@${repoId}:${filter}`;
+    }
+
     return `repo:${owner}/${repo}:${filter}`;
   }
-
 
   /**
    * Define an IAM Role that can be assumed by Github Actions workflow
@@ -145,12 +201,12 @@ export class GithubActionsRole extends iam.Role {
    * myBucket.grantWrite(uploadRole);
    */
   constructor(scope: Construct, id: string, props: GithubActionsRoleProps) {
-
-    const { provider, owner, repo } = props;
+    const { provider, owner, repo, ownerId, repoId } = props;
 
     // Perform validations
     GithubActionsRole.validateOwner(scope, owner);
     GithubActionsRole.validateRepo(scope, repo);
+    GithubActionsRole.validateIds(scope, ownerId, repoId);
 
     // Prepare values
     const subject = GithubActionsRole.formatSubject(props);
@@ -159,7 +215,7 @@ export class GithubActionsRole extends iam.Role {
     // The actual IAM Role creation
     super(scope, id, {
       ...roleProps,
-      assumedBy: new iam.WebIdentityPrincipal(provider.openIdConnectProviderArn, {
+      assumedBy: new iam.WebIdentityPrincipal(provider.oidcProviderArn, {
         StringLike: {
           // Only allow specified subjects to assume this role
           [`${GithubActionsIdentityProvider.issuer}:sub`]: subject,
@@ -167,11 +223,9 @@ export class GithubActionsRole extends iam.Role {
         StringEquals: {
           // Audience is always sts.amazonaws.com with AWS official Github Action
           // https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/configuring-openid-connect-in-amazon-web-services#adding-the-identity-provider-to-aws
-          [`${GithubActionsIdentityProvider.issuer}:aud`]: 'sts.amazonaws.com',
+          [`${GithubActionsIdentityProvider.issuer}:aud`]: "sts.amazonaws.com",
         },
       }),
     });
-
   }
 }
-

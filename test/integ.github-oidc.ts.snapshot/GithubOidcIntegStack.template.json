@@ -1,0 +1,90 @@
+{
+ "Resources": {
+  "GithubProvider1CDE27EB": {
+   "Type": "AWS::IAM::OIDCProvider",
+   "Properties": {
+    "ClientIdList": [
+     "sts.amazonaws.com"
+    ],
+    "Url": "https://token.actions.githubusercontent.com"
+   }
+  },
+  "GithubActionsRoleF5CC769F": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRoleWithWebIdentity",
+       "Condition": {
+        "StringLike": {
+         "token.actions.githubusercontent.com:sub": "repo:octo-org/octo-repo:ref:refs/heads/main"
+        },
+        "StringEquals": {
+         "token.actions.githubusercontent.com:aud": "sts.amazonaws.com"
+        }
+       },
+       "Effect": "Allow",
+       "Principal": {
+        "Federated": {
+         "Ref": "GithubProvider1CDE27EB"
+        }
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "Description": "Integration test role for GitHub Actions OIDC",
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/ReadOnlyAccess"
+       ]
+      ]
+     }
+    ],
+    "RoleName": "github-oidc-integ-role"
+   }
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}
