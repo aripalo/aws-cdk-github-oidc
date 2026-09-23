@@ -49,8 +49,8 @@ export class GithubActionsIdentityProvider
     scope: Construct,
     id: string,
   ): IGithubActionsIdentityProvider {
-    const accountId = cdk.Stack.of(scope).account;
-    const providerArn = `arn:aws:iam::${accountId}:oidc-provider/${GithubActionsIdentityProvider.issuer}`;
+    const { account, partition } = cdk.Stack.of(scope);
+    const providerArn = `arn:${partition}:iam::${account}:oidc-provider/${GithubActionsIdentityProvider.issuer}`;
     return iam.OidcProviderNative.fromOidcProviderArn(scope, id, providerArn);
   }
 
