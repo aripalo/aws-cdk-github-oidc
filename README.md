@@ -120,6 +120,7 @@ By default the value of `filter` property will be `'*'` which means any workflow
 > If you need:
 > - multiple filters on a same repo NOW or
 > - multiple repos to be able to assume the role
+> 
 > see [@blimmer/cdk-github-oidc](https://github.com/blimmer/cdk-github-oidc) as an alternative!
 
 <br/>
