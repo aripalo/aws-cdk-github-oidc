@@ -1287,6 +1287,8 @@ const githubActionsRoleProps: GithubActionsRoleProps = { ... }
 | <code><a href="#aws-cdk-github-oidc.GithubActionsRoleProps.property.provider">provider</a></code> | <code><a href="#aws-cdk-github-oidc.IGithubActionsIdentityProvider">IGithubActionsIdentityProvider</a></code> | Reference to Github OpenID Connect Provider configured in AWS IAM. |
 | <code><a href="#aws-cdk-github-oidc.GithubActionsRoleProps.property.repo">repo</a></code> | <code>string</code> | Repository name (slug) without the owner. |
 | <code><a href="#aws-cdk-github-oidc.GithubActionsRoleProps.property.filter">filter</a></code> | <code>string</code> | Subject condition filter, appended after `repo:${owner}/${repo}:` string in IAM Role trust relationship. |
+| <code><a href="#aws-cdk-github-oidc.GithubActionsRoleProps.property.ownerId">ownerId</a></code> | <code>string</code> | Numeric Github ID of the repository owner (organization or user), which makes the subject immutable. |
+| <code><a href="#aws-cdk-github-oidc.GithubActionsRoleProps.property.repoId">repoId</a></code> | <code>string</code> | Numeric Github ID of the repository, which makes the subject immutable. |
 | <code><a href="#aws-cdk-github-oidc.GithubActionsRoleProps.property.description">description</a></code> | <code>string</code> | A description of the role. |
 | <code><a href="#aws-cdk-github-oidc.GithubActionsRoleProps.property.externalIds">externalIds</a></code> | <code>string[]</code> | List of IDs that the role assumer needs to provide one of when assuming this role. |
 | <code><a href="#aws-cdk-github-oidc.GithubActionsRoleProps.property.inlinePolicies">inlinePolicies</a></code> | <code>{[ key: string ]: aws-cdk-lib.aws_iam.PolicyDocument}</code> | A list of named policies to inline into this role. |
@@ -1363,6 +1365,9 @@ public readonly filter: string;
 
 Subject condition filter, appended after `repo:${owner}/${repo}:` string in IAM Role trust relationship.
 
+With `ownerId` & `repoId` given, appended after
+`repo:${owner}@${ownerId}/${repo}@${repoId}:` instead.
+
 > [https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/about-security-hardening-with-openid-connect#examples](https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/about-security-hardening-with-openid-connect#examples)
 
 ---
@@ -1374,6 +1379,54 @@ Subject condition filter, appended after `repo:${owner}/${repo}:` string in IAM 
 'ref:refs/heads/demo-branch'
 'pull_request'
 'environment:Production'
+```
+
+
+##### `ownerId`<sup>Optional</sup> <a name="ownerId" id="aws-cdk-github-oidc.GithubActionsRoleProps.property.ownerId"></a>
+
+```typescript
+public readonly ownerId: string;
+```
+
+- *Type:* string
+- *Default:* subject refers to the owner and repository by name
+
+Numeric Github ID of the repository owner (organization or user), which makes the subject immutable.
+
+Must be given together with `repoId`.
+
+> [https://docs.github.com/en/actions/reference/security/oidc#immutable-subject-claims](https://docs.github.com/en/actions/reference/security/oidc#immutable-subject-claims)
+
+---
+
+*Example*
+
+```typescript
+'123456'
+```
+
+
+##### `repoId`<sup>Optional</sup> <a name="repoId" id="aws-cdk-github-oidc.GithubActionsRoleProps.property.repoId"></a>
+
+```typescript
+public readonly repoId: string;
+```
+
+- *Type:* string
+- *Default:* subject refers to the owner and repository by name
+
+Numeric Github ID of the repository, which makes the subject immutable.
+
+Must be given together with `ownerId`.
+
+> [https://docs.github.com/en/actions/reference/security/oidc#immutable-subject-claims](https://docs.github.com/en/actions/reference/security/oidc#immutable-subject-claims)
+
+---
+
+*Example*
+
+```typescript
+'456789'
 ```
 
 
@@ -1551,6 +1604,8 @@ const githubConfiguration: GithubConfiguration = { ... }
 | <code><a href="#aws-cdk-github-oidc.GithubConfiguration.property.provider">provider</a></code> | <code><a href="#aws-cdk-github-oidc.IGithubActionsIdentityProvider">IGithubActionsIdentityProvider</a></code> | Reference to Github OpenID Connect Provider configured in AWS IAM. |
 | <code><a href="#aws-cdk-github-oidc.GithubConfiguration.property.repo">repo</a></code> | <code>string</code> | Repository name (slug) without the owner. |
 | <code><a href="#aws-cdk-github-oidc.GithubConfiguration.property.filter">filter</a></code> | <code>string</code> | Subject condition filter, appended after `repo:${owner}/${repo}:` string in IAM Role trust relationship. |
+| <code><a href="#aws-cdk-github-oidc.GithubConfiguration.property.ownerId">ownerId</a></code> | <code>string</code> | Numeric Github ID of the repository owner (organization or user), which makes the subject immutable. |
+| <code><a href="#aws-cdk-github-oidc.GithubConfiguration.property.repoId">repoId</a></code> | <code>string</code> | Numeric Github ID of the repository, which makes the subject immutable. |
 
 ---
 
@@ -1619,6 +1674,9 @@ public readonly filter: string;
 
 Subject condition filter, appended after `repo:${owner}/${repo}:` string in IAM Role trust relationship.
 
+With `ownerId` & `repoId` given, appended after
+`repo:${owner}@${ownerId}/${repo}@${repoId}:` instead.
+
 > [https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/about-security-hardening-with-openid-connect#examples](https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/about-security-hardening-with-openid-connect#examples)
 
 ---
@@ -1630,6 +1688,54 @@ Subject condition filter, appended after `repo:${owner}/${repo}:` string in IAM 
 'ref:refs/heads/demo-branch'
 'pull_request'
 'environment:Production'
+```
+
+
+##### `ownerId`<sup>Optional</sup> <a name="ownerId" id="aws-cdk-github-oidc.GithubConfiguration.property.ownerId"></a>
+
+```typescript
+public readonly ownerId: string;
+```
+
+- *Type:* string
+- *Default:* subject refers to the owner and repository by name
+
+Numeric Github ID of the repository owner (organization or user), which makes the subject immutable.
+
+Must be given together with `repoId`.
+
+> [https://docs.github.com/en/actions/reference/security/oidc#immutable-subject-claims](https://docs.github.com/en/actions/reference/security/oidc#immutable-subject-claims)
+
+---
+
+*Example*
+
+```typescript
+'123456'
+```
+
+
+##### `repoId`<sup>Optional</sup> <a name="repoId" id="aws-cdk-github-oidc.GithubConfiguration.property.repoId"></a>
+
+```typescript
+public readonly repoId: string;
+```
+
+- *Type:* string
+- *Default:* subject refers to the owner and repository by name
+
+Numeric Github ID of the repository, which makes the subject immutable.
+
+Must be given together with `ownerId`.
+
+> [https://docs.github.com/en/actions/reference/security/oidc#immutable-subject-claims](https://docs.github.com/en/actions/reference/security/oidc#immutable-subject-claims)
+
+---
+
+*Example*
+
+```typescript
+'456789'
 ```
 
 

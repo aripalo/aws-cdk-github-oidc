@@ -116,6 +116,28 @@ By default the value of `filter` property will be `'*'` which means any workflow
 
 <br/>
 
+#### Immutable Subject
+
+Give both `ownerId` and `repoId` to form the trust policy with an [immutable subject](https://docs.github.com/en/actions/reference/security/oidc#immutable-subject-claims):
+
+```ts
+const deployRole = new GithubActionsRole(scope, "DeployRole", {
+  provider: provider,
+  owner: "octo-org",
+  repo: "octo-repo",
+  ownerId: "123456", // your repository owner ID
+  repoId: "456789", // your repository ID
+  filter: "ref:refs/tags/v*",
+});
+```
+
+Which results in a subject condition of `repo:octo-org@123456/octo-repo@456789:ref:refs/tags/v*` instead of `repo:octo-org/octo-repo:ref:refs/tags/v*`. Both properties must be given together, as CDK will fail if you only provide one of them.
+
+> [!IMPORTANT]
+> Ensure Github actually [issues an immutable subject](https://docs.github.com/en/actions/reference/security/oidc#immutable-subject-claims) for your repository **before** deploying a role which requires one, as otherwise `sts:AssumeRoleWithWebIdentity` will be denied.
+
+<br/>
+
 ### Github Actions Workflow
 
 To actually utilize this in your Github Actions workflow, use [aws-actions/configure-aws-credentials](https://github.com/aws-actions/configure-aws-credentials) to [assume a role](https://github.com/aws-actions/configure-aws-credentials#assuming-a-role).

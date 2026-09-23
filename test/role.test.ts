@@ -172,6 +172,123 @@ test("Role with custom props", () => {
   });
 });
 
+test("Role with immutable subject", () => {
+  const app = new cdk.App();
+  const stack = new cdk.Stack(app);
+  const provider = GithubActionsIdentityProvider.fromAccount(
+    stack,
+    "GithubProvider",
+  );
+
+  new GithubActionsRole(stack, "TestRole", {
+    provider,
+    owner: "octo-org",
+    repo: "octo-repo",
+    ownerId: "123456",
+    repoId: "456789",
+    filter: "ref:refs/tags/v*",
+  });
+
+  expect(annotationsOf(stack)).toHaveLength(0);
+
+  const template = Template.fromStack(stack);
+
+  template.hasResourceProperties("AWS::IAM::Role", {
+    AssumeRolePolicyDocument: Match.objectLike({
+      Statement: Match.arrayWith([
+        Match.objectLike({
+          Action: "sts:AssumeRoleWithWebIdentity",
+          Effect: "Allow",
+          Condition: {
+            StringLike: {
+              "token.actions.githubusercontent.com:sub":
+                "repo:octo-org@123456/octo-repo@456789:ref:refs/tags/v*",
+            },
+            StringEquals: {
+              "token.actions.githubusercontent.com:aud": "sts.amazonaws.com",
+            },
+          },
+        }),
+      ]),
+    }),
+  });
+});
+
+test("Role with immutable subject and default filter", () => {
+  const app = new cdk.App();
+  const stack = new cdk.Stack(app);
+  const provider = GithubActionsIdentityProvider.fromAccount(
+    stack,
+    "GithubProvider",
+  );
+
+  new GithubActionsRole(stack, "TestRole", {
+    provider,
+    owner: "octo-org",
+    repo: "octo-repo",
+    ownerId: "123456",
+    repoId: "456789",
+  });
+
+  Template.fromStack(stack).hasResourceProperties("AWS::IAM::Role", {
+    AssumeRolePolicyDocument: Match.objectLike({
+      Statement: Match.arrayWith([
+        Match.objectLike({
+          Condition: Match.objectLike({
+            StringLike: {
+              "token.actions.githubusercontent.com:sub":
+                "repo:octo-org@123456/octo-repo@456789:*",
+            },
+          }),
+        }),
+      ]),
+    }),
+  });
+});
+
+test.each([
+  ["ownerId", { ownerId: "123456" }],
+  ["repoId", { repoId: "456789" }],
+])("Role with only %s given", (_name, ids) => {
+  const app = new cdk.App();
+  const stack = new cdk.Stack(app);
+  const provider = GithubActionsIdentityProvider.fromAccount(
+    stack,
+    "GithubProvider",
+  );
+
+  new GithubActionsRole(stack, "TestRole", {
+    provider,
+    owner: "octo-org",
+    repo: "octo-repo",
+    ...ids,
+  });
+
+  const annotations = annotationsOf(stack);
+
+  expect(annotations).toHaveLength(1);
+  expect(annotations[0].type).toBe(ArtifactMetadataEntryType.ERROR);
+  expect(annotations[0].data).toBe(
+    'Incomplete Github IDs. Both "ownerId" and "repoId" must be given to use an immutable subject, or neither of them.',
+  );
+
+  // Falls back to referring by name instead of a half-formed immutable subject.
+  Template.fromStack(stack).hasResourceProperties("AWS::IAM::Role", {
+    AssumeRolePolicyDocument: Match.objectLike({
+      Statement: Match.arrayWith([
+        Match.objectLike({
+          Condition: Match.objectLike({
+            StringLike: {
+              "token.actions.githubusercontent.com:sub":
+                "repo:octo-org/octo-repo:*",
+            },
+          }),
+        }),
+      ]),
+    }),
+  });
+});
+
 test("Role with invalid owner", () => {
   const app = new cdk.App();
   const stack = new cdk.Stack(app);

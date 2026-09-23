@@ -38,7 +38,36 @@ export interface GithubConfiguration {
   readonly repo: string;
 
   /**
+   * Numeric Github ID of the repository owner (organization or user), which
+   * makes the subject immutable. Must be given together with `repoId`.
+   *
+   * @default - subject refers to the owner and repository by name
+   *
+   * @example
+   * '123456'
+   *
+   * @see https://docs.github.com/en/actions/reference/security/oidc#immutable-subject-claims
+   */
+  readonly ownerId?: string;
+
+  /**
+   * Numeric Github ID of the repository, which makes the subject immutable.
+   * Must be given together with `ownerId`.
+   *
+   * @default - subject refers to the owner and repository by name
+   *
+   * @example
+   * '456789'
+   *
+   * @see https://docs.github.com/en/actions/reference/security/oidc#immutable-subject-claims
+   */
+  readonly repoId?: string;
+
+  /**
    * Subject condition filter, appended after `repo:${owner}/${repo}:` string in IAM Role trust relationship.
+   *
+   * With `ownerId` & `repoId` given, appended after
+   * `repo:${owner}@${ownerId}/${repo}@${repoId}:` instead.
    *
    * @default
    * '*'
@@ -105,6 +134,8 @@ export class GithubActionsRole extends iam.Role {
     delete extractProps.provider;
     delete extractProps.owner;
     delete extractProps.repo;
+    delete extractProps.ownerId;
+    delete extractProps.repoId;
     delete extractProps.filter;
     return extractProps;
   }
@@ -127,9 +158,27 @@ export class GithubActionsRole extends iam.Role {
     }
   }
 
+  /** Validates the Github owner and repository IDs. */
+  private static validateIds(
+    scope: Construct,
+    ownerId?: string,
+    repoId?: string,
+  ): void {
+    if ((ownerId === undefined) !== (repoId === undefined)) {
+      cdk.Annotations.of(scope).addError(
+        'Incomplete Github IDs. Both "ownerId" and "repoId" must be given to use an immutable subject, or neither of them.',
+      );
+    }
+  }
+
   /** Formats the `sub` value used in trust policy. */
   private static formatSubject(props: GithubConfiguration): string {
-    const { owner, repo, filter = "*" } = props;
+    const { owner, repo, ownerId, repoId, filter = "*" } = props;
+
+    if (ownerId !== undefined && repoId !== undefined) {
+      return `repo:${owner}@${ownerId}/${repo}@${repoId}:${filter}`;
+    }
+
     return `repo:${owner}/${repo}:${filter}`;
   }
 
@@ -152,11 +201,12 @@ export class GithubActionsRole extends iam.Role {
    * myBucket.grantWrite(uploadRole);
    */
   constructor(scope: Construct, id: string, props: GithubActionsRoleProps) {
-    const { provider, owner, repo } = props;
+    const { provider, owner, repo, ownerId, repoId } = props;
 
     // Perform validations
     GithubActionsRole.validateOwner(scope, owner);
     GithubActionsRole.validateRepo(scope, repo);
+    GithubActionsRole.validateIds(scope, ownerId, repoId);
 
     // Prepare values
     const subject = GithubActionsRole.formatSubject(props);
