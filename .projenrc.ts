@@ -33,8 +33,14 @@ const project = new AlmaCdkConstructLibrary({
     },
   },
   pnpmSettings: {
-    trustPolicyExclude: ["jsii@5.9.35"],
-    allowBuilds: { lefthook: true, esbuild: true },
+    // jsii-rosetta 6.0.16 carries the stream-json fix (GHSA-528h-pc64-c93x);
+    // it ages past minimumReleaseAge on its own at 2026-09-24T00:24Z.
+    minimumReleaseAgeExclude: ["jsii-rosetta@6.0.16"],
+    // @istanbuljs/load-nyc-config is dormant; its ^3.13.1 range still resolves
+    // to a js-yaml vulnerable to GHSA-2883-xcg3-v3hh.
+    overrides: { "js-yaml@<3.15.2": "3.15.2" },
+    trustPolicyExclude: ["jsii@5.9.3", "jsii@6.0.14"],
+    allowBuilds: { lefthook: true, esbuild: true, "@parcel/watcher": true },
   },
   codeCov: true,
 });
