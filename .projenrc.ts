@@ -87,7 +87,7 @@ gitleaksWorkflow.addJobs({
         name: "Checkout",
         uses: "actions/checkout@v7.0.1",
         with: {
-          fetchDepth: 0,
+          "fetch-depth": 0,
         },
       },
       {
