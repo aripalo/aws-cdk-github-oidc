@@ -114,6 +114,15 @@ By default the value of `filter` property will be `'*'` which means any workflow
 | `'pull_request'`               | Allow only from pull request             |
 | `'environment:Production'`     | Allow only from `Production` environment |
 
+> [!TIP]
+> Currently only one filter can be defined, a future update will introduce option to provide multiple filters (on the same repo).
+>
+> If you need:
+> - multiple filters on a same repo NOW or
+> - multiple repos to be able to assume the role
+> 
+> see [@blimmer/cdk-github-oidc](https://github.com/blimmer/cdk-github-oidc) as an alternative!
+
 <br/>
 
 #### Immutable Subject
